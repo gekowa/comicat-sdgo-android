@@ -4,6 +4,11 @@ package cn.sdgundam.comicatsdgo;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,8 +25,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import static android.view.LayoutInflater.*;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -88,7 +101,9 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView = (ListView) rootView.findViewById(R.id.drawer_list_view);
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -96,13 +111,10 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                getResources().getStringArray(R.array.top_view_titles)));
+        mDrawerListView.setAdapter(new NavigationDrawerListViewAdapter(getActivity()));
+
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        return rootView;
     }
 
     public boolean isDrawerOpen() {
@@ -274,4 +286,63 @@ public class NavigationDrawerFragment extends Fragment {
          */
         void onNavigationDrawerItemSelected(int position);
     }
+
 }
+
+class NavigationDrawerListViewAdapter extends BaseAdapter {
+    ArrayList<Pair<String, Integer>> mTopViewCaptions;
+    Context mContext;
+
+    public NavigationDrawerListViewAdapter(Context context) {
+        super();
+
+        mContext = context;
+
+        String[] topViewTitles = context.getResources().getStringArray(R.array.top_view_titles);
+        TypedArray topViewIcons = context.getResources().obtainTypedArray(R.array.top_view_icons);
+
+        if (topViewTitles.length != topViewIcons.length())
+            throw new AssertionError("Number of titles and views should equal.");
+
+        mTopViewCaptions = new ArrayList<Pair<String, Integer>>(topViewTitles.length);
+        for (int i = 0; i < topViewTitles.length; i++) {
+            Pair<String, Integer> p = new Pair<String, Integer>(topViewTitles[i], topViewIcons.getResourceId(i, -1));
+            mTopViewCaptions.add(p);
+        }
+    }
+
+    @Override
+    public int getCount() {
+        return mTopViewCaptions.size();
+    }
+
+    @Override
+    public Object getItem(int i) {
+        return mTopViewCaptions.get(i);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
+    public View getView(int i, View convertView, ViewGroup parent) {
+        View v = convertView;
+
+        if (v == null) {
+            v = LayoutInflater.from(mContext).inflate(R.layout.nav_drawer_list_view_item, parent, false);
+        }
+
+        Pair<String, Integer> item = (Pair<String, Integer>)getItem(i);
+
+        ImageView icon = (ImageView)v.findViewById(R.id.icon);
+        TextView text = (TextView)v.findViewById(R.id.title);
+
+        icon.setImageResource(item.second);
+        text.setText(item.first);
+
+        return v;
+    }
+}
+
