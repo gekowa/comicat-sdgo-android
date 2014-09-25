@@ -50,7 +50,7 @@ public class MainActivity extends Activity
         switch(position) {
             case 0:
                 fm.beginTransaction()
-                    .replace(R.id.container, HomeFragment.newInstance("1", "2"))
+                    .replace(R.id.container, HomeFragment.newInstance())
                     .commit();
                 break;
             case 1:
