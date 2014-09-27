@@ -3,6 +3,7 @@
     package="cn.sdgundam.comicatsdgo" >
 
     <application
+        android:name=".GDApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -19,4 +20,5 @@
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

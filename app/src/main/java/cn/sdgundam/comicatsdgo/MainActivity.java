@@ -3,14 +3,15 @@ package cn.sdgundam.comicatsdgo;
 import android.app.Activity;
 
 import android.app.ActionBar;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 
 
-public class MainActivity extends Activity
+public class MainActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
@@ -46,28 +47,28 @@ public class MainActivity extends Activity
         mTitle = allTitles[position];
 
         // update the main content by replacing fragments
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         switch(position) {
             case 0:
                 fm.beginTransaction()
-                    .replace(R.id.container, HomeFragment.getInstance())
+                    .replace(R.id.container, cn.sdgundam.comicatsdgo.HomeFragment.getInstance())
                     .commit();
                 break;
-            case 1:
-                fm.beginTransaction()
-                    .replace(R.id.container, VideoFragment.newInstance("1", "2"))
-                    .commit();
-                break;
-            case 2:
-                fm.beginTransaction()
-                    .replace(R.id.container, NewsFragment.newInstance("1", "2"))
-                    .commit();
-                break;
-            case 3:
-                fm.beginTransaction()
-                    .replace(R.id.container, OriginFragment.newInstance("1", "2"))
-                    .commit();
-                break;
+//            case 1:
+//                fm.beginTransaction()
+//                    .replace(R.id.container, VideoFragment.newInstance("1", "2"))
+//                    .commit();
+//                break;
+//            case 2:
+//                fm.beginTransaction()
+//                    .replace(R.id.container, NewsFragment.newInstance("1", "2"))
+//                    .commit();
+//                break;
+//            case 3:
+//                fm.beginTransaction()
+//                    .replace(R.id.container, OriginFragment.newInstance("1", "2"))
+//                    .commit();
+//                break;
         }
     }
 

@@ -1,14 +1,22 @@
 package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.gd_api.FetchHomeInfoAsyncTask;
 
@@ -71,6 +79,15 @@ public class HomeFragment extends Fragment {
 
     void onReceiveHomeInfo(HomeInfo homeInfo) {
         this.homeInfo = homeInfo;
+
+        // setup view
+        setupView();
+    }
+
+    void setupView() {
+        CarouselFragment carousel = (CarouselFragment) getFragmentManager().findFragmentById(R.id.carousel);
+        carousel.setCarousel(homeInfo.getCarousel());
+
     }
 
     void onFetchingHomeInfoWithError() {
