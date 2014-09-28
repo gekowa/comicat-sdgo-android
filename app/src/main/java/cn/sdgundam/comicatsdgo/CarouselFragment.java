@@ -7,9 +7,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+
+import com.viewpagerindicator.LinePageIndicator;
+import com.viewpagerindicator.PageIndicator;
 
 import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 
@@ -17,8 +22,9 @@ import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
  * Created by xhguo on 9/28/2014.
  */
 public class CarouselFragment extends Fragment {
-    ViewPager pager;
+    static final int INDEX_SEED = 500;
 
+    ViewPager pager;
 
     CarouselInfo[] carousel;
 
@@ -30,6 +36,7 @@ public class CarouselFragment extends Fragment {
         this.carousel = carousel;
 
         pager.setAdapter(new CarouselPagerAdapter(getFragmentManager()));
+        pager.setCurrentItem(INDEX_SEED * carousel.length);
     }
 
     public CarouselFragment() { }
@@ -37,13 +44,12 @@ public class CarouselFragment extends Fragment {
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
-
-
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 
@@ -53,18 +59,25 @@ public class CarouselFragment extends Fragment {
 
         pager = (ViewPager) root.findViewById(R.id.the_view_pager);
 
+        PageIndicator indicator = (LinePageIndicator) root.findViewById(R.id.indicator);
+
         return root;
 
     }
 
-    class CarouselPagerAdapter extends FragmentPagerAdapter {
+    class CarouselPagerAdapter extends FragmentPagerAdapter
+        implements ViewTreeObserver.OnScrollChangedListener {
+
+        static final int BIG_NUMBER_OF_ITEMS = 10000;
+
         CarouselPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public android.support.v4.app.Fragment getItem(int i) {
-            CarouselInfo ci = carousel[i];
+            int realIndex = i % carousel.length;
+            CarouselInfo ci = carousel[realIndex];
 
             CarouselItemFragment f = new CarouselItemFragment();
 
@@ -77,7 +90,12 @@ public class CarouselFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return carousel.length;
+            return BIG_NUMBER_OF_ITEMS;
+        }
+
+        @Override
+        public void onScrollChanged() {
+            Log.d("Scroll", "ScrollChanged");
         }
     }
 }

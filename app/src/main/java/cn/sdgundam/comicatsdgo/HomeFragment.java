@@ -2,6 +2,7 @@ package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -81,17 +83,30 @@ public class HomeFragment extends Fragment {
         this.homeInfo = homeInfo;
 
         // setup view
+        setupData();
+
         setupView();
     }
 
-    void setupView() {
+    void setupData() {
         CarouselFragment carousel = (CarouselFragment) getFragmentManager().findFragmentById(R.id.carousel);
         carousel.setCarousel(homeInfo.getCarousel());
+    }
 
+    void setupView() {
+        int fragmentWidth = getView().getMeasuredWidth();
+        int carouselHeight = getResources().getDimensionPixelSize(R.dimen.carousel_height);
+        int carouselWidth = getResources().getDimensionPixelSize(R.dimen.carousel_width);
+        int aspectCarouselHeight = (int) (fragmentWidth  * (float)carouselHeight  / carouselWidth);
+
+        View v = this.getView().findViewById(R.id.carousel);
+        v.getLayoutParams().height = aspectCarouselHeight;
     }
 
     void onFetchingHomeInfoWithError() {
         // TODO: Toast?
         // TODO: display network not available fragment
     }
+
+
 }
