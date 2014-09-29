@@ -90,11 +90,6 @@ public class CarouselFragment extends Fragment {
         public int getCount() {
             return carousel.length;
         }
-//
-//        @Override
-//        public void onScrollChanged() {
-//            Log.d("Scroll", "ScrollChanged");
-//        }
     }
 
     public class ZoomOutPageTransformer implements ViewPager.PageTransformer {

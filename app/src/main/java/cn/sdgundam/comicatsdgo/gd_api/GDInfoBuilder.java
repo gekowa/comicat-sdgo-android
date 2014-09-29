@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class GDInfoBuilder {
 
             String generatedString = rootObject.getString("generated");
             Date generated = new Date();
-            Log.v(LOG_TAG, generatedString + " parse success? " + Utility.TryParseDate(generatedString, generated));
+            Log.v(LOG_TAG, generatedString + " parse success? " + Utility.tryParseDate(generatedString, generated));
             homeInfo.setGenerated(generated);
 
             // carousel
@@ -60,7 +59,7 @@ public class GDInfoBuilder {
             for (int i = 0; i < videoListJSONArray.length(); i++) {
                 JSONObject d = videoListJSONArray.getJSONObject(i);
                 Date created = new Date();
-                Utility.TryParseDate(d.getString("created"), created);
+                Utility.tryParseDate(d.getString("created"), created);
                 VideoListItem vli = new VideoListItem(
                     d.getInt("postId"),
                     d.getString("title"),
@@ -80,7 +79,7 @@ public class GDInfoBuilder {
             for (int i = 0; i < postListJSONArray.length(); i++) {
                 JSONObject d = postListJSONArray.getJSONObject(i);
                 Date created = new Date();
-                Utility.TryParseDate(d.getString("created"), created);
+                Utility.tryParseDate(d.getString("created"), created);
                 PostInfo pi = new PostInfo(
                     d.getInt("postId"),
                     d.getString("title"),
