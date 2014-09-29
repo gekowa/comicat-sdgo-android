@@ -16,13 +16,6 @@
             android:layout_height="match_parent"
          />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:textColor="#FF0000"
-            android:text="asdfasdfa sdf asdf 333"
-             />
 
     </LinearLayout>
 </ScrollView>

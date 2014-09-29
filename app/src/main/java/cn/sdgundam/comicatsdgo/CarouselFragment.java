@@ -22,8 +22,6 @@ import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
  * Created by xhguo on 9/28/2014.
  */
 public class CarouselFragment extends Fragment {
-    static final int INDEX_SEED = 500;
-
     ViewPager pager;
 
     CarouselInfo[] carousel;
@@ -35,8 +33,14 @@ public class CarouselFragment extends Fragment {
     public void setCarousel(CarouselInfo[] carousel) {
         this.carousel = carousel;
 
+        View rootView = getView();
+
+        pager = (ViewPager) rootView.findViewById(R.id.the_view_pager);
+
         pager.setAdapter(new CarouselPagerAdapter(getFragmentManager()));
-        pager.setCurrentItem(INDEX_SEED * carousel.length);
+
+        PageIndicator indicator = (LinePageIndicator) rootView.findViewById(R.id.indicator);
+        indicator.setViewPager(pager);
     }
 
     public CarouselFragment() { }
@@ -55,20 +59,11 @@ public class CarouselFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_carousel, container, false);
-
-        pager = (ViewPager) root.findViewById(R.id.the_view_pager);
-
-        PageIndicator indicator = (LinePageIndicator) root.findViewById(R.id.indicator);
-
-        return root;
-
+        return inflater.inflate(R.layout.fragment_carousel, container, false);
     }
 
     class CarouselPagerAdapter extends FragmentPagerAdapter
         implements ViewTreeObserver.OnScrollChangedListener {
-
-        static final int BIG_NUMBER_OF_ITEMS = 10000;
 
         CarouselPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -76,8 +71,7 @@ public class CarouselFragment extends Fragment {
 
         @Override
         public android.support.v4.app.Fragment getItem(int i) {
-            int realIndex = i % carousel.length;
-            CarouselInfo ci = carousel[realIndex];
+            CarouselInfo ci = carousel[i];
 
             CarouselItemFragment f = new CarouselItemFragment();
 
@@ -90,7 +84,7 @@ public class CarouselFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return BIG_NUMBER_OF_ITEMS;
+            return carousel.length;
         }
 
         @Override

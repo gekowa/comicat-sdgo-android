@@ -90,7 +90,7 @@ public class LinePageIndicator extends View implements PageIndicator {
 
         Drawable background = a.getDrawable(R.styleable.LinePageIndicator_android_background);
         if (background != null) {
-          setBackgroundDrawable(background);
+            setBackgroundDrawable(background);
         }
 
         a.recycle();
@@ -371,7 +371,7 @@ public class LinePageIndicator extends View implements PageIndicator {
                 result = Math.min(result, specSize);
             }
         }
-        return (int) FloatMath.ceil(result);
+        return (int)FloatMath.ceil(result);
     }
 
     /**
@@ -397,7 +397,7 @@ public class LinePageIndicator extends View implements PageIndicator {
                 result = Math.min(result, specSize);
             }
         }
-        return (int) FloatMath.ceil(result);
+        return (int)FloatMath.ceil(result);
     }
 
     @Override
