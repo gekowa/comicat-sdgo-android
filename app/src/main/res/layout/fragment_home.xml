@@ -26,5 +26,11 @@
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
             />
+
+        <it.sephiroth.android.library.widget.AbsHListView
+            android:id="@+id/unit_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </LinearLayout>
 </ScrollView>

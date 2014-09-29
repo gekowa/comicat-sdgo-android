@@ -1,18 +1,18 @@
 package cn.sdgundam.comicatsdgo;
 
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import com.imbryk.viewpager.LoopViewPager;
 import com.viewpagerindicator.LinePageIndicator;
@@ -24,6 +24,10 @@ import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
  * Created by xhguo on 9/28/2014.
  */
 public class CarouselFragment extends Fragment {
+    static final int MESSAGE_SCROLL = 0;
+    static final int AUTO_SCROLL_INTERVAL = 3000;
+    Handler autoScrollHandler;
+
     ViewPager pager;
 
     CarouselInfo[] carousel;
@@ -40,9 +44,23 @@ public class CarouselFragment extends Fragment {
         pager = (LoopViewPager) rootView.findViewById(R.id.the_view_pager);
         pager.setAdapter(new CarouselPagerAdapter(getFragmentManager()));
         // pager.setPageTransformer(true, new ZoomOutPageTransformer());
+        pager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent ev) {
+                if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+                    stopAutoScroll();
+                } else if (ev.getAction() == MotionEvent.ACTION_UP) {
+                    startAutoScroll(AUTO_SCROLL_INTERVAL);
+                }
+                return false;
+            }
+        });
 
         PageIndicator indicator = (LinePageIndicator) rootView.findViewById(R.id.indicator);
         indicator.setViewPager(pager);
+
+        autoScrollHandler = new AutoScrollHandler();
+        startAutoScroll(AUTO_SCROLL_INTERVAL);
     }
 
     public CarouselFragment() { }
@@ -62,9 +80,36 @@ public class CarouselFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_carousel, container, false);
     }
 
-//    class CarouselPagerAdapter2 extends PagerAdapter {
-//
-//    }
+    public void startAutoScroll(int delayTimeInMills) {
+        sendScrollMessage(delayTimeInMills);
+    }
+
+    /**
+     * stop auto scroll
+     */
+    public void stopAutoScroll() {
+        autoScrollHandler.removeMessages(MESSAGE_SCROLL);
+    }
+
+    void scrollOnce() {
+        PagerAdapter adapter = pager.getAdapter();
+        int currentItem = pager.getCurrentItem();
+        if (adapter == null || carousel.length == 0) {
+            return;
+        }
+
+        int nextItem = currentItem + 1;
+        if (nextItem == carousel.length) {
+            pager.setCurrentItem(0, true);
+        } else {
+            pager.setCurrentItem(nextItem, true);
+        }
+    }
+
+    void sendScrollMessage(long delayTimeInMills) {
+        autoScrollHandler.removeMessages(MESSAGE_SCROLL);
+        autoScrollHandler.sendEmptyMessageDelayed(MESSAGE_SCROLL, delayTimeInMills);
+    }
 
     class CarouselPagerAdapter extends FragmentPagerAdapter {
 
@@ -89,6 +134,19 @@ public class CarouselFragment extends Fragment {
         @Override
         public int getCount() {
             return carousel.length;
+        }
+    }
+
+    class AutoScrollHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            switch(msg.what) {
+                case MESSAGE_SCROLL:
+                    scrollOnce();
+                    sendScrollMessage(AUTO_SCROLL_INTERVAL);
+            }
         }
     }
 
