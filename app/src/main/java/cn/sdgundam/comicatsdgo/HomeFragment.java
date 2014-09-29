@@ -83,17 +83,13 @@ public class HomeFragment extends Fragment {
         this.homeInfo = homeInfo;
 
         // setup view
-        setupData();
-
-        setupView();
+        setupCarousel();
     }
 
-    void setupData() {
+    void setupCarousel() {
         CarouselFragment carousel = (CarouselFragment) getFragmentManager().findFragmentById(R.id.carousel);
         carousel.setCarousel(homeInfo.getCarousel());
-    }
 
-    void setupView() {
         int fragmentWidth = getView().getMeasuredWidth();
         int carouselHeight = getResources().getDimensionPixelSize(R.dimen.carousel_height);
         int carouselWidth = getResources().getDimensionPixelSize(R.dimen.carousel_width);
@@ -102,6 +98,7 @@ public class HomeFragment extends Fragment {
         View v = this.getView().findViewById(R.id.carousel);
         v.getLayoutParams().height = aspectCarouselHeight;
     }
+
 
     void onFetchingHomeInfoWithError() {
         // TODO: Toast?
