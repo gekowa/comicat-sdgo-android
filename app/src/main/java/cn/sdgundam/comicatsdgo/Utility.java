@@ -22,6 +22,6 @@ public class Utility {
     }
 
     public static String getUnitImageURLByUnitId(String unitId) {
-        return String.format("http://cdn.sdgundam.cn/data-source/acc/unit-3g/%1$.png", unitId);
+        return String.format("http://cdn.sdgundam.cn/data-source/acc/unit-3g/%s.png", unitId);
     }
 }

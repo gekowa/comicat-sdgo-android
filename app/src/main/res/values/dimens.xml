@@ -10,5 +10,5 @@
     <dimen name="carousel_width">640px</dimen>
     <dimen name="carousel_height">266px</dimen>
 
-    <dimen name="unit_image_size">155px</dimen>
+    <dimen name="unit_image_size">70dp</dimen>
 </resources>

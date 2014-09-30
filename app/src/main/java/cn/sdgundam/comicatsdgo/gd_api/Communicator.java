@@ -28,7 +28,7 @@ public class Communicator {
     public static final String API_URL = "http://www.sdgundam.cn/services/app.ashx";
 
     public static String requestApi(String action, Map<String, String> parameters) {
-        StringBuffer sb = null;
+        StringBuffer sb = new StringBuffer();
 
         URL url = null;
         HttpURLConnection conn = null;
@@ -56,8 +56,6 @@ public class Communicator {
             int bufferSize = 1024;
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 char[] buffer = new char[bufferSize];
-
-                sb = new StringBuffer();
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 int read = 0;

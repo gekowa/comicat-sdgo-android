@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
@@ -80,8 +81,8 @@ public class HomeFragment extends Fragment {
     void onReceiveHomeInfo(HomeInfo homeInfo) {
         this.homeInfo = homeInfo;
 
-        // setup view
         setupCarousel();
+        setupUnitList();
     }
 
     void setupCarousel() {
@@ -97,9 +98,15 @@ public class HomeFragment extends Fragment {
         v.getLayoutParams().height = aspectCarouselHeight;
     }
 
+    void setupUnitList() {
+        UnitListType1Fragment unitList = (UnitListType1Fragment) getFragmentManager().findFragmentById(R.id.unit_list);
+        unitList.setUnits(homeInfo.getUnits());
+    }
+
 
     void onFetchingHomeInfoWithError() {
         // TODO: Toast?
+        Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_LONG).show();
         // TODO: display network not available fragment
     }
 
