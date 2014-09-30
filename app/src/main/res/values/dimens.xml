@@ -11,4 +11,7 @@
     <dimen name="carousel_height">266px</dimen>
 
     <dimen name="unit_image_size">70dp</dimen>
+
+    <dimen name="gd_category_icon_s_width">32dp</dimen>
+    <dimen name="gd_category_icon_s_height">16dp</dimen>
 </resources>

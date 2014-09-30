@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/gdc_1"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_1"/>
+
+    <ImageView
+        android:id="@+id/gdc_2"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_2"/>
+
+    <ImageView
+        android:id="@+id/gdc_4"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_4"/>
+
+    <ImageView
+        android:id="@+id/gdc_8"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_8"/>
+
+    <ImageView
+        android:id="@+id/gdc_16"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_16"/>
+
+    <ImageView
+        android:id="@+id/gdc_32"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_32"/>
+
+    <ImageView
+        android:id="@+id/gdc_64"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_64"/>
+
+    <ImageView
+        android:id="@+id/gdc_128"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_128"/>
+
+    <ImageView
+        android:id="@+id/gdc_256"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_256"/>
+
+    <ImageView
+        android:id="@+id/gdc_512"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_512"/>
+
+    <ImageView
+        android:id="@+id/gdc_1024"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_1024"/>
+
+    <ImageView
+        android:id="@+id/gdc_2048"
+        android:layout_width="@dimen/gd_category_icon_s_width"
+        android:layout_height="@dimen/gd_category_icon_s_height"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/gdc_icon_s_2048"/>
+
+</LinearLayout>

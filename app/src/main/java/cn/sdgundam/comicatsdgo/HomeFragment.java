@@ -83,7 +83,9 @@ public class HomeFragment extends Fragment {
 
         setupCarousel();
         setupUnitList();
+        setupPostList();
     }
+
 
     void setupCarousel() {
         CarouselFragment carousel = (CarouselFragment) getFragmentManager().findFragmentById(R.id.carousel);
@@ -101,6 +103,11 @@ public class HomeFragment extends Fragment {
     void setupUnitList() {
         UnitListType1Fragment unitList = (UnitListType1Fragment) getFragmentManager().findFragmentById(R.id.unit_list);
         unitList.setUnits(homeInfo.getUnits());
+    }
+
+    void setupPostList() {
+        PostListForHomeFragment postList = (PostListForHomeFragment) getFragmentManager().findFragmentById(R.id.post_list);
+        postList.setPosts(homeInfo.getPostList());
     }
 
 

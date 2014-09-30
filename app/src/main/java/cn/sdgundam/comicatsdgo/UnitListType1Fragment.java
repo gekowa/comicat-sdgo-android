@@ -2,6 +2,7 @@ package cn.sdgundam.comicatsdgo;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import it.sephiroth.android.library.widget.HListView;
 
 /**
  * Created by xhguo on 9/30/2014.
+ * This fragment is mainly for usage on Home view
  */
 public class UnitListType1Fragment extends Fragment {
     static int unitImageSize = 0;
@@ -91,7 +93,13 @@ public class UnitListType1Fragment extends Fragment {
                 gd.setColor(0xFFFFFFFF);
                 // gd.setCornerRadius(0);
                 gd.setStroke(1, 0x341A1A1A);
-                view.setBackgroundDrawable(gd);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    view.setBackground(gd);
+                }
+                else {
+                    view.setBackgroundDrawable(gd);
+                }
             }
 
             UnitInfoShort unit = (UnitInfoShort)getItem(i);
