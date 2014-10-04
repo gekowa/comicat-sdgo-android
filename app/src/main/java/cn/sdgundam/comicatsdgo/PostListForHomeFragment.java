@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
 import cn.sdgundam.comicatsdgo.extension.BorderedTableRow;
@@ -88,7 +89,7 @@ public class PostListForHomeFragment extends Fragment {
         }
     }
 
-    View createPostListForHomeItemView (PostInfo p) {
+    View createPostListForHomeItemView (final PostInfo p) {
         View v = View.inflate(getActivity(), R.layout.post_list_for_home_item, null);
 
         TextView textView = (TextView) v.findViewById(R.id.text_view);
@@ -100,6 +101,14 @@ public class PostListForHomeFragment extends Fragment {
 
         TextView dateView = (TextView)v.findViewById(R.id.date_text_view);
         dateView.setText(Utility.dateStringByDay(getActivity(), p.getCreated()));
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(),
+                        String.format("PostId: %s clicked", p.getPostId()), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return v;
 

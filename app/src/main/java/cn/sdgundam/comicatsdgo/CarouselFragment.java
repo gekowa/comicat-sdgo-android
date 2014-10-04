@@ -15,6 +15,7 @@ import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.imbryk.viewpager.LoopViewPager;
 import com.squareup.picasso.Picasso;
@@ -127,7 +128,7 @@ public class CarouselFragment extends Fragment {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
             ImageView imageView = new ImageView(getActivity());
 
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
@@ -144,6 +145,13 @@ public class CarouselFragment extends Fragment {
             Picasso.with(getActivity()).load(ci.getImageURL()).into(imageView);
 
             container.addView(imageView);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getActivity(), "Carousel " + position + " clicked.", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             return imageView;
         }
@@ -162,6 +170,8 @@ public class CarouselFragment extends Fragment {
         public boolean isViewFromObject(View view, Object o) {
             return (ImageView)view == (ImageView)o;
         }
+
+
     }
 
     class AutoScrollHandler extends Handler {

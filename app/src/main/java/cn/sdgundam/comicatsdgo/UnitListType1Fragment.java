@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
 import it.sephiroth.android.library.widget.AbsHListView;
+import it.sephiroth.android.library.widget.AdapterView;
 import it.sephiroth.android.library.widget.HListView;
 
 /**
@@ -36,6 +38,16 @@ public class UnitListType1Fragment extends Fragment {
         this.units = units;
 
         listView.setAdapter(new UnitListType1Adapter(getActivity()));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                UnitInfoShort unit = (UnitInfoShort) adapterView.getAdapter().getItem(i);
+
+                Toast.makeText(getActivity(),
+                        String.format("UnitId: %s (index: %s) clicked", unit.getUnitId(), i), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -91,7 +103,6 @@ public class UnitListType1Fragment extends Fragment {
                 // draw border
                 GradientDrawable gd = new GradientDrawable();
                 gd.setColor(0xFFFFFFFF);
-                // gd.setCornerRadius(0);
                 gd.setStroke(1, 0x341A1A1A);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
