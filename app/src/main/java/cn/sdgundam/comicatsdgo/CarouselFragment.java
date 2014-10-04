@@ -1,5 +1,6 @@
 package cn.sdgundam.comicatsdgo;
 
+import android.app.ActionBar;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -13,10 +14,14 @@ import android.view.MotionEvent;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.imbryk.viewpager.LoopViewPager;
+import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.LinePageIndicator;
 import com.viewpagerindicator.PageIndicator;
+
+import java.util.ArrayList;
 
 import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 
@@ -42,7 +47,7 @@ public class CarouselFragment extends Fragment {
         View rootView = getView();
 
         pager = (LoopViewPager) rootView.findViewById(R.id.the_view_pager);
-        pager.setAdapter(new CarouselPagerAdapter(getFragmentManager()));
+        pager.setAdapter(new CarouselPageAdapter2());
         // pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -112,29 +117,50 @@ public class CarouselFragment extends Fragment {
         autoScrollHandler.sendEmptyMessageDelayed(MESSAGE_SCROLL, delayTimeInMills);
     }
 
-    class CarouselPagerAdapter extends FragmentPagerAdapter {
+    class CarouselPageAdapter2 extends PagerAdapter {
+        ArrayList<ImageView> imageViews;
 
-        CarouselPagerAdapter(FragmentManager fm) {
-            super(fm);
+        public CarouselPageAdapter2() {
+            super();
+
+            imageViews = new ArrayList<ImageView>();
         }
 
         @Override
-        public android.support.v4.app.Fragment getItem(int i) {
-            int realPosition= (carousel.length + i - 1) % carousel.length;
+        public Object instantiateItem(ViewGroup container, int position) {
+            ImageView imageView = new ImageView(getActivity());
+
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            );
+
+            imageView.setLayoutParams(layoutParams);
+
+            int realPosition= (carousel.length + position) % carousel.length;
             CarouselInfo ci = carousel[realPosition];
 
-            CarouselItemFragment f = new CarouselItemFragment();
+            Picasso.with(getActivity()).setIndicatorsEnabled(true);
+            Picasso.with(getActivity()).load(ci.getImageURL()).into(imageView);
 
-            Bundle args = new Bundle();
-            args.putString("imageURL", ci.getImageURL());
-            f.setArguments(args);
+            container.addView(imageView);
 
-            return f;
+            return imageView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((ImageView)object);
         }
 
         @Override
         public int getCount() {
             return carousel.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object o) {
+            return (ImageView)view == (ImageView)o;
         }
     }
 
