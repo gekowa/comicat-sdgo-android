@@ -1,5 +1,8 @@
 package cn.sdgundam.comicatsdgo;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +14,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
+import cn.sdgundam.comicatsdgo.extension.BorderedTableRow;
+import cn.sdgundam.comicatsdgo.view.GDCategorySmallIconView;
+import cn.sdgundam.comicatsdgo.view.PostListForHomeItemView;
 
 /**
  * Created by xhguo on 9/30/2014.
@@ -26,11 +32,13 @@ public class PostListForHomeFragment extends Fragment {
         table.removeAllViews();
 
         boolean hasOpenRow = false;
-        TableRow openRow = new TableRow(getActivity());
+        BorderedTableRow openRow = new BorderedTableRow(getActivity());
 
         TableRow.LayoutParams layoutParams =
                 new TableRow.LayoutParams(0, TableLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1;
+
+        PostInfo last = posts[posts.length - 1];
 
         for (int i = 0; i < posts.length; i++) {
             PostInfo p = posts[i];
@@ -42,14 +50,14 @@ public class PostListForHomeFragment extends Fragment {
 
             if (p.getListStyle() == 1) {
                 // full
+                hasOpenRow = false;
+
                 layoutParams.span = 2;
 
-                openRow = new TableRow(getActivity());
+                openRow = new BorderedTableRow(getActivity());
                 openRow.addView(itemView);
 
                 table.addView(openRow);
-
-                hasOpenRow = false;
             } else if (p.getListStyle() == 2) {
                 // half
                 layoutParams.span = 1;
@@ -59,13 +67,22 @@ public class PostListForHomeFragment extends Fragment {
 
                     hasOpenRow = false;
                 } else {
-                    openRow = new TableRow(getActivity());
+                    openRow = new BorderedTableRow(getActivity());
                     openRow.addView(itemView);
 
                     table.addView(openRow);
 
                     hasOpenRow = true;
                 }
+
+                openRow.setBorder(openRow.getBorder() | BorderedTableRow.BORDER_CENTER_SPLIT);
+            }
+
+            if (i == posts.length - 1 /* last one */||
+                i == posts.length - 2 && p.getListStyle() == 2 && last.getListStyle() != 1) {
+
+            } else {
+                openRow.setBorder(openRow.getBorder() | BorderedTableRow.BORDER_BOTTOM);
             }
         }
     }
@@ -76,9 +93,11 @@ public class PostListForHomeFragment extends Fragment {
         TextView textView = (TextView) v.findViewById(R.id.text_view);
         textView.setText(p.getTitle());
 
-
+        GDCategorySmallIconView iconView = (GDCategorySmallIconView) v.findViewById(R.id.gd_icon_small);
+        iconView.setGdCategory(p.getGdPostCategory());
 
         return v;
+
     }
 
 
