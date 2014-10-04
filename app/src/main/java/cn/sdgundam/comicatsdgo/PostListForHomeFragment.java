@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.DimenRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -93,8 +94,12 @@ public class PostListForHomeFragment extends Fragment {
         TextView textView = (TextView) v.findViewById(R.id.text_view);
         textView.setText(p.getTitle());
 
+
         GDCategorySmallIconView iconView = (GDCategorySmallIconView) v.findViewById(R.id.gd_icon_small);
         iconView.setGdCategory(p.getGdPostCategory());
+
+        TextView dateView = (TextView)v.findViewById(R.id.date_text_view);
+        dateView.setText(Utility.dateStringByDay(getActivity(), p.getCreated()));
 
         return v;
 

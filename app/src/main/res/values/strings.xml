@@ -25,4 +25,8 @@
 
     <string name="latest_units_caption">最新机体</string>
     <string name="latest_news_caption">最新情报</string>
+
+    <string name="date_today">今天</string>
+    <string name="date_yesterday">昨天</string>
+    <string name="date_days_before">天前</string>
 </resources>
