@@ -1,20 +1,17 @@
-package cn.sdgundam.comicatsdgo;
+package cn.sdgundam.comicatsdgo.view;
 
-import android.app.ActionBar;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.imbryk.viewpager.LoopViewPager;
@@ -24,30 +21,26 @@ import com.viewpagerindicator.PageIndicator;
 
 import java.util.ArrayList;
 
+import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 
 /**
- * Created by xhguo on 9/28/2014.
+ * Created by xhguo on 10/5/2014.
  */
-public class CarouselFragment extends Fragment {
+public class CarouselView extends RelativeLayout {
     static final int MESSAGE_SCROLL = 0;
     static final int AUTO_SCROLL_INTERVAL = 3000;
+
     Handler autoScrollHandler;
 
     ViewPager pager;
 
     CarouselInfo[] carousel;
 
-    public CarouselInfo[] getCarousel() {
-        return carousel;
-    }
-
     public void setCarousel(CarouselInfo[] carousel) {
         this.carousel = carousel;
 
-        View rootView = getView();
-
-        pager = (LoopViewPager) rootView.findViewById(R.id.the_view_pager);
+        pager = (LoopViewPager) this.findViewById(R.id.the_view_pager);
         pager.setAdapter(new CarouselPageAdapter2());
         // pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager.setOnTouchListener(new View.OnTouchListener() {
@@ -62,29 +55,21 @@ public class CarouselFragment extends Fragment {
             }
         });
 
-        PageIndicator indicator = (LinePageIndicator) rootView.findViewById(R.id.indicator);
+        PageIndicator indicator = (LinePageIndicator) this.findViewById(R.id.indicator);
         indicator.setViewPager(pager);
 
         autoScrollHandler = new AutoScrollHandler();
         startAutoScroll(AUTO_SCROLL_INTERVAL);
     }
 
-    public CarouselFragment() { }
-
-    @Override
-    public void setArguments(Bundle args) {
-        super.setArguments(args);
+    public CarouselView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public CarouselView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fragment_carousel, container, false);
+        LayoutInflater.from(context).inflate(R.layout.carousel_view, this, true);
     }
 
     public void startAutoScroll(int delayTimeInMills) {
@@ -129,7 +114,7 @@ public class CarouselFragment extends Fragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            ImageView imageView = new ImageView(getActivity());
+            ImageView imageView = new ImageView(getContext());
 
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -141,15 +126,15 @@ public class CarouselFragment extends Fragment {
             int realPosition= (carousel.length + position) % carousel.length;
             CarouselInfo ci = carousel[realPosition];
 
-            Picasso.with(getActivity()).setIndicatorsEnabled(true);
-            Picasso.with(getActivity()).load(ci.getImageURL()).into(imageView);
+            Picasso.with(getContext()).setIndicatorsEnabled(true);
+            Picasso.with(getContext()).load(ci.getImageURL()).into(imageView);
 
             container.addView(imageView);
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getActivity(), "Carousel " + position + " clicked.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Carousel " + position + " clicked.", Toast.LENGTH_SHORT).show();
                 }
             });
 

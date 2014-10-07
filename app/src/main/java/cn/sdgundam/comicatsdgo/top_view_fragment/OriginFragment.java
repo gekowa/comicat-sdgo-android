@@ -1,4 +1,4 @@
-package cn.sdgundam.comicatsdgo;
+package cn.sdgundam.comicatsdgo.top_view_fragment;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -8,18 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cn.sdgundam.comicatsdgo.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link VideoFragment.OnFragmentInteractionListener} interface
+ * {@link OriginFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link VideoFragment#newInstance} factory method to
+ * Use the {@link OriginFragment#newInstance} factory method to
  * create an instance of this fragment.
  *
  */
-public class VideoFragment extends Fragment {
+public class OriginFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,18 +38,18 @@ public class VideoFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment VideoFragment.
+     * @return A new instance of fragment OriginFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static VideoFragment newInstance(String param1, String param2) {
-        VideoFragment fragment = new VideoFragment();
+    public static OriginFragment newInstance(String param1, String param2) {
+        OriginFragment fragment = new OriginFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-    public VideoFragment() {
+    public OriginFragment() {
         // Required empty public constructor
     }
 
@@ -65,7 +66,7 @@ public class VideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_video, container, false);
+        return inflater.inflate(R.layout.fragment_origin, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,7 +1,5 @@
 package cn.sdgundam.comicatsdgo;
 
-import android.app.Activity;
-
 import android.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -9,6 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
+
+import cn.sdgundam.comicatsdgo.top_view_fragment.HomeFragment;
 
 
 public class MainActivity extends FragmentActivity
@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity
         switch(position) {
             case 0:
                 fm.beginTransaction()
-                    .replace(R.id.container, cn.sdgundam.comicatsdgo.HomeFragment.getInstance())
+                    .replace(R.id.container, HomeFragment.getInstance())
                     .commit();
                 break;
 //            case 1:
