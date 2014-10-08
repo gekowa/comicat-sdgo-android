@@ -69,14 +69,14 @@ public class VideoGridItemView extends RelativeLayout {
         Picasso.with(getContext()).load(vli.getImageURL()).into(imageTarget);
 
         GDCategorySmallIconView iconView = new GDCategorySmallIconView(getContext(), null);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-        );
-        iconView.setLayoutParams(layoutParams);
+//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+//                RelativeLayout.LayoutParams.WRAP_CONTENT,
+//                RelativeLayout.LayoutParams.WRAP_CONTENT
+//        );
+//        iconView.setLayoutParams(layoutParams);
 
         iconView.setGdCategory(vli.getGdPostCategory());
-        gdCategoryDrawingCache = convertViewToBitmap(iconView);
+        gdCategoryDrawingCache = Utility.convertViewToBitmap(iconView);
 
 //        TextView titleView = (TextView)findViewById(R.id.title);
 //        titleView.setText(vli.getTitle());
@@ -100,14 +100,7 @@ public class VideoGridItemView extends RelativeLayout {
 
     }
 
-    public static Bitmap convertViewToBitmap(View view){
-        view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        view.buildDrawingCache();
-        Bitmap bitmap = view.getDrawingCache();
 
-        return bitmap;
-    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -126,21 +119,21 @@ public class VideoGridItemView extends RelativeLayout {
         super.onDraw(canvas);
 
         int width = canvas.getWidth();
-        int height = (int)((float)width / IMAGE_ASPECT);
+        int imageHeight = (int)((float)width / IMAGE_ASPECT);
 
         if (image == null) {
             // TODO: draw place holder
         } else {
             // image
-            Bitmap resizedImage = Utility.getResizedBitmap(image, width, height);
-            // canvas.drawBitmap(resizedImage, 0, 0, null);
+            Bitmap resizedImage = Utility.getResizedBitmap(image, width, imageHeight);
+            canvas.drawBitmap(resizedImage, 0, 0, null);
         }
-        int textStripHeight = (int)((float)height * 0.2);
+        int textStripHeight = (int)((float)imageHeight * 0.2);
 
         // overlay
         Paint transGreyPaint = new Paint();
         transGreyPaint.setColor(Color.argb(100, 100, 100, 100));
-        canvas.drawRect(0, height - textStripHeight, width, height, transGreyPaint);
+        canvas.drawRect(0, imageHeight - textStripHeight, width, imageHeight, transGreyPaint);
 
         float textPaddingBottom  = Utility.convertDpToPixel(4.8f, getContext());
         float textSize = Utility.convertDpToPixel(12.5f, getContext());
@@ -153,20 +146,19 @@ public class VideoGridItemView extends RelativeLayout {
         String title2Ellipsized = (String) TextUtils.ellipsize(vli.getTitle2(), title2Paint, width, TextUtils.TruncateAt.END);
         float title2Width = title2Paint.measureText(title2Ellipsized);
 
-        canvas.drawText(title2Ellipsized, width - title2Width, height - textPaddingBottom , title2Paint);
+        canvas.drawText(title2Ellipsized, width - title2Width, imageHeight - textPaddingBottom , title2Paint);
 
         // title
         TextPaint titlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         titlePaint.setColor(Color.BLACK);
         titlePaint.setTextSize(textSize);
         String titleEllipsized = (String) TextUtils.ellipsize(vli.getTitle(), titlePaint, width, TextUtils.TruncateAt.END);
-        canvas.drawText(titleEllipsized, 0, height + titlePaint.getTextSize() + textPaddingBottom / 2, titlePaint);
+        float titleTop = imageHeight + titlePaint.getTextSize() + textPaddingBottom / 2;
+        canvas.drawText(titleEllipsized, 0, titleTop, titlePaint);
 
         // category icons
-        canvas.drawBitmap(gdCategoryDrawingCache, 0, 0, null);
+        canvas.drawBitmap(gdCategoryDrawingCache, 0, titleTop + Utility.convertDpToPixel(6, getContext()), null);
     }
-
-
 
     @Override
     protected void onDetachedFromWindow() {
