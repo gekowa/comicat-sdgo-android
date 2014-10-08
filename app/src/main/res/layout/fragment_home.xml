@@ -43,7 +43,8 @@
         <cn.sdgundam.comicatsdgo.view.UnitListForHomeView
             android:id="@+id/unit_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:listSelector="@drawable/list_selector_common"/>
 
         <!--<fragment-->
             <!--android:id="@+id/post_list"-->
@@ -60,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+             />
 </LinearLayout>
 </ScrollView>

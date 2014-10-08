@@ -93,7 +93,6 @@ public class UnitListForHomeView extends HListView {
 
                 // draw border
                 GradientDrawable gd = new GradientDrawable();
-                gd.setColor(0xFFFFFFFF);
                 gd.setStroke(1, 0x341A1A1A);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

@@ -1,6 +1,7 @@
 package cn.sdgundam.comicatsdgo.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TableLayout;
@@ -83,12 +84,21 @@ public class PostListForHomeView extends TableLayout {
             }
         }
 
+
+
         requestLayout();
         invalidate();
     }
 
     View createPostListForHomeItemView (final PostInfo p) {
         View v = View.inflate(getContext(), R.layout.post_list_for_home_item, null);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            v.setBackground(getResources().getDrawable(R.drawable.list_selector_common));
+        }
+        else {
+            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.list_selector_common));
+        }
 
         TextView textView = (TextView) v.findViewById(R.id.text_view);
         textView.setText(p.getTitle());
