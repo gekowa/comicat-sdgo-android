@@ -11,12 +11,12 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
-import cn.sdgundam.comicatsdgo.PostListForHomeFragment;
 import cn.sdgundam.comicatsdgo.R;
-import cn.sdgundam.comicatsdgo.UnitListType1Fragment;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.gd_api.FetchHomeInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.view.CarouselView;
+import cn.sdgundam.comicatsdgo.view.PostListForHomeView;
+import cn.sdgundam.comicatsdgo.view.UnitListForHomeView;
 
 
 public class HomeFragment extends Fragment {
@@ -69,12 +69,6 @@ public class HomeFragment extends Fragment {
             });
         }
 
-//        if (this.homeInfo == null) {
-//            refreshHomeInfo();
-//        } else {
-//            setupViews();
-//        }
-
         Log.v(LOG_TAG, "onResume");
     }
 
@@ -113,6 +107,8 @@ public class HomeFragment extends Fragment {
 
     void setupViews() {
         setupCarousel();
+        setupUnitList();
+        setupPostList();
     }
 
     void setupCarousel() {
@@ -127,15 +123,15 @@ public class HomeFragment extends Fragment {
         carouselView.setCarousel(homeInfo.getCarousel());
     }
 
-//    void setupUnitList() {
-//        UnitListType1Fragment unitList = (UnitListType1Fragment) getFragmentManager().findFragmentById(R.id.unit_list);
-//        unitList.setUnits(homeInfo.getUnits());
-//    }
-//
-//    void setupPostList() {
-//        PostListForHomeFragment postList = (PostListForHomeFragment) getFragmentManager().findFragmentById(R.id.post_list);
-//        postList.setPosts(homeInfo.getPostList());
-//    }
+    void setupUnitList() {
+        UnitListForHomeView unitList = (UnitListForHomeView) getView().findViewById(R.id.unit_list);
+        unitList.setUnits(homeInfo.getUnits());
+    }
+
+    void setupPostList() {
+        PostListForHomeView postList = (PostListForHomeView)getView().findViewById(R.id.post_list);
+        postList.setPosts(homeInfo.getPostList());
+    }
 
 
     void onFetchingHomeInfoWithError() {

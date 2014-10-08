@@ -1,71 +1,62 @@
-package cn.sdgundam.comicatsdgo;
+package cn.sdgundam.comicatsdgo.view;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.Layout;
-import android.view.LayoutInflater;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
+import cn.sdgundam.comicatsdgo.R;
+import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
 import it.sephiroth.android.library.widget.AbsHListView;
 import it.sephiroth.android.library.widget.AdapterView;
 import it.sephiroth.android.library.widget.HListView;
 
 /**
- * Created by xhguo on 9/30/2014.
- * This fragment is mainly for usage on Home view
+ * Created by xhguo on 10/8/2014.
  */
-public class UnitListType1Fragment extends Fragment {
-    static int unitImageSize = 0;
+public class UnitListForHomeView extends HListView {
+    static int unitImageSize;
 
-    HListView listView;
+    public UnitListForHomeView(Context context) {
+        super(context);
+    }
+
+    public UnitListForHomeView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public UnitListForHomeView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
 
     UnitInfoShort[] units;
 
     public void setUnits(UnitInfoShort[] units) {
         this.units = units;
 
-        listView.setAdapter(new UnitListType1Adapter(getActivity()));
+        if (unitImageSize == 0) {
+            unitImageSize = getResources().getDimensionPixelSize(R.dimen.unit_image_size);
+        }
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        this.setAdapter(new UnitListType1Adapter(getContext()));
+
+        this.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 UnitInfoShort unit = (UnitInfoShort) adapterView.getAdapter().getItem(i);
 
-                Toast.makeText(getActivity(),
+                Toast.makeText(getContext(),
                         String.format("UnitId: %s (index: %s) clicked", unit.getUnitId(), i), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (unitImageSize == 0) {
-            unitImageSize = getResources().getDimensionPixelSize(R.dimen.unit_image_size);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_unit_list_type1, container, false);
-
-        listView = (HListView) root.findViewById(R.id.hlistview);
-
-        return root;
     }
 
     class UnitListType1Adapter extends BaseAdapter {
@@ -120,4 +111,5 @@ public class UnitListType1Fragment extends Fragment {
             return view;
         }
     }
+
 }

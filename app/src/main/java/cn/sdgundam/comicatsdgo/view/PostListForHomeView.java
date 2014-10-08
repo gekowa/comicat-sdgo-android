@@ -1,35 +1,35 @@
-package cn.sdgundam.comicatsdgo;
+package cn.sdgundam.comicatsdgo.view;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.content.Context;
+import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.sdgundam.comicatsdgo.R;
+import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
 import cn.sdgundam.comicatsdgo.extension.BorderedTableRow;
-import cn.sdgundam.comicatsdgo.view.GDCategorySmallIconView;
 
 /**
- * Created by xhguo on 9/30/2014.
+ * Created by xhguo on 10/8/2014.
  */
-public class PostListForHomeFragment extends Fragment {
-    TableLayout table;
+public class PostListForHomeView extends TableLayout {
+    public PostListForHomeView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
     PostInfo[] posts;
 
     public void setPosts(PostInfo[] posts) {
         this.posts = posts;
 
-        table.removeAllViews();
+        this.removeAllViews();
 
         boolean hasOpenRow = false;
-        BorderedTableRow openRow = new BorderedTableRow(getActivity());
+        BorderedTableRow openRow = new BorderedTableRow(getContext());
 
         TableRow.LayoutParams layoutParams =
                 new TableRow.LayoutParams(0, TableLayout.LayoutParams.WRAP_CONTENT);
@@ -51,10 +51,10 @@ public class PostListForHomeFragment extends Fragment {
 
                 layoutParams.span = 2;
 
-                openRow = new BorderedTableRow(getActivity());
+                openRow = new BorderedTableRow(getContext());
                 openRow.addView(itemView);
 
-                table.addView(openRow);
+                this.addView(openRow);
             } else if (p.getListStyle() == 2) {
                 // half
                 layoutParams.span = 1;
@@ -64,10 +64,10 @@ public class PostListForHomeFragment extends Fragment {
 
                     hasOpenRow = false;
                 } else {
-                    openRow = new BorderedTableRow(getActivity());
+                    openRow = new BorderedTableRow(getContext());
                     openRow.addView(itemView);
 
-                    table.addView(openRow);
+                    this.addView(openRow);
 
                     hasOpenRow = true;
                 }
@@ -76,16 +76,19 @@ public class PostListForHomeFragment extends Fragment {
             }
 
             if (i == posts.length - 1 /* last one */||
-                i == posts.length - 2 && p.getListStyle() == 2 && last.getListStyle() != 1) {
+                    i == posts.length - 2 && p.getListStyle() == 2 && last.getListStyle() != 1) {
 
             } else {
                 openRow.setBorder(openRow.getBorder() | BorderedTableRow.BORDER_BOTTOM);
             }
         }
+
+        requestLayout();
+        invalidate();
     }
 
     View createPostListForHomeItemView (final PostInfo p) {
-        View v = View.inflate(getActivity(), R.layout.post_list_for_home_item, null);
+        View v = View.inflate(getContext(), R.layout.post_list_for_home_item, null);
 
         TextView textView = (TextView) v.findViewById(R.id.text_view);
         textView.setText(p.getTitle());
@@ -95,12 +98,12 @@ public class PostListForHomeFragment extends Fragment {
         iconView.setGdCategory(p.getGdPostCategory());
 
         TextView dateView = (TextView)v.findViewById(R.id.date_text_view);
-        dateView.setText(Utility.dateStringByDay(getActivity(), p.getCreated()));
+        dateView.setText(Utility.dateStringByDay(getContext(), p.getCreated()));
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(),
+                Toast.makeText(getContext(),
                         String.format("PostId: %s clicked", p.getPostId()), Toast.LENGTH_SHORT).show();
             }
         });
@@ -108,18 +111,4 @@ public class PostListForHomeFragment extends Fragment {
         return v;
 
     }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return table = (TableLayout) inflater.inflate(R.layout.fragment_post_list_for_home, container, false);
-    }
-
-
 }
