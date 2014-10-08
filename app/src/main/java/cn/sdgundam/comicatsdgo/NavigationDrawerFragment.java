@@ -6,9 +6,6 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,16 +21,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-
-import static android.view.LayoutInflater.*;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -331,7 +324,7 @@ class NavigationDrawerListViewAdapter extends BaseAdapter {
         View v = convertView;
 
         if (v == null) {
-            v = LayoutInflater.from(mContext).inflate(R.layout.nav_drawer_list_view_item, parent, false);
+            v = LayoutInflater.from(mContext).inflate(R.layout.nav_drawer_list_item, parent, false);
         }
 
         Pair<String, Integer> item = (Pair<String, Integer>)getItem(i);

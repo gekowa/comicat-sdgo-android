@@ -63,5 +63,16 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
              />
+
+        <cn.sdgundam.comicatsdgo.view.VideoGridView
+            android:id="@+id/video_list"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_marginTop="12dp"
+            android:isScrollContainer="false"
+            />
+
 </LinearLayout>
 </ScrollView>

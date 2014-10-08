@@ -84,8 +84,6 @@ public class PostListForHomeView extends TableLayout {
             }
         }
 
-
-
         requestLayout();
         invalidate();
     }

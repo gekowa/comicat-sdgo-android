@@ -155,8 +155,6 @@ public class CarouselView extends RelativeLayout {
         public boolean isViewFromObject(View view, Object o) {
             return (ImageView)view == (ImageView)o;
         }
-
-
     }
 
     class AutoScrollHandler extends Handler {

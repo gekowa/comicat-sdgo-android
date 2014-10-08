@@ -17,6 +17,8 @@ import cn.sdgundam.comicatsdgo.gd_api.FetchHomeInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.view.CarouselView;
 import cn.sdgundam.comicatsdgo.view.PostListForHomeView;
 import cn.sdgundam.comicatsdgo.view.UnitListForHomeView;
+import cn.sdgundam.comicatsdgo.view.VideoGridItemView;
+import cn.sdgundam.comicatsdgo.view.VideoGridView;
 
 
 public class HomeFragment extends Fragment {
@@ -109,6 +111,7 @@ public class HomeFragment extends Fragment {
         setupCarousel();
         setupUnitList();
         setupPostList();
+        setupVideoList();
     }
 
     void setupCarousel() {
@@ -133,6 +136,10 @@ public class HomeFragment extends Fragment {
         postList.setPosts(homeInfo.getPostList());
     }
 
+    void setupVideoList() {
+        VideoGridView videoList = (VideoGridView)getView().findViewById(R.id.video_list);
+        videoList.setVideos(homeInfo.getVideoList());
+    }
 
     void onFetchingHomeInfoWithError() {
         // TODO: Toast?
