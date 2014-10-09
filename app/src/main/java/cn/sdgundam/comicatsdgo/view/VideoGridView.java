@@ -1,13 +1,19 @@
 package cn.sdgundam.comicatsdgo.view;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import cn.sdgundam.comicatsdgo.Utility;
+import cn.sdgundam.comicatsdgo.VideoViewActivity;
+import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 
 /**
@@ -35,6 +41,22 @@ public class VideoGridView extends GridView {
         this.videos = videos;
 
         this.setAdapter(new VideoGridViewAdapter(getContext()));
+
+        this.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                VideoListItem vli = (VideoListItem) adapterView.getAdapter().getItem(i);
+
+                Toast.makeText(getContext(),
+                        String.format("Video: %s (index: %s) clicked", vli.getPostId(), i), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getContext(), VideoViewActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("Id", vli.getPostId());
+                intent.putExtras(b);
+                getContext().startActivity(intent);
+            }
+        });
 
         requestLayout();
         invalidate();

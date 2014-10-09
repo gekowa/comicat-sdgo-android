@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cn.sdgundam.comicatsdgo.VideoViewActivity">
+
+    <!--&lt;!&ndash; View that will be hidden when video goes fullscreen &ndash;&gt;-->
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/nonVideoLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" >-->
+
+        <!--<cn.sdgundam.comicatsdgo.video_enabled.VideoEnabledWebView-->
+            <!--android:id="@+id/web_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+
+    <!--</RelativeLayout>-->
+
+    <!--&lt;!&ndash; View where the video will be shown when video goes fullscreen &ndash;&gt;-->
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/videoLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" >-->
+
+        <!--&lt;!&ndash; View that will be shown while the fullscreen video loads (maybe include a spinner and a "Loading..." message) &ndash;&gt;-->
+        <!--<View-->
+            <!--android:id="@+id/videoLoading"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:visibility="invisible" />-->
+
+    <!--</RelativeLayout>-->
+
+    <VideoView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
