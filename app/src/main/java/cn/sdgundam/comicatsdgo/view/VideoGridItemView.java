@@ -27,8 +27,16 @@ import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
  * Created by xhguo on 10/8/2014.
  */
 public class VideoGridItemView extends RelativeLayout {
+    // 视频图宽高比
     static final float IMAGE_ASPECT = 1.785714285714286f;
+    // 每个视频View的宽高比
     static final float VIEW_ASPECT = 1.11f;
+    // 视频图上的文字黑色底色的比例
+    static final float TEXT_STRIP_ASPECT = 0.2f;
+
+    static TextPaint titlePaint;
+    static TextPaint title2Paint;
+    static TextPaint datePaint;
 
     VideoListItem vli;
     Target imageTarget;
@@ -60,7 +68,24 @@ public class VideoGridItemView extends RelativeLayout {
             }
         };
 
+        configurePaints();
+    }
 
+    void configurePaints() {
+        float titleTextSize = Utility.convertDpToPixel(12.5f, getContext());
+        float dateTextSize = Utility.convertDpToPixel(11f, getContext());
+
+        titlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        titlePaint.setColor(Color.BLACK);
+        titlePaint.setTextSize(titleTextSize);
+
+        title2Paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        title2Paint.setColor(Color.WHITE);
+        title2Paint.setTextSize(titleTextSize);
+
+        datePaint = new TextPaint();
+        datePaint.setColor(Color.LTGRAY);
+        datePaint.setTextSize(dateTextSize);
     }
 
     public void setVli(VideoListItem vli) {
@@ -128,7 +153,8 @@ public class VideoGridItemView extends RelativeLayout {
             Bitmap resizedImage = Utility.getResizedBitmap(image, width, imageHeight);
             canvas.drawBitmap(resizedImage, 0, 0, null);
         }
-        int textStripHeight = (int)((float)imageHeight * 0.2);
+
+        int textStripHeight = (int)((float)imageHeight * TEXT_STRIP_ASPECT);
 
         // overlay
         Paint transGreyPaint = new Paint();
@@ -136,28 +162,27 @@ public class VideoGridItemView extends RelativeLayout {
         canvas.drawRect(0, imageHeight - textStripHeight, width, imageHeight, transGreyPaint);
 
         float textPaddingBottom  = Utility.convertDpToPixel(4.8f, getContext());
-        float textSize = Utility.convertDpToPixel(12.5f, getContext());
-        // title2
-        TextPaint title2Paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        title2Paint.setColor(Color.WHITE);
-        title2Paint.setTextSize(textSize);
-        // title2Paint.setTextAlign(Paint.Align.RIGHT);
 
+        // title2
         String title2Ellipsized = (String) TextUtils.ellipsize(vli.getTitle2(), title2Paint, width, TextUtils.TruncateAt.END);
         float title2Width = title2Paint.measureText(title2Ellipsized);
 
         canvas.drawText(title2Ellipsized, width - title2Width, imageHeight - textPaddingBottom , title2Paint);
 
         // title
-        TextPaint titlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        titlePaint.setColor(Color.BLACK);
-        titlePaint.setTextSize(textSize);
+
         String titleEllipsized = (String) TextUtils.ellipsize(vli.getTitle(), titlePaint, width, TextUtils.TruncateAt.END);
-        float titleTop = imageHeight + titlePaint.getTextSize() + textPaddingBottom / 2;
+        float titleTop = imageHeight + titlePaint.getTextSize() + textPaddingBottom / 2 /* Magic number */;
         canvas.drawText(titleEllipsized, 0, titleTop, titlePaint);
 
         // category icons
         canvas.drawBitmap(gdCategoryDrawingCache, 0, titleTop + Utility.convertDpToPixel(6, getContext()), null);
+
+        // date
+        canvas.drawText(Utility.dateStringByDay(getContext(), vli.getCreated()),
+                gdCategoryDrawingCache.getWidth() + Utility.convertDpToPixel(6, getContext()),
+                titleTop + Utility.convertDpToPixel(6, getContext()) + datePaint.getTextSize() + textPaddingBottom / 4 /* Magic number */,
+                datePaint);
     }
 
     @Override
