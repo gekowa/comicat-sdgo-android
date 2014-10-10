@@ -24,6 +24,8 @@ public class PostInfo {
 
     int listStyle;
 
+    public PostInfo() { }
+
     public PostInfo(int postId, String title, int gdPostCategory, Date created, int listStyle) {
         this.postId = postId;
         this.title = title;

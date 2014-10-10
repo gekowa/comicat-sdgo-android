@@ -44,7 +44,7 @@ public class Communicator {
             if (!parameters.isEmpty()) {
                 OutputStream os = new BufferedOutputStream(conn.getOutputStream());
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                bw.write(getQuery(parameters));
+                bw.write(getQuery(action, parameters));
                 bw.flush();
                 bw.close();
             }
@@ -83,24 +83,18 @@ public class Communicator {
         return result;
     }
 
-    private static String getQuery(Map<String, String> params) {
+
+    private static String getQuery(String action, Map<String, String> params) {
         StringBuilder result = new StringBuilder();
+        result.append("a=" + action);
 
         try {
-            boolean first = true;
-
             for (String key : params.keySet()) {
-                if (first) {
-                    first = false;
-                } else {
-                    result.append("&");
-                }
-
+                result.append("&");
                 result.append(URLEncoder.encode(key, "UTF-8"));
                 result.append("=");
                 result.append(URLEncoder.encode(params.get(key), "UTF-8"));
             }
-
         }
         catch (UnsupportedEncodingException e) { }
 

@@ -66,6 +66,11 @@ public class GDInfoBuilder {
                     d.getInt("gdPostCategory"),
                     created
                 );
+
+                vli.setVideoHost(d.getString("videoHost"));
+                vli.setVideoId(d.getString("videoId"));
+                vli.setVideoId2(d.getString("videoId2"));
+
                 videoList.add(vli);
             }
             homeInfo.setVideoList(videoList.toArray(new VideoListItem[0]));

@@ -52,7 +52,11 @@ public class VideoGridView extends GridView {
 
                 Intent intent = new Intent(getContext(), VideoViewActivity.class);
                 Bundle b = new Bundle();
-                b.putInt("Id", vli.getPostId());
+                b.putInt("id", vli.getPostId());
+                b.putString("videoHost", vli.getVideoHost());
+                b.putString("videoId", vli.getVideoId());
+                b.putString("videoId2", vli.getVideoId2());
+
                 intent.putExtras(b);
                 getContext().startActivity(intent);
             }

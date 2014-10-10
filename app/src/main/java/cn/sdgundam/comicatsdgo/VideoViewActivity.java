@@ -20,6 +20,7 @@ import android.widget.VideoView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 import cn.sdgundam.comicatsdgo.video_enabled.VideoEnabledWebChromeClient;
 import cn.sdgundam.comicatsdgo.video_enabled.VideoEnabledWebView;
@@ -27,13 +28,23 @@ import cn.sdgundam.comicatsdgo.video_enabled.VideoEnabledWebView;
 
 public class VideoViewActivity extends Activity {
     int postId;
+    String videoHost;
+    String videoId;
+    String videoId2;
+
+    String videoURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle extra = getIntent().getExtras();
-        postId = extra.getInt("Id");
+        postId = extra.getInt("id");
+        videoHost = extra.getString("videoHost");
+        videoId = extra.getString("videoId");
+        videoId2 = extra.getString("videoId2");
+
+        videoURL = getVideoURL(videoHost, videoId, videoId2);
 
         setContentView(R.layout.activity_video_view);
 
@@ -41,13 +52,10 @@ public class VideoViewActivity extends Activity {
 
         MediaController mc = new MediaController(this);
 
-        String httpLiveUrl = "http://v.17173.com/api/18419387-4.m3u8";
-        vv.setVideoURI(Uri.parse(httpLiveUrl));
+        vv.setVideoURI(Uri.parse(videoURL));
         vv.setMediaController(mc);
         vv.requestFocus();
         vv.start();
-
-
 
 //
 //        VideoEnabledWebView webView = (VideoEnabledWebView)findViewById(R.id.web_view);
@@ -122,5 +130,29 @@ public class VideoViewActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    static String getVideoURL(String videoHost, String videoId, String videoId2) {
+        if (videoHost.equals("2")) {
+            // 17173
+            return getVideoURL17173(videoId);
+        } else if (videoHost.equals("4")) {
+            // youku
+            return getVideoURLYouku(videoId2);
+        }
+
+        return "";
+    }
+
+    static String getVideoURLYouku(String videoId) {
+        Date now = new Date();
+        String nowString = String.valueOf((now.getTime() / 1000));
+
+        return String.format("http://v.youku.com/player/getM3U8/vid/%s/type/hd2/ts/%s/v.m3u8",
+                videoId, nowString);
+    }
+
+    static String getVideoURL17173(String videoId) {
+        return String.format("http://v.17173.com/api/%s-4.m3u8", videoId);
     }
 }

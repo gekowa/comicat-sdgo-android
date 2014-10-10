@@ -12,6 +12,11 @@ public class VideoListItem {
     int gdPostCategory;
 
     int postId;
+
+    String videoHost;
+    String videoId;
+    String videoId2;
+
     Date created;
     String createdBy;
 
@@ -62,6 +67,30 @@ public class VideoListItem {
 
     public void setPostId(int postId) {
         this.postId = postId;
+    }
+
+    public String getVideoHost() {
+        return videoHost;
+    }
+
+    public void setVideoHost(String videoHost) {
+        this.videoHost = videoHost;
+    }
+
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
+    }
+
+    public String getVideoId2() {
+        return videoId2;
+    }
+
+    public void setVideoId2(String videoId2) {
+        this.videoId2 = videoId2;
     }
 
     public Date getCreated() {

@@ -14,7 +14,6 @@ public class FetchHomeInfoAsyncTask extends AsyncTask<Void, Void, HomeInfo> {
     @Override
     protected HomeInfo doInBackground(Void... voids) {
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("a", "home");
         // stub params
         parameters.put("p", "1");
         parameters.put("s", "2");
