@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
+import cn.sdgundam.comicatsdgo.video.GetYoukuVideoSrcAsyncTask;
 import cn.sdgundam.comicatsdgo.video_enabled.VideoEnabledWebChromeClient;
 import cn.sdgundam.comicatsdgo.video_enabled.VideoEnabledWebView;
 
@@ -44,18 +45,30 @@ public class VideoViewActivity extends Activity {
         videoId = extra.getString("videoId");
         videoId2 = extra.getString("videoId2");
 
-        videoURL = getVideoURL(videoHost, videoId, videoId2);
+        // videoURL = getVideoURL(videoHost, videoId, videoId2);
+        // videoURL = "http://k.youku.com/player/getFlvPath/sid/04130449857811285137d_00/st/flv/fileid/03000202005436EE2A3863077FBC69AEF61B2F-1735-358E-85AA-3B561BEE9D3F?K=f1f4848e6b1349042411f7c1&hd=0&myp=0&ts=409&ypp=0&ep=ciaVGUmJUscI4CTXiT8bbynjd3BbXP4J9h%2BFg9JgALshTOu57EvTtp64SPxCEf5vAFEAGZqE3dbmGEJiYfFEqm0Q3EugTPro%2B4GS5a4hwZYBFGxDe7nUwlSfQjP2&ctype=12&ev=1&token=1137&oip=1872932434";
 
         setContentView(R.layout.activity_video_view);
 
-        VideoView vv = (VideoView)findViewById(R.id.video_view);
 
-        MediaController mc = new MediaController(this);
 
-        vv.setVideoURI(Uri.parse(videoURL));
-        vv.setMediaController(mc);
-        vv.requestFocus();
-        vv.start();
+        GetYoukuVideoSrcAsyncTask task = new GetYoukuVideoSrcAsyncTask() {
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+
+                VideoView vv = (VideoView)findViewById(R.id.video_view);
+
+                MediaController mc = new MediaController(VideoViewActivity.this);
+
+                vv.setVideoURI(Uri.parse(s));
+                vv.setMediaController(mc);
+                vv.requestFocus();
+                vv.start();
+            }
+        };
+        task.setContext(this);
+        task.execute(videoId);
 
 //
 //        VideoEnabledWebView webView = (VideoEnabledWebView)findViewById(R.id.web_view);

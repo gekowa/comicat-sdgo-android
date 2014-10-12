@@ -14,6 +14,7 @@ import android.widget.Toast;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.gd_api.FetchHomeInfoAsyncTask;
+import cn.sdgundam.comicatsdgo.video.GetYoukuVideoSrcAsyncTask;
 import cn.sdgundam.comicatsdgo.view.CarouselView;
 import cn.sdgundam.comicatsdgo.view.PostListForHomeView;
 import cn.sdgundam.comicatsdgo.view.UnitListForHomeView;
@@ -46,6 +47,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+//        Log.d(LOG_TAG, GetYoukuVideoSrcAsyncTask.getFileIDMixString("1234"));
+//        Log.d(LOG_TAG, GetYoukuVideoSrcAsyncTask.getFileID("40*49*40*40*16*40*40*64*40*40*59*27*49*50*47*47*6*40*49*5*50*49*40*17*17*63*10*6*50*65*28*47*63*50*64*10*16*63*35*64*17*49*59*35*49*59*5*47*35*5*59*28*28*35*49*10*59*50*64*10*47*47*65*34*49*63*", "5320"));
+
+
 
         ViewTreeObserver vto = getView().getViewTreeObserver();
         if (vto.isAlive()) {
