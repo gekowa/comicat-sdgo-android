@@ -158,7 +158,7 @@ public class VideoGridItemView extends RelativeLayout {
 
         // overlay
         Paint transGreyPaint = new Paint();
-        transGreyPaint.setColor(Color.argb(100, 100, 100, 100));
+        transGreyPaint.setColor(Color.argb(60, 100, 100, 100));
         canvas.drawRect(0, imageHeight - textStripHeight, width, imageHeight, transGreyPaint);
 
         float textPaddingBottom  = Utility.convertDpToPixel(4.8f, getContext());
@@ -174,15 +174,17 @@ public class VideoGridItemView extends RelativeLayout {
         float titleTop = imageHeight + titlePaint.getTextSize() + textPaddingBottom / 2 /* Magic number */;
         canvas.drawText(titleEllipsized, 0, titleTop, titlePaint);
 
+        float gdCategoryIconWidth = 0;
         if (gdCategoryDrawingCache != null) {
             // category icons
             canvas.drawBitmap(gdCategoryDrawingCache, 0, titleTop + Utility.convertDpToPixel(6, getContext()), null);
-            // date
-            canvas.drawText(Utility.dateStringByDay(getContext(), vli.getCreated()),
-                    gdCategoryDrawingCache.getWidth() + Utility.convertDpToPixel(6, getContext()),
-                    titleTop + Utility.convertDpToPixel(6, getContext()) + datePaint.getTextSize() + textPaddingBottom / 4 /* Magic number */,
-                    datePaint);
+            gdCategoryIconWidth = gdCategoryDrawingCache.getWidth();
         }
+            // date
+        canvas.drawText(Utility.dateStringByDay(getContext(), vli.getCreated()),
+                gdCategoryIconWidth + Utility.convertDpToPixel(6, getContext()),
+                titleTop + Utility.convertDpToPixel(6, getContext()) + datePaint.getTextSize() + textPaddingBottom / 4 /* Magic number */,
+                datePaint);
     }
 
     @Override

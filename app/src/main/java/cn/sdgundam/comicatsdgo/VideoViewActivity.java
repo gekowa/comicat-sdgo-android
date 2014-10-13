@@ -37,8 +37,6 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
     private String videoURL;
     private VideoView videoView;
 
-    private ViewGroup.LayoutParams paramsNotFullscreen; //if you're using RelativeLatout
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
