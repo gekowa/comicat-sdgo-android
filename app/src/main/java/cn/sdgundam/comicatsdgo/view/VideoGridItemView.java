@@ -170,19 +170,19 @@ public class VideoGridItemView extends RelativeLayout {
         canvas.drawText(title2Ellipsized, width - title2Width, imageHeight - textPaddingBottom , title2Paint);
 
         // title
-
         String titleEllipsized = (String) TextUtils.ellipsize(vli.getTitle(), titlePaint, width, TextUtils.TruncateAt.END);
         float titleTop = imageHeight + titlePaint.getTextSize() + textPaddingBottom / 2 /* Magic number */;
         canvas.drawText(titleEllipsized, 0, titleTop, titlePaint);
 
-        // category icons
-        canvas.drawBitmap(gdCategoryDrawingCache, 0, titleTop + Utility.convertDpToPixel(6, getContext()), null);
-
-        // date
-        canvas.drawText(Utility.dateStringByDay(getContext(), vli.getCreated()),
-                gdCategoryDrawingCache.getWidth() + Utility.convertDpToPixel(6, getContext()),
-                titleTop + Utility.convertDpToPixel(6, getContext()) + datePaint.getTextSize() + textPaddingBottom / 4 /* Magic number */,
-                datePaint);
+        if (gdCategoryDrawingCache != null) {
+            // category icons
+            canvas.drawBitmap(gdCategoryDrawingCache, 0, titleTop + Utility.convertDpToPixel(6, getContext()), null);
+            // date
+            canvas.drawText(Utility.dateStringByDay(getContext(), vli.getCreated()),
+                    gdCategoryDrawingCache.getWidth() + Utility.convertDpToPixel(6, getContext()),
+                    titleTop + Utility.convertDpToPixel(6, getContext()) + datePaint.getTextSize() + textPaddingBottom / 4 /* Magic number */,
+                    datePaint);
+        }
     }
 
     @Override

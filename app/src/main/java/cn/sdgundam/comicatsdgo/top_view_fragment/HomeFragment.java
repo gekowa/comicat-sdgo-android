@@ -14,11 +14,9 @@ import android.widget.Toast;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.gd_api.FetchHomeInfoAsyncTask;
-import cn.sdgundam.comicatsdgo.video.GetYoukuVideoSrcAsyncTask;
 import cn.sdgundam.comicatsdgo.view.CarouselView;
 import cn.sdgundam.comicatsdgo.view.PostListForHomeView;
 import cn.sdgundam.comicatsdgo.view.UnitListForHomeView;
-import cn.sdgundam.comicatsdgo.view.VideoGridItemView;
 import cn.sdgundam.comicatsdgo.view.VideoGridView;
 
 
