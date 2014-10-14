@@ -2,18 +2,25 @@ package cn.sdgundam.comicatsdgo.top_view_fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.Date;
+
+import cn.sdgundam.comicatsdgo.extension.SwipeRefreshLayout;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.gd_api.FetchHomeInfoAsyncTask;
+import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.view.CarouselView;
 import cn.sdgundam.comicatsdgo.view.PostListForHomeView;
 import cn.sdgundam.comicatsdgo.view.UnitListForHomeView;
@@ -32,6 +39,14 @@ public class HomeFragment extends Fragment {
     }
 
     HomeInfo homeInfo;
+    public void setHomeInfo(HomeInfo homeInfo) {
+        this.homeInfo = homeInfo;
+    }
+
+    private GDApiService apiService;
+    private ViewGroup progressViewContainer;
+
+    Date lastSwipeRefresh;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,17 +54,28 @@ public class HomeFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
+        // configure API service
+        apiService = new GDApiService() {
+            @Override
+            protected void onReceiveHomeInfo(HomeInfo homeInfo) {
+                hideAllLoadings();
+
+                setHomeInfo(homeInfo);
+                setupViews();
+            }
+
+            @Override
+            protected void onFetchingHomeInfoWithError(Exception e) {
+                hideAllLoadings();
+            }
+        };
+
         Log.v(LOG_TAG, "onCreated");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-//        Log.d(LOG_TAG, GetYoukuVideoSrcAsyncTask.getFileIDMixString("1234"));
-//        Log.d(LOG_TAG, GetYoukuVideoSrcAsyncTask.getFileID("40*49*40*40*16*40*40*64*40*40*59*27*49*50*47*47*6*40*49*5*50*49*40*17*17*63*10*6*50*65*28*47*63*50*64*10*16*63*35*64*17*49*59*35*49*59*5*47*35*5*59*28*28*35*49*10*59*50*64*10*47*47*65*34*49*63*", "5320"));
-
-
 
         ViewTreeObserver vto = getView().getViewTreeObserver();
         if (vto.isAlive()) {
@@ -66,14 +92,39 @@ public class HomeFragment extends Fragment {
 
                     if (HomeFragment.this.homeInfo == null) {
                         refreshHomeInfo();
-                        Log.d(LOG_TAG, "refreshHomeInfo");
                     } else {
                         setupViews();
-                        Log.d(LOG_TAG, "setupViews");
                     }
                 }
             });
         }
+
+        SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Boolean shouldForce = lastSwipeRefresh != null && (new Date().getTime() - lastSwipeRefresh.getTime()) / 1000 < 10;
+                apiService.fetchHomeInfo(shouldForce);
+                if (shouldForce) {
+                    lastSwipeRefresh = null;
+                } else {
+                    lastSwipeRefresh = new Date();
+                }
+            }
+        });
+        swipeLayout.setColorScheme(R.color.gd_tint_color,
+                android.R.color.white,
+                R.color.gd_tint_color,
+                android.R.color.white);
+
+
+        progressViewContainer = (ViewGroup)getView().findViewById(R.id.progress_bar_container);
+        progressViewContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
 
         Log.v(LOG_TAG, "onResume");
     }
@@ -86,29 +137,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void refreshHomeInfo() {
-        // load api
-        FetchHomeInfoAsyncTask task = new FetchHomeInfoAsyncTask() {
-            @Override
-            protected void onPostExecute(HomeInfo homeInfo) {
-                super.onPostExecute(homeInfo);
-
-                if (homeInfo != null) {
-                    Log.v(LOG_TAG, "Got 'HomeInfo'" + homeInfo.toString());
-                    onReceiveHomeInfo(homeInfo);
-                } else {
-                    onFetchingHomeInfoWithError();
-                }
-            }
-        };
-        task.execute();
-
         // TODO: show loading
-    }
+        showLoading();
 
-    void onReceiveHomeInfo(HomeInfo homeInfo) {
-        this.homeInfo = homeInfo;
-
-        setupViews();
+        apiService.fetchHomeInfo(false);
     }
 
     void setupViews() {
@@ -143,6 +175,14 @@ public class HomeFragment extends Fragment {
     void setupVideoList() {
         VideoGridView videoList = (VideoGridView)getView().findViewById(R.id.video_list);
         videoList.setVideos(homeInfo.getVideoList());
+    }
+
+    void showLoading() {
+        progressViewContainer.setVisibility(View.VISIBLE);
+    }
+
+    void hideAllLoadings() {
+        progressViewContainer.setVisibility(View.INVISIBLE);
     }
 
     void onFetchingHomeInfoWithError() {

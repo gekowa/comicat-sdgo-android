@@ -8,7 +8,7 @@
     <!-- android:configChanges="orientation" -->
     <!-- android:screenOrientation="portrait" -->
     <application
-        android:screenOrientation="portrait"
+
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"

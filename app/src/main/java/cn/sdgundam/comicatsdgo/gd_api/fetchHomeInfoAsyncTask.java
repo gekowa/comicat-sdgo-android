@@ -10,9 +10,9 @@ import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 /**
  * Created by xhguo on 9/25/2014.
  */
-public class FetchHomeInfoAsyncTask extends AsyncTask<Void, Void, HomeInfo> {
+public class FetchHomeInfoAsyncTask extends AsyncTask<Boolean, Void, HomeInfo> {
     @Override
-    protected HomeInfo doInBackground(Void... voids) {
+    protected HomeInfo doInBackground(Boolean... voids) {
         Map<String, String> parameters = new HashMap<String, String>();
         // stub params
         parameters.put("p", "1");
