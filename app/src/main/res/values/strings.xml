@@ -31,4 +31,6 @@
 
     <string name="network_failure">网络不给力啊\n要不过一会再试试看?</string>
     <string name="reload">重新加载</string>
+    <string name="data_loading_failure">数据加载失败</string>
+    <string name="network_disconnected">网络似乎已经断开.</string>
 </resources>
