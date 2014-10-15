@@ -129,10 +129,10 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        swipeLayout.setColorScheme(R.color.gd_tint_color,
-                android.R.color.white,
-                R.color.gd_tint_color,
-                android.R.color.white);
+        swipeLayout.setColorScheme(R.color.gundam_1,
+                R.color.gundam_2,
+                R.color.gundam_3,
+                R.color.gundam_4);
 
 
         progressViewContainer = (ViewGroup)getView().findViewById(R.id.progress_bar_container);
@@ -209,7 +209,7 @@ public class HomeFragment extends Fragment {
 
     void hideAllLoadings() {
         progressViewContainer.setVisibility(View.INVISIBLE);
-        swipeLayout.setRefreshing(false);
+        // swipeLayout.setRefreshing(false);
     }
 
     @Override
