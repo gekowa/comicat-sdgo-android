@@ -2,11 +2,15 @@ package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,15 +21,15 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-//import android.widget.VideoView;
-//import android.widget.MediaController;
+import android.widget.VideoView;
+import android.widget.MediaController;
 
 import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.video.OnReceivedYoukuVideoSrc;
 
 import io.vov.vitamio.LibsChecker;
-import io.vov.vitamio.widget.MediaController;
-import io.vov.vitamio.widget.VideoView;
+//import io.vov.vitamio.widget.MediaController;
+//import io.vov.vitamio.widget.VideoView;
 
 
 public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoSrc {
@@ -35,7 +39,11 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
     private String videoId2;
 
     private String videoURL;
+
     private VideoView videoView;
+    private WebView webView;
+
+    private int orientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +56,59 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
         videoId2 = extra.getString("videoId2");
 
         setContentView(R.layout.activity_video_view);
-        videoView = (VideoView)findViewById(R.id.video_view);
 
+        videoView = (VideoView)findViewById(R.id.video_view);
         prepareVideoPlay(videoHost, videoId, videoId2);
+
+        webView = (WebView)findViewById(R.id.web_view);
+        prepareWebView();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        this.orientation = newConfig.orientation;
+
+        configureVideoViewOnOrientation();
+    }
+
+    void configureVideoViewOnOrientation() {
+        if (this.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             videoView.requestLayout();
+
+//            getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+            getActionBar().hide();
+
+            // Hide the status bar.
+            if (Build.VERSION.SDK_INT < 16) {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            } else if (Build.VERSION.SDK_INT >= 19) {
+                View decorView = getWindow().getDecorView();
+                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE;
+                decorView.setSystemUiVisibility(uiOptions);
+            } else {
+                View decorView = getWindow().getDecorView();
+                int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+                decorView.setSystemUiVisibility(uiOptions);
+            }
+
+
+
+            ((LinearLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
         }
-        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        else if (this.orientation == Configuration.ORIENTATION_PORTRAIT) {
             videoView.requestLayout();
+
+            getActionBar().show();
+
+            ((LinearLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.NO_GRAVITY;
         }
     }
 
@@ -122,7 +169,9 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                videoView.setMediaController(new MediaController(VideoViewActivity.this));
+                MediaController mc = new MediaController(VideoViewActivity.this);
+                mc.setAnchorView(videoView);
+                videoView.setMediaController(mc);
                 videoView.setVideoPath(videoURL);
                 videoView.requestFocus();
                 }
@@ -134,6 +183,9 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
         return String.format("http://v.17173.com/api/%s-4.m3u8", videoId);
     }
 
+    void prepareWebView() {
+
+    }
 
     public class YoukuJSInterface {
         OnReceivedYoukuVideoSrc vva;

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.Date;
 
+import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.extension.SwipeRefreshLayout;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
@@ -74,16 +75,12 @@ public class HomeFragment extends Fragment {
             protected void onFetchingHomeInfoWithError(Exception e) {
                 hideAllLoadings();
 
+                // Display "Network Unavailable" view
                 if (HomeFragment.this.homeInfo == null) {
                     nev.setVisibility(View.VISIBLE);
                 }
 
-                // TODO: Display "Network Unavailable" view
-                AlertDialog alert = new AlertDialog.Builder(HomeFragment.this.getActivity()).create();
-                alert.setTitle("数据加载失败");
-                alert.setMessage(e.getMessage());
-                alert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (Message)null);
-                alert.show();
+                Utility.showNetworkErrorAlertDialog(HomeFragment.this.getActivity(), e);
             }
         };
 

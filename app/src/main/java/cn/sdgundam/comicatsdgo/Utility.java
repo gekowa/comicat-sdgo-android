@@ -1,12 +1,15 @@
 package cn.sdgundam.comicatsdgo;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -99,5 +102,19 @@ public class Utility {
         Bitmap bitmap = view.getDrawingCache();
 
         return bitmap;
+    }
+
+    public static void showNetworkErrorAlertDialog(Context context, Throwable e) {
+        AlertDialog alert = new AlertDialog.Builder(context).create();
+        alert.setTitle(context.getString(R.string.data_loading_failure));
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (Message)null);
+
+        Class throwableType = e.getClass();
+
+        if (IOException.class.isAssignableFrom(throwableType)) {
+            alert.setMessage(context.getString(R.string.network_disconnected));
+        }
+
+        alert.show();
     }
 }
