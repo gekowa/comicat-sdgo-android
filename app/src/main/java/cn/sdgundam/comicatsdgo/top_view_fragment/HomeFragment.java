@@ -1,7 +1,9 @@
 package cn.sdgundam.comicatsdgo.top_view_fragment;
 
+import android.app.AlertDialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,6 +24,7 @@ import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.gd_api.FetchHomeInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.view.CarouselView;
+import cn.sdgundam.comicatsdgo.view.NetworkErrorView;
 import cn.sdgundam.comicatsdgo.view.PostListForHomeView;
 import cn.sdgundam.comicatsdgo.view.UnitListForHomeView;
 import cn.sdgundam.comicatsdgo.view.VideoGridView;
@@ -44,7 +47,10 @@ public class HomeFragment extends Fragment {
     }
 
     private GDApiService apiService;
+
     private ViewGroup progressViewContainer;
+    private SwipeRefreshLayout swipeLayout;
+    private NetworkErrorView nev;
 
     Date lastSwipeRefresh;
 
@@ -67,6 +73,17 @@ public class HomeFragment extends Fragment {
             @Override
             protected void onFetchingHomeInfoWithError(Exception e) {
                 hideAllLoadings();
+
+                if (HomeFragment.this.homeInfo == null) {
+                    nev.setVisibility(View.VISIBLE);
+                }
+
+                // TODO: Display "Network Unavailable" view
+                AlertDialog alert = new AlertDialog.Builder(HomeFragment.this.getActivity()).create();
+                alert.setTitle("数据加载失败");
+                alert.setMessage(e.getMessage());
+                alert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (Message)null);
+                alert.show();
             }
         };
 
@@ -99,7 +116,7 @@ public class HomeFragment extends Fragment {
             });
         }
 
-        SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_container);
+        swipeLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -123,6 +140,15 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return true;
+            }
+        });
+
+        nev = (NetworkErrorView)getView().findViewById(R.id.nev);
+        nev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HomeFragment.this.refreshHomeInfo();
+                nev.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -183,12 +209,7 @@ public class HomeFragment extends Fragment {
 
     void hideAllLoadings() {
         progressViewContainer.setVisibility(View.INVISIBLE);
-    }
-
-    void onFetchingHomeInfoWithError() {
-        // TODO: Toast?
-        Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_LONG).show();
-        // TODO: display network not available fragment
+        swipeLayout.setRefreshing(false);
     }
 
     @Override

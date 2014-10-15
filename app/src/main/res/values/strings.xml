@@ -28,6 +28,7 @@
     <string name="date_days_before">天前</string>
     <string name="menu_item_refresh">刷新</string>
     <string name="title_activity_video_view">Video Player</string>
-    <string name="hello_world">Hello world!</string>
 
+    <string name="network_failure">网络不给力啊\n要不过一会再试试看?</string>
+    <string name="reload">重新加载</string>
 </resources>

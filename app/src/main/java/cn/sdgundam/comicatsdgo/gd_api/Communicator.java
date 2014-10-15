@@ -27,7 +27,8 @@ public class Communicator {
 
     public static final String API_URL = "http://www.sdgundam.cn/services/app.ashx";
 
-    public static String requestApi(String action, Map<String, String> parameters) {
+    public static String requestApi(String action, Map<String, String> parameters)
+        throws MalformedURLException, IOException {
         StringBuffer sb = new StringBuffer();
 
         URL url = null;
@@ -70,9 +71,11 @@ public class Communicator {
         }
         catch(MalformedURLException e) {
             Log.e(LOG_TAG, "Error: " + e.getMessage());
+            throw e;
         }
         catch(IOException e) {
             Log.e(LOG_TAG, "Error: " + e.getMessage());
+            throw e;
         }
         finally {
             conn.disconnect();
