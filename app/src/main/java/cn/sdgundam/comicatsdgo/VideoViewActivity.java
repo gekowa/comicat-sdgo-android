@@ -18,18 +18,21 @@ import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import android.widget.VideoView;
-import android.widget.MediaController;
+//import android.media.MediaPlayer;
+//import android.widget.VideoView;
+//import android.widget.MediaController;
 
 import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.video.OnReceivedYoukuVideoSrc;
 
 import io.vov.vitamio.LibsChecker;
-//import io.vov.vitamio.widget.MediaController;
-//import io.vov.vitamio.widget.VideoView;
+import io.vov.vitamio.widget.MediaController;
+import io.vov.vitamio.widget.VideoView;
+import io.vov.vitamio.MediaPlayer;
 
 
 public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoSrc {
@@ -42,6 +45,7 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
 
     private VideoView videoView;
     private WebView webView;
+    private MediaController mediaController;
 
     private int orientation;
 
@@ -169,11 +173,29 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                MediaController mc = new MediaController(VideoViewActivity.this);
-                mc.setAnchorView(videoView);
-                videoView.setMediaController(mc);
-                videoView.setVideoPath(videoURL);
-                videoView.requestFocus();
+                    mediaController = new MediaController(VideoViewActivity.this);
+                    mediaController.setAnchorView(videoView);
+                    videoView.setMediaController(mediaController);
+                    videoView.setVideoPath(videoURL);
+                    videoView.requestFocus();
+                    videoView.setOnPreparedListener(new io.vov.vitamio.MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mediaPlayer) {
+                            // don't play immediately
+                            videoView.pause();
+
+                            Toast.makeText(VideoViewActivity.this, "Prepared", Toast.LENGTH_SHORT).show();
+
+                            FrameLayout controllerAnchor = (FrameLayout) findViewById(R.id.video_container);
+                            mediaController.setAnchorView(controllerAnchor);
+                            controllerAnchor.getLayoutParams().height = videoView.getHeight();
+
+                            View progressBarContainer = findViewById(R.id.progress_bar_container);
+                            // progressBarContainer.setVisibility(View.GONE);
+
+                            mediaController.show();
+                        }
+                    });
                 }
             });
         }
@@ -184,7 +206,7 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
     }
 
     void prepareWebView() {
-
+        webView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view-video-2.aspx?id=%d", postId));
     }
 
     public class YoukuJSInterface {
@@ -219,4 +241,5 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
     }
 
 }
+
 
