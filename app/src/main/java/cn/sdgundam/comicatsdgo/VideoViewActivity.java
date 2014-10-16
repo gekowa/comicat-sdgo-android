@@ -54,7 +54,9 @@ public class VideoViewActivity extends Activity implements
     private WebView webView;
     private MediaController mediaController;
     private View rootView;
-    private ViewGroup videoContainer;
+    private FrameLayout videoContainer;
+
+    private FrameLayout.LayoutParams layoutPortrait;
 
     private int orientation;
 
@@ -87,7 +89,7 @@ public class VideoViewActivity extends Activity implements
         webView = (WebView)findViewById(R.id.web_view);
         prepareWebView();
 
-        videoContainer = (ViewGroup)findViewById(R.id.video_container);
+        videoContainer = (FrameLayout)findViewById(R.id.video_container);
 
         rootView = findViewById(R.id.root_view);
     }
@@ -103,42 +105,102 @@ public class VideoViewActivity extends Activity implements
 
     void configureVideoViewOnOrientation() {
         if (this.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            videoView.requestLayout();
 
 //            getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
             getActionBar().hide();
 
-            // Hide the status bar.
-            if (Build.VERSION.SDK_INT < 16) {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            } else if (Build.VERSION.SDK_INT >= 19) {
-                View decorView = getWindow().getDecorView();
-                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE;
-                decorView.setSystemUiVisibility(uiOptions);
-            } else {
-                View decorView = getWindow().getDecorView();
-                int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-                decorView.setSystemUiVisibility(uiOptions);
-            }
+//            ((FrameLayout.LayoutParams)videoView.getLayoutParams()).gravity =
+//                    Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
+//            videoContainer.setForegroundGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+//            videoView.setPadding(0, 0, 0, 0);
 
-            // ((FrameLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
+            layoutPortrait = (FrameLayout.LayoutParams)videoView.getLayoutParams();
+            videoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            // Hide the status bar.
+//            if (Build.VERSION.SDK_INT < 16) {
+//                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//            }
+//            else if (Build.VERSION.SDK_INT >= 19) {
+//                View decorView = getWindow().getDecorView();
+//                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+//                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+//                        | View.SYSTEM_UI_FLAG_IMMERSIVE;
+//                decorView.setSystemUiVisibility(uiOptions);
+//            }
+//            else {
+//                View decorView = getWindow().getDecorView();
+//                int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN |
+//                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION; // hide nav bar
+//                decorView.setSystemUiVisibility(uiOptions);
+//            }
+
+            webView.setVisibility(View.INVISIBLE);
         }
         else if (this.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            videoView.requestLayout();
-
             getActionBar().show();
 
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(0);
+            webView.setVisibility(View.VISIBLE);
 
-            // ((FrameLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.NO_GRAVITY;
+            videoView.setLayoutParams(layoutPortrait);
+
+//            if (Build.VERSION.SDK_INT < 16) {
+//                getWindow().setFlags(WindowManager.LayoutParams.MATCH_PARENT,
+//                        WindowManager.LayoutParams.MATCH_PARENT);
+//            } else {
+//                View decorView = getWindow().getDecorView();
+////                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+////                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+////                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+//                decorView.setSystemUiVisibility(0);
+//            }
+
+//            videoContainer.setForegroundGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+//            videoView.setPadding(0, (int)Utility.convertDpToPixel(28f, this), 0, 0);
+
         }
+
+        blinkMediaController();
+
+//        videoView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                videoView.invalidate();
+//                videoView.requestLayout();
+//            }
+//        }, 500);
+//        videoView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                videoView.invalidate();
+//                videoView.requestLayout();
+//            }
+//        }, 600);
+//        videoView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                videoView.invalidate();
+//                videoView.requestLayout();
+//            }
+//        }, 700);
+//        videoView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                videoView.invalidate();
+//                videoView.requestLayout();
+//            }
+//        }, 800);
+//        videoView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                videoView.invalidate();
+//                videoView.requestLayout();
+//            }
+//        }, 900);
     }
 
     void prepareVideoPlay(String videoHost, String videoId, String videoId2) {
@@ -216,7 +278,19 @@ public class VideoViewActivity extends Activity implements
     // Vitamio
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        // Hack to make the media controller position right
+        blinkMediaController();
+
+        View progressBarContainer = findViewById(R.id.loading);
+        progressBarContainer.setVisibility(View.GONE);
+
+        ViewGroup controllerAnchor = (ViewGroup) findViewById(R.id.video_container);
+        mediaController.setAnchorView(controllerAnchor);
+    }
+
+    /**
+     * Hack to make the media controller position right
+     */
+    private void blinkMediaController() {
         videoView.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -226,6 +300,7 @@ public class VideoViewActivity extends Activity implements
         videoView.postDelayed(new Runnable() {
             @Override
             public void run() {
+                mediaController.setAlpha(0);
                 mediaController.hide();
             }
         }, 600);
@@ -235,16 +310,8 @@ public class VideoViewActivity extends Activity implements
                 mediaController.show();
 
                 mediaController.setAlpha(1);
-
-                View progressBarContainer = findViewById(R.id.loading);
-                progressBarContainer.setVisibility(View.GONE);
             }
         }, 800);
-
-        Toast.makeText(VideoViewActivity.this, "Prepared", Toast.LENGTH_SHORT).show();
-
-        ViewGroup controllerAnchor = (ViewGroup) findViewById(R.id.video_container);
-        mediaController.setAnchorView(controllerAnchor);
     }
 
     @Override
