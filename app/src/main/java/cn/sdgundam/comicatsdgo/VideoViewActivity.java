@@ -117,21 +117,21 @@ public class VideoViewActivity extends Activity implements
             layoutPortrait = (FrameLayout.LayoutParams)videoView.getLayoutParams();
             videoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            // Hide the status bar.
+            // Uncomment code below to enable full screen mode, need more tuning
 //            if (Build.VERSION.SDK_INT < 16) {
 //                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //            }
-//            else if (Build.VERSION.SDK_INT >= 19) {
-//                View decorView = getWindow().getDecorView();
-//                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-//                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-//                        | View.SYSTEM_UI_FLAG_IMMERSIVE;
-//                decorView.setSystemUiVisibility(uiOptions);
-//            }
+////            else if (Build.VERSION.SDK_INT >= 19) {
+////                View decorView = getWindow().getDecorView();
+////                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+////                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+////                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+////                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+////                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+////                        | View.SYSTEM_UI_FLAG_IMMERSIVE;
+////                decorView.setSystemUiVisibility(uiOptions);
+////            }
 //            else {
 //                View decorView = getWindow().getDecorView();
 //                int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN |
@@ -148,59 +148,17 @@ public class VideoViewActivity extends Activity implements
 
             videoView.setLayoutParams(layoutPortrait);
 
+            // Uncomment code below to enable full screen mode
 //            if (Build.VERSION.SDK_INT < 16) {
 //                getWindow().setFlags(WindowManager.LayoutParams.MATCH_PARENT,
 //                        WindowManager.LayoutParams.MATCH_PARENT);
 //            } else {
 //                View decorView = getWindow().getDecorView();
-////                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-////                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-////                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 //                decorView.setSystemUiVisibility(0);
 //            }
-
-//            videoContainer.setForegroundGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-//            videoView.setPadding(0, (int)Utility.convertDpToPixel(28f, this), 0, 0);
-
         }
 
         blinkMediaController();
-
-//        videoView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                videoView.invalidate();
-//                videoView.requestLayout();
-//            }
-//        }, 500);
-//        videoView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                videoView.invalidate();
-//                videoView.requestLayout();
-//            }
-//        }, 600);
-//        videoView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                videoView.invalidate();
-//                videoView.requestLayout();
-//            }
-//        }, 700);
-//        videoView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                videoView.invalidate();
-//                videoView.requestLayout();
-//            }
-//        }, 800);
-//        videoView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                videoView.invalidate();
-//                videoView.requestLayout();
-//            }
-//        }, 900);
     }
 
     void prepareVideoPlay(String videoHost, String videoId, String videoId2) {
@@ -366,5 +324,3 @@ public class VideoViewActivity extends Activity implements
     }
 
 }
-
-
