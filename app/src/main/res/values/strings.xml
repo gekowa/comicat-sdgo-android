@@ -20,8 +20,6 @@
         <item>@drawable/ic_launcher</item>
     </string-array>
 
-    <string name="title_activity_video_view">视频</string>
-
     <string name="latest_units_caption">最新机体</string>
     <string name="latest_news_caption">最新情报</string>
     <string name="date_today">今天</string>
@@ -33,4 +31,7 @@
     <string name="reload">重新加载</string>
     <string name="data_loading_failure">数据加载失败</string>
     <string name="network_disconnected">网络似乎已经断开.</string>
+
+    <string name="title_activity_video_view">视频</string>
+    <string name="title_activity_post_view">情报</string>
 </resources>

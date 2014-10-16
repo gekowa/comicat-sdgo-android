@@ -47,8 +47,8 @@ public class VideoGridView extends GridView {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 VideoListItem vli = (VideoListItem) adapterView.getAdapter().getItem(i);
 
-                Toast.makeText(getContext(),
-                        String.format("Video: %s (index: %s) clicked", vli.getPostId(), i), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),
+//                        String.format("Video: %s (index: %s) clicked", vli.getPostId(), i), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getContext(), VideoViewActivity.class);
                 Bundle b = new Bundle();

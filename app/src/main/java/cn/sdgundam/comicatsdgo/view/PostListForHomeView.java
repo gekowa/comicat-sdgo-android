@@ -1,7 +1,9 @@
 package cn.sdgundam.comicatsdgo.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TableLayout;
@@ -9,6 +11,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.sdgundam.comicatsdgo.PostViewActivity;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
@@ -111,8 +114,15 @@ public class PostListForHomeView extends TableLayout {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        String.format("PostId: %s clicked", p.getPostId()), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),
+//                        String.format("PostId: %s clicked", p.getPostId()), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getContext(), PostViewActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("id", p.getPostId());
+
+                intent.putExtras(b);
+                getContext().startActivity(intent);
             }
         });
 
