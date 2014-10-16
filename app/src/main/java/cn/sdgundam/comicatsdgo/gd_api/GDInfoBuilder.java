@@ -47,6 +47,11 @@ public class GDInfoBuilder {
                     c.getInt("gdPostType"),
                     c.getInt("postId")
                 );
+
+                tempCI.setVideoHost(c.getString("videoHost"));
+                tempCI.setVideoId(c.getString("videoId"));
+                tempCI.setVideoId2(c.getString("videoId2"));
+
                 carousel.add(tempCI);
             }
 

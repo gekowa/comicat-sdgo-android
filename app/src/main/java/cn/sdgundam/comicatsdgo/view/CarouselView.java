@@ -1,6 +1,8 @@
 package cn.sdgundam.comicatsdgo.view;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
@@ -21,7 +23,9 @@ import com.viewpagerindicator.PageIndicator;
 
 import java.util.ArrayList;
 
+import cn.sdgundam.comicatsdgo.PostViewActivity;
 import cn.sdgundam.comicatsdgo.R;
+import cn.sdgundam.comicatsdgo.VideoViewActivity;
 import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 
 /**
@@ -135,6 +139,37 @@ public class CarouselView extends RelativeLayout {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(getContext(), "Carousel " + position + " clicked.", Toast.LENGTH_SHORT).show();
+
+                    CarouselInfo ci = carousel[position];
+
+                    Intent intent;
+                    switch(ci.getGdPostType()) {
+                        case 1:
+                            // post
+                        {
+                            intent = new Intent(getContext(), PostViewActivity.class);
+                            Bundle b = new Bundle();
+                            b.putInt("id", ci.getPostId());
+
+                            intent.putExtras(b);
+                            getContext().startActivity(intent);
+                        }
+                            break;
+                        case 2:
+                            // video
+                        {
+                            intent = new Intent(getContext(), VideoViewActivity.class);
+                            Bundle b = new Bundle();
+                            b.putInt("id", ci.getPostId());
+                            b.putString("videoHost", ci.getVideoHost());
+                            b.putString("videoId", ci.getVideoId());
+                            b.putString("videoId2", ci.getVideoId2());
+
+                            intent.putExtras(b);
+                            getContext().startActivity(intent);
+                        }
+                            break;
+                    }
                 }
             });
 
