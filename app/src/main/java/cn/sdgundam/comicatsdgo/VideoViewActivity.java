@@ -35,7 +35,11 @@ import io.vov.vitamio.widget.VideoView;
 import io.vov.vitamio.MediaPlayer;
 
 
-public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoSrc {
+public class VideoViewActivity extends Activity implements
+        OnReceivedYoukuVideoSrc,
+        MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnErrorListener,
+        MediaPlayer.OnInfoListener {
     private int postId;
     private String videoHost;
     private String videoId;
@@ -46,6 +50,7 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
     private VideoView videoView;
     private WebView webView;
     private MediaController mediaController;
+    private View rootView;
 
     private int orientation;
 
@@ -59,6 +64,13 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
         videoId = extra.getString("videoId");
         videoId2 = extra.getString("videoId2");
 
+        // 17173
+//        videoHost = "2";
+//        videoId = "18408422";
+
+        // youku
+
+
         setContentView(R.layout.activity_video_view);
 
         videoView = (VideoView)findViewById(R.id.video_view);
@@ -66,6 +78,8 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
 
         webView = (WebView)findViewById(R.id.web_view);
         prepareWebView();
+
+        rootView = findViewById(R.id.root_view);
     }
 
     @Override
@@ -103,16 +117,14 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
                 decorView.setSystemUiVisibility(uiOptions);
             }
 
-
-
-            ((LinearLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
+            ((FrameLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
         }
         else if (this.orientation == Configuration.ORIENTATION_PORTRAIT) {
             videoView.requestLayout();
 
             getActionBar().show();
 
-            ((LinearLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.NO_GRAVITY;
+            ((FrameLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.NO_GRAVITY;
         }
     }
 
@@ -173,32 +185,49 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mediaController = new MediaController(VideoViewActivity.this);
-                    mediaController.setAnchorView(videoView);
-                    videoView.setMediaController(mediaController);
+//                    mediaController = new MediaController(VideoViewActivity.this);
+//                    videoView.setMediaController(mediaController);
+
+                    videoView.setOnPreparedListener(VideoViewActivity.this);
+                    videoView.setOnErrorListener(VideoViewActivity.this);
+                    videoView.setOnInfoListener(VideoViewActivity.this);
+
                     videoView.setVideoPath(videoURL);
                     videoView.requestFocus();
-                    videoView.setOnPreparedListener(new io.vov.vitamio.MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mediaPlayer) {
-                            // don't play immediately
-                            videoView.pause();
-
-                            Toast.makeText(VideoViewActivity.this, "Prepared", Toast.LENGTH_SHORT).show();
-
-                            FrameLayout controllerAnchor = (FrameLayout) findViewById(R.id.video_container);
-                            mediaController.setAnchorView(controllerAnchor);
-                            controllerAnchor.getLayoutParams().height = videoView.getHeight();
-
-                            View progressBarContainer = findViewById(R.id.progress_bar_container);
-                            // progressBarContainer.setVisibility(View.GONE);
-
-                            mediaController.show();
-                        }
-                    });
                 }
             });
         }
+    }
+
+    // Vitamio
+    @Override
+    public void onPrepared(MediaPlayer mediaPlayer) {
+        // don't play immediately
+        videoView.start();
+
+        Toast.makeText(VideoViewActivity.this, "Prepared", Toast.LENGTH_SHORT).show();
+
+        FrameLayout controllerAnchor = (FrameLayout) findViewById(R.id.video_container);
+        // mediaController.setAnchorView(controllerAnchor);
+
+        // controllerAnchor.getLayoutParams().height = videoView.getHeight();
+
+        View progressBarContainer = findViewById(R.id.progress_bar_container);
+        progressBarContainer.setVisibility(View.GONE);
+
+
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        videoView.setVisibility(View.GONE);
+        finish();
+        return true;
+    }
+
+    @Override
+    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+        return false;
     }
 
     String getVideoURL17173(String videoId) {
@@ -206,7 +235,7 @@ public class VideoViewActivity extends Activity implements OnReceivedYoukuVideoS
     }
 
     void prepareWebView() {
-        webView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view-video-2.aspx?id=%d", postId));
+        webView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view-video-android.aspx?id=%d", postId));
     }
 
     public class YoukuJSInterface {

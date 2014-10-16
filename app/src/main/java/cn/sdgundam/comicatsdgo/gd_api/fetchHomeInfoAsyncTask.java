@@ -29,5 +29,4 @@ public class FetchHomeInfoAsyncTask extends AsyncTask<Void, Void, HomeInfo> {
         }
         return homeInfo;
     }
-
 }
