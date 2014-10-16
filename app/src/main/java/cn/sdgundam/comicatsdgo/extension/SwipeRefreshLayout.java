@@ -401,7 +401,6 @@ public class SwipeRefreshLayout extends ViewGroup {
                         if (yDiff > mDistanceToTriggerSync) {
                             // User movement passed distance; trigger a refresh
                             startRefresh();
-                            handled = true;
                             break;
                         } else {
                             // Just track the user's movement
@@ -423,7 +422,6 @@ public class SwipeRefreshLayout extends ViewGroup {
 //                                updatePositionTimeout();
 //                            }
                             mPrevY = event.getY();
-                            handled = true;
                         }
                     }
                 }

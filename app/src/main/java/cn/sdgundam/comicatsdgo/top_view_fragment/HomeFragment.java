@@ -206,7 +206,7 @@ public class HomeFragment extends Fragment {
 
     void hideAllLoadings() {
         progressViewContainer.setVisibility(View.INVISIBLE);
-        // swipeLayout.setRefreshing(false);
+        swipeLayout.setRefreshing(false);
     }
 
     @Override
