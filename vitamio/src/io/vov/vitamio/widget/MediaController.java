@@ -350,7 +350,7 @@ public class MediaController extends FrameLayout {
     updatePausePlay();
     mHandler.sendEmptyMessage(SHOW_PROGRESS);
 
-    if (timeout != 0) {
+    if (timeout != 0 && mPlayer.isPlaying()) {
       mHandler.removeMessages(FADE_OUT);
       mHandler.sendMessageDelayed(mHandler.obtainMessage(FADE_OUT), timeout);
     }

@@ -20,11 +20,14 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 //import android.media.MediaPlayer;
 //import android.widget.VideoView;
 //import android.widget.MediaController;
+
+import java.util.logging.Handler;
 
 import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.video.OnReceivedYoukuVideoSrc;
@@ -51,6 +54,7 @@ public class VideoViewActivity extends Activity implements
     private WebView webView;
     private MediaController mediaController;
     private View rootView;
+    private ViewGroup videoContainer;
 
     private int orientation;
 
@@ -59,16 +63,20 @@ public class VideoViewActivity extends Activity implements
         super.onCreate(savedInstanceState);
 
         Bundle extra = getIntent().getExtras();
-        postId = extra.getInt("id");
-        videoHost = extra.getString("videoHost");
-        videoId = extra.getString("videoId");
-        videoId2 = extra.getString("videoId2");
+        if (extra != null) {
+            postId = extra.getInt("id");
+            videoHost = extra.getString("videoHost");
+            videoId = extra.getString("videoId");
+            videoId2 = extra.getString("videoId2");
+        } else {
+            // 17173
+//            videoHost = "2";
+//            videoId = "18408422";
 
-        // 17173
-//        videoHost = "2";
-//        videoId = "18408422";
-
-        // youku
+            // youku
+            videoHost = "4";
+            videoId = "XODAzNzY5MzE2";
+        }
 
 
         setContentView(R.layout.activity_video_view);
@@ -78,6 +86,8 @@ public class VideoViewActivity extends Activity implements
 
         webView = (WebView)findViewById(R.id.web_view);
         prepareWebView();
+
+        videoContainer = (ViewGroup)findViewById(R.id.video_container);
 
         rootView = findViewById(R.id.root_view);
     }
@@ -117,14 +127,17 @@ public class VideoViewActivity extends Activity implements
                 decorView.setSystemUiVisibility(uiOptions);
             }
 
-            ((FrameLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
+            // ((FrameLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
         }
         else if (this.orientation == Configuration.ORIENTATION_PORTRAIT) {
             videoView.requestLayout();
 
             getActionBar().show();
 
-            ((FrameLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.NO_GRAVITY;
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(0);
+
+            // ((FrameLayout.LayoutParams)videoView.getLayoutParams()).gravity = Gravity.NO_GRAVITY;
         }
     }
 
@@ -185,15 +198,16 @@ public class VideoViewActivity extends Activity implements
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    mediaController = new MediaController(VideoViewActivity.this);
-//                    videoView.setMediaController(mediaController);
+                    mediaController = new MediaController(VideoViewActivity.this);
+                    mediaController.setAlpha(0);
+                    mediaController.hide();
+                    videoView.setMediaController(mediaController);
 
                     videoView.setOnPreparedListener(VideoViewActivity.this);
                     videoView.setOnErrorListener(VideoViewActivity.this);
                     videoView.setOnInfoListener(VideoViewActivity.this);
 
                     videoView.setVideoPath(videoURL);
-                    videoView.requestFocus();
                 }
             });
         }
@@ -202,20 +216,35 @@ public class VideoViewActivity extends Activity implements
     // Vitamio
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        // don't play immediately
-        videoView.start();
+        // Hack to make the media controller position right
+        videoView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mediaController.show();
+            }
+        }, 500);
+        videoView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mediaController.hide();
+            }
+        }, 600);
+        videoView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mediaController.show();
+
+                mediaController.setAlpha(1);
+
+                View progressBarContainer = findViewById(R.id.loading);
+                progressBarContainer.setVisibility(View.GONE);
+            }
+        }, 800);
 
         Toast.makeText(VideoViewActivity.this, "Prepared", Toast.LENGTH_SHORT).show();
 
-        FrameLayout controllerAnchor = (FrameLayout) findViewById(R.id.video_container);
-        // mediaController.setAnchorView(controllerAnchor);
-
-        // controllerAnchor.getLayoutParams().height = videoView.getHeight();
-
-        View progressBarContainer = findViewById(R.id.progress_bar_container);
-        progressBarContainer.setVisibility(View.GONE);
-
-
+        ViewGroup controllerAnchor = (ViewGroup) findViewById(R.id.video_container);
+        mediaController.setAnchorView(controllerAnchor);
     }
 
     @Override
