@@ -15,4 +15,8 @@
     <dimen name="gd_category_icon_s_width">32dp</dimen>
     <dimen name="gd_category_icon_s_height">16dp</dimen>
     <dimen name="gd_category_icon_s_inner_margin">4dp</dimen>
+
+    <dimen name="gd_category_icon_l_width">60dp</dimen>
+    <dimen name="gd_category_icon_l_height">24dp</dimen>
+    <dimen name="gd_category_icon_l_margin">6dp</dimen>
 </resources>

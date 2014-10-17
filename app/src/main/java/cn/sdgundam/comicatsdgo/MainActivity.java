@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 
 import cn.sdgundam.comicatsdgo.top_view_fragment.HomeFragment;
+import cn.sdgundam.comicatsdgo.top_view_fragment.VideoFragment;
 
 
 public class MainActivity extends FragmentActivity
@@ -50,15 +51,19 @@ public class MainActivity extends FragmentActivity
         FragmentManager fm = getSupportFragmentManager();
         switch(position) {
             case 0:
+//                fm.beginTransaction()
+//                    .replace(R.id.container, HomeFragment.getInstance())
+//                    .commit();
+
                 fm.beginTransaction()
-                    .replace(R.id.container, HomeFragment.getInstance())
+                    .replace(R.id.container, VideoFragment.getInstance())
                     .commit();
                 break;
-//            case 1:
-//                fm.beginTransaction()
-//                    .replace(R.id.container, VideoFragment.newInstance("1", "2"))
-//                    .commit();
-//                break;
+            case 1:
+                fm.beginTransaction()
+                    .replace(R.id.container, VideoFragment.getInstance())
+                    .commit();
+                break;
 //            case 2:
 //                fm.beginTransaction()
 //                    .replace(R.id.container, NewsFragment.newInstance("1", "2"))

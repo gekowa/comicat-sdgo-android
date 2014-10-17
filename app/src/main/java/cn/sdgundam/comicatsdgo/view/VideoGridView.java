@@ -51,6 +51,7 @@ public class VideoGridView extends GridView {
 //                        String.format("Video: %s (index: %s) clicked", vli.getPostId(), i), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getContext(), VideoViewActivity.class);
+
                 Bundle b = new Bundle();
                 b.putInt("id", vli.getPostId());
                 b.putString("videoHost", vli.getVideoHost());

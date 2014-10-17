@@ -1,13 +1,21 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cn.sdgundam.comicatsdgo.top_view_fragment.VideoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <cn.sdgundam.comicatsdgo.view.GDCategorySelectionView
+        android:id="@+id/gd_category_sel_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        />
+
+    <GridView
+        android:id="@+id/video_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="视频" />
-
-</FrameLayout>
+        android:layout_weight="1"/>
+</LinearLayout>
