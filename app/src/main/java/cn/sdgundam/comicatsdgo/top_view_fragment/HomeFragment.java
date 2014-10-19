@@ -29,9 +29,13 @@ import cn.sdgundam.comicatsdgo.view.NetworkErrorView;
 import cn.sdgundam.comicatsdgo.view.PostListForHomeView;
 import cn.sdgundam.comicatsdgo.view.UnitListForHomeView;
 import cn.sdgundam.comicatsdgo.view.VideoGridView;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnRefreshListener {
     static final String LOG_TAG = HomeFragment.class.getSimpleName();
 
     static HomeFragment instance = null;
@@ -50,7 +54,8 @@ public class HomeFragment extends Fragment {
     private GDApiService apiService;
 
     private ViewGroup progressViewContainer;
-    private SwipeRefreshLayout swipeLayout;
+    // private SwipeRefreshLayout swipeLayout;
+    private PullToRefreshLayout ptrLayout;
     private NetworkErrorView nev;
 
     Date lastSwipeRefresh;
@@ -113,23 +118,30 @@ public class HomeFragment extends Fragment {
             });
         }
 
-        swipeLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_container);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Boolean shouldForce = lastSwipeRefresh != null && (new Date().getTime() - lastSwipeRefresh.getTime()) / 1000 < 10;
-                apiService.fetchHomeInfo(shouldForce);
-                if (shouldForce) {
-                    lastSwipeRefresh = null;
-                } else {
-                    lastSwipeRefresh = new Date();
-                }
-            }
-        });
-        swipeLayout.setColorScheme(R.color.gundam_1,
-                R.color.gundam_2,
-                R.color.gundam_3,
-                R.color.gundam_4);
+//        swipeLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_container);
+//        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                Boolean shouldForce = lastSwipeRefresh != null && (new Date().getTime() - lastSwipeRefresh.getTime()) / 1000 < 10;
+//                apiService.fetchHomeInfo(shouldForce);
+//                if (shouldForce) {
+//                    lastSwipeRefresh = null;
+//                } else {
+//                    lastSwipeRefresh = new Date();
+//                }
+//            }
+//        });
+//        swipeLayout.setColorScheme(R.color.gundam_1,
+//                R.color.gundam_2,
+//                R.color.gundam_3,
+//                R.color.gundam_4);
+
+        ptrLayout = (PullToRefreshLayout)getView().findViewById(R.id.ptr_layout);
+        ActionBarPullToRefresh.from(this.getActivity())
+                .allChildrenArePullable()
+                .listener(this)
+                .setup(ptrLayout);
+        ((DefaultHeaderTransformer)ptrLayout.getHeaderTransformer()).setProgressBarColor(getResources().getColor(R.color.gd_tint_color));
 
 
         progressViewContainer = (ViewGroup)getView().findViewById(R.id.progress_bar_container);
@@ -150,6 +162,17 @@ public class HomeFragment extends Fragment {
         });
 
         Log.v(LOG_TAG, "onResume");
+    }
+
+    @Override
+    public void onRefreshStarted(View view) {
+        Boolean shouldForce = lastSwipeRefresh != null && (new Date().getTime() - lastSwipeRefresh.getTime()) / 1000 < 10;
+        apiService.fetchHomeInfo(shouldForce);
+        if (shouldForce) {
+            lastSwipeRefresh = null;
+        } else {
+            lastSwipeRefresh = new Date();
+        }
     }
 
     @Override
@@ -206,7 +229,8 @@ public class HomeFragment extends Fragment {
 
     void hideAllLoadings() {
         progressViewContainer.setVisibility(View.INVISIBLE);
-        swipeLayout.setRefreshing(false);
+        // swipeLayout.setRefreshing(false);
+        ptrLayout.setRefreshComplete();
     }
 
     @Override

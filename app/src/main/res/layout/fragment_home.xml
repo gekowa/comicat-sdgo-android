@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <cn.sdgundam.comicatsdgo.extension.SwipeRefreshLayout
-        android:id="@+id/swipe_container"
+    <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
+        android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true">
@@ -64,7 +64,7 @@
 
             </LinearLayout>
         </ScrollView>
-    </cn.sdgundam.comicatsdgo.extension.SwipeRefreshLayout>
+    </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 
 
     <cn.sdgundam.comicatsdgo.view.NetworkErrorView
