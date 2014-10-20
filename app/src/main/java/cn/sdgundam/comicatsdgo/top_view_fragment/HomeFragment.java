@@ -88,8 +88,6 @@ public class HomeFragment extends Fragment implements OnRefreshListener {
                 Utility.showNetworkErrorAlertDialog(HomeFragment.this.getActivity(), e);
             }
         };
-
-        Log.v(LOG_TAG, "onCreated");
     }
 
     @Override

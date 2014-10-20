@@ -12,16 +12,6 @@ public class HomeInfo {
     PostInfo[] postList;
     UnitInfoShort[] units;
 
-    Exception e;
-
-    public Exception getE() {
-        return e;
-    }
-
-    public void setE(Exception e) {
-        this.e = e;
-    }
-
     public Date getGenerated() {
         return generated;
     }

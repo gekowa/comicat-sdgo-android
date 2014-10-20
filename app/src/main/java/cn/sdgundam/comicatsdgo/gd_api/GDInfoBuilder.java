@@ -15,6 +15,7 @@ import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
+import cn.sdgundam.comicatsdgo.data_model.VideoList;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 
 /**
@@ -115,5 +116,50 @@ public class GDInfoBuilder {
         }
 
         return homeInfo;
+    }
+
+    public static VideoList buildVideoList(String json) {
+
+        if (json == "") {
+            return null;
+        }
+
+        VideoList result = null;
+        try {
+            JSONObject rootObject = new JSONObject(json);
+
+            Integer gdCategory = rootObject.getInt("category");
+
+            result = new VideoList(gdCategory);
+
+            List<VideoListItem> vliList = new ArrayList<VideoListItem>();
+
+            JSONArray postsJSONArray = rootObject.getJSONArray("posts");
+            for (int i = 0; i < postsJSONArray.length(); i++) {
+                JSONObject d = postsJSONArray.getJSONObject(i);
+                Date created = Utility.parseDateSafe(d.getString("created"));
+                VideoListItem vli = new VideoListItem(
+                        d.getInt("postId"),
+                        d.getString("title"),
+                        d.getString("title2"),
+                        d.getString("imageURL"),
+                        d.getInt("gdPostCategory"),
+                        created
+                );
+
+                vli.setVideoHost(d.getString("videoHost"));
+                vli.setVideoId(d.getString("videoId"));
+                vli.setVideoId2(d.getString("videoId2"));
+
+                vliList.add(vli);
+            }
+
+            result.setVideoListItems(vliList);
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "JSON parse error: " + e.getMessage());
+        }
+
+        return result;
     }
 }
