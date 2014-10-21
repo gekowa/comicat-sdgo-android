@@ -2,32 +2,18 @@ package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
+import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Surface;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.JsResult;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 //import android.media.MediaPlayer;
 //import android.widget.VideoView;
 //import android.widget.MediaController;
-
-import java.util.logging.Handler;
 
 import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.video.OnReceivedYoukuVideoSrc;
@@ -56,7 +42,9 @@ public class VideoViewActivity extends Activity implements
     private View rootView;
     private FrameLayout videoContainer;
 
-    private FrameLayout.LayoutParams layoutPortrait;
+    private float videoAspectRatio;
+
+    private FrameLayout.LayoutParams layoutParamsPortrait;
 
     private int orientation;
 
@@ -71,6 +59,7 @@ public class VideoViewActivity extends Activity implements
             videoId = extra.getString("videoId");
             videoId2 = extra.getString("videoId2");
         } else {
+
             // 17173
 //            videoHost = "2";
 //            videoId = "18408422";
@@ -114,7 +103,7 @@ public class VideoViewActivity extends Activity implements
 //            videoContainer.setForegroundGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 //            videoView.setPadding(0, 0, 0, 0);
 
-            layoutPortrait = (FrameLayout.LayoutParams)videoView.getLayoutParams();
+//             layoutParamsPortrait = (FrameLayout.LayoutParams)videoView.getLayoutParams();
             videoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
             // Uncomment code below to enable full screen mode, need more tuning
@@ -146,7 +135,11 @@ public class VideoViewActivity extends Activity implements
 
             webView.setVisibility(View.VISIBLE);
 
-            videoView.setLayoutParams(layoutPortrait);
+            int videoViewWidth = videoView.getHeight();
+            int videoViewHeight= (int)((float)videoViewWidth / videoAspectRatio);
+            layoutParamsPortrait = new FrameLayout.LayoutParams(videoViewWidth, videoViewHeight);
+
+            videoView.setLayoutParams(layoutParamsPortrait);
 
             // Uncomment code below to enable full screen mode
 //            if (Build.VERSION.SDK_INT < 16) {
@@ -236,13 +229,24 @@ public class VideoViewActivity extends Activity implements
     // Vitamio
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        blinkMediaController();
+        // blinkMediaController();
 
         View progressBarContainer = findViewById(R.id.loading);
         progressBarContainer.setVisibility(View.GONE);
 
         ViewGroup controllerAnchor = (ViewGroup) findViewById(R.id.video_container);
         mediaController.setAnchorView(controllerAnchor);
+
+        videoAspectRatio = mediaPlayer.getVideoAspectRatio();
+
+        if (orientation == 0) {
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            orientation = size.x > size.y ? Configuration.ORIENTATION_LANDSCAPE : Configuration.ORIENTATION_PORTRAIT;
+        }
+
+        configureVideoViewOnOrientation();
     }
 
     /**
