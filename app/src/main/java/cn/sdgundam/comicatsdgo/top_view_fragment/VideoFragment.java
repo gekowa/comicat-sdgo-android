@@ -19,14 +19,21 @@ import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.data_model.VideoList;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
+import cn.sdgundam.comicatsdgo.gd_api.GDApiServiceCallbacks;
+import cn.sdgundam.comicatsdgo.gd_api.listener.FetchVideoListListener;
 import cn.sdgundam.comicatsdgo.view.GDCategorySelectionView;
 import cn.sdgundam.comicatsdgo.view.VideoGridItemView;
 
-public class VideoFragment extends Fragment implements GDCategorySelectionView.OnGDCategorySelectionListener {
+public class VideoFragment extends Fragment implements
+        GDCategorySelectionView.OnGDCategorySelectionListener, FetchVideoListListener
+{
     int pageIndex = 0;
     int currentGDCategory = 0;
     private Map<Integer, VideoGridViewAdapter> adapters;
     private Map<Integer, VideoList> videoLists;
+    private Map<Integer, Integer> indices;
+
+    GDApiService apiService;
 
     static final int PAGE_SIZE = 20;
 
@@ -44,28 +51,18 @@ public class VideoFragment extends Fragment implements GDCategorySelectionView.O
         return instance;
     }
 
-    public VideoFragment() {
-        // Required empty public constructor
-    }
+    public VideoFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GDApiService apiService = new GDApiService() {
-            @Override
-            protected void onReceiveVideoList(VideoList videoList) {
-                super.onReceiveVideoList(videoList);
-            }
-
-            @Override
-            protected void onFetchingVideoListWithError(Exception e) {
-                super.onFetchingVideoListWithError(e);
-            }
-        };
+        apiService = new GDApiService(this);
 
         adapters = new HashMap<Integer, VideoGridViewAdapter>();
         videoLists = new HashMap<Integer, VideoList>();
+
+        loadListForCurrentGDCategory();
     }
 
     @Override
@@ -73,6 +70,7 @@ public class VideoFragment extends Fragment implements GDCategorySelectionView.O
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_video, container, false);
+
         gdcsv = (GDCategorySelectionView)rootView.findViewById(R.id.gd_category_sel_view);
         gdcsv.setGDCategories(GD_CATEGORIES);
         gdcsv.setGDCategorySelectionListener(this);
@@ -83,11 +81,36 @@ public class VideoFragment extends Fragment implements GDCategorySelectionView.O
     @Override
     public void onShowAllClicked() {
         this.currentGDCategory = 0;
+        pageIndex = 0;
     }
 
     @Override
     public void onGDCategorySelected(int gdCategory) {
         this.currentGDCategory = gdCategory;
+    }
+
+    void loadListForCurrentGDCategory() {
+        apiService.fetchVideoList(currentGDCategory, PAGE_SIZE, pageIndex);
+    }
+
+    VideoGridViewAdapter getAdapterForCurrentGDCategory() {
+        return this.adapters.get(currentGDCategory);
+    }
+
+    @Override
+    public void onReceiveVideoList(VideoList videoList) {
+        if (this.currentGDCategory == videoList.getCategory()) {
+
+        }
+    }
+
+    void appendPosts(List<VideoListItem> posts) {
+
+    }
+
+    @Override
+    public void onFetchingVideoListWithError(Exception e) {
+
     }
 
     class VideoGridViewAdapter extends BaseAdapter {

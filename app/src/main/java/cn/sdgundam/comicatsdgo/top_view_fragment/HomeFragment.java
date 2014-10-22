@@ -24,6 +24,7 @@ import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.gd_api.FetchHomeInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
+import cn.sdgundam.comicatsdgo.gd_api.listener.FetchHomeInfoListener;
 import cn.sdgundam.comicatsdgo.view.CarouselView;
 import cn.sdgundam.comicatsdgo.view.NetworkErrorView;
 import cn.sdgundam.comicatsdgo.view.PostListForHomeView;
@@ -35,7 +36,8 @@ import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 
-public class HomeFragment extends Fragment implements OnRefreshListener {
+public class HomeFragment extends Fragment implements
+        OnRefreshListener, FetchHomeInfoListener {
     static final String LOG_TAG = HomeFragment.class.getSimpleName();
 
     static HomeFragment instance = null;
@@ -67,27 +69,7 @@ public class HomeFragment extends Fragment implements OnRefreshListener {
         setHasOptionsMenu(true);
 
         // configure API service
-        apiService = new GDApiService() {
-            @Override
-            protected void onReceiveHomeInfo(HomeInfo homeInfo) {
-                hideAllLoadings();
-
-                setHomeInfo(homeInfo);
-                setupViews();
-            }
-
-            @Override
-            protected void onFetchingHomeInfoWithError(Exception e) {
-                hideAllLoadings();
-
-                // Display "Network Unavailable" view
-                if (HomeFragment.this.homeInfo == null) {
-                    nev.setVisibility(View.VISIBLE);
-                }
-
-                Utility.showNetworkErrorAlertDialog(HomeFragment.this.getActivity(), e);
-            }
-        };
+        apiService = new GDApiService(this);
     }
 
     @Override
@@ -178,6 +160,27 @@ public class HomeFragment extends Fragment implements OnRefreshListener {
                              Bundle savedInstanceState) {
         Log.v(LOG_TAG, "onCreateView");
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+
+    @Override
+    public void onReceiveHomeInfo(HomeInfo homeInfo) {
+        hideAllLoadings();
+
+        setHomeInfo(homeInfo);
+        setupViews();
+    }
+
+    @Override
+    public void onFetchingHomeInfoWithError(Exception e) {
+        hideAllLoadings();
+
+        // Display "Network Unavailable" view
+        if (HomeFragment.this.homeInfo == null) {
+            nev.setVisibility(View.VISIBLE);
+        }
+
+        Utility.showNetworkErrorAlertDialog(HomeFragment.this.getActivity(), e);
     }
 
     private void refreshHomeInfo() {

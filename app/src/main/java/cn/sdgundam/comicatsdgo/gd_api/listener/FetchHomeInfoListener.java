@@ -1,11 +1,15 @@
-package cn.sdgundam.comicatsdgo.gd_api;
+package cn.sdgundam.comicatsdgo.gd_api.listener;
 
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
+
+import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
+import cn.sdgundam.comicatsdgo.data_model.VideoList;
 
 /**
  * Created by xhguo on 10/14/2014.
  */
-public interface GDApiServiceCallbacks {
+
+public interface FetchHomeInfoListener {
     void onReceiveHomeInfo(HomeInfo homeInfo);
     void onFetchingHomeInfoWithError(Exception e);
 }
