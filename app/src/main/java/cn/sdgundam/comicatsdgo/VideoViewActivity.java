@@ -1,12 +1,19 @@
 package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
@@ -14,6 +21,8 @@ import android.widget.FrameLayout;
 //import android.media.MediaPlayer;
 //import android.widget.VideoView;
 //import android.widget.MediaController;
+
+import org.lucasr.twowayview.TwoWayView;
 
 import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.video.OnReceivedYoukuVideoSrc;
@@ -28,7 +37,15 @@ public class VideoViewActivity extends Activity implements
         OnReceivedYoukuVideoSrc,
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnErrorListener,
-        MediaPlayer.OnInfoListener {
+        MediaPlayer.OnInfoListener,
+        View.OnSystemUiVisibilityChangeListener {
+
+    static final int ORIENTATION_THRESHOLD = 20;
+
+    static final int SYSTEM_UI_FLAG_MY_FULLSCREEN =
+            View.SYSTEM_UI_FLAG_FULLSCREEN |
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+
     private int postId;
     private String videoHost;
     private String videoId;
@@ -36,17 +53,22 @@ public class VideoViewActivity extends Activity implements
 
     private String videoURL;
 
+    private View decorView;
     private VideoView videoView;
     private WebView webView;
     private MediaController mediaController;
     private View rootView;
     private FrameLayout videoContainer;
 
+    private OrientationEventListener orientationEventListener;
+
     private float videoAspectRatio;
 
     private FrameLayout.LayoutParams layoutParamsPortrait;
 
-    private int orientation;
+    private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    private boolean isVideoPrepared;
+    private boolean isOrientationLocked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +91,20 @@ public class VideoViewActivity extends Activity implements
             videoId = "XODAzNzY5MzE2";
         }
 
-
         setContentView(R.layout.activity_video_view);
 
+        decorView = getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener(this);
+
         videoView = (VideoView)findViewById(R.id.video_view);
+//        videoView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (VideoViewActivity.this.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+//                    hideSystemUI();
+//                }
+//            }
+//        });
         prepareVideoPlay(videoHost, videoId, videoId2);
 
         webView = (WebView)findViewById(R.id.web_view);
@@ -81,77 +113,122 @@ public class VideoViewActivity extends Activity implements
         videoContainer = (FrameLayout)findViewById(R.id.video_container);
 
         rootView = findViewById(R.id.root_view);
+
+        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
+            @Override
+            public void onOrientationChanged(int degree) {
+                int orientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+                if (degree >= (90 - ORIENTATION_THRESHOLD) && degree <= (90 + ORIENTATION_THRESHOLD) ||
+                        degree >= (270 - ORIENTATION_THRESHOLD) && degree <= (270 + ORIENTATION_THRESHOLD)) {
+                    orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                } else if ((degree>= (360 - ORIENTATION_THRESHOLD) && degree <= 360) ||
+                        (degree >= 0 && degree <= ORIENTATION_THRESHOLD)) {
+                    orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                }
+
+                if (orientation != ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED &&
+                        orientation != VideoViewActivity.this.orientation) {
+                    VideoViewActivity.this.orientation = orientation;
+                    if (isVideoPrepared) {
+                        setRequestedOrientation(orientation);
+                        configureVideoViewOnOrientation();
+                    }
+                }
+            }
+        };
+
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+    protected void onResume() {
+        super.onResume();
 
-        this.orientation = newConfig.orientation;
+        if (orientationEventListener.canDetectOrientation() && isVideoPrepared) {
+            orientationEventListener.enable();
+        }
+    }
 
-        configureVideoViewOnOrientation();
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        orientationEventListener.disable();
+    }
+
+    @Override
+    public void onSystemUiVisibilityChange(int i) {
+        if (i != SYSTEM_UI_FLAG_MY_FULLSCREEN) {
+            mediaController.show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            // disable sensor for a while (2.5s)
+            orientationEventListener.disable();
+
+            orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            setRequestedOrientation(orientation);
+            configureVideoViewOnOrientation();
+
+            rootView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    orientationEventListener.enable();
+                }
+            }, 2500);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     void configureVideoViewOnOrientation() {
-        if (this.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
 
-//            getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
             getActionBar().hide();
 
-//            ((FrameLayout.LayoutParams)videoView.getLayoutParams()).gravity =
-//                    Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
-//            videoContainer.setForegroundGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-//            videoView.setPadding(0, 0, 0, 0);
-
-//             layoutParamsPortrait = (FrameLayout.LayoutParams)videoView.getLayoutParams();
+            layoutParamsPortrait = (FrameLayout.LayoutParams)videoView.getLayoutParams();
             videoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            // Uncomment code below to enable full screen mode, need more tuning
-//            if (Build.VERSION.SDK_INT < 16) {
-//                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//            }
-////            else if (Build.VERSION.SDK_INT >= 19) {
-////                View decorView = getWindow().getDecorView();
-////                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-////                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-////                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-////                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-////                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-////                        | View.SYSTEM_UI_FLAG_IMMERSIVE;
-////                decorView.setSystemUiVisibility(uiOptions);
-////            }
-//            else {
-//                View decorView = getWindow().getDecorView();
-//                int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN |
-//                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION; // hide nav bar
-//                decorView.setSystemUiVisibility(uiOptions);
-//            }
+            hideSystemUI();
 
             webView.setVisibility(View.INVISIBLE);
         }
-        else if (this.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        else if (orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+
             getActionBar().show();
 
+            if (layoutParamsPortrait != null) {
+                videoView.setLayoutParams(layoutParamsPortrait);
+            }
+
+            showSystemUI();
+
             webView.setVisibility(View.VISIBLE);
-
-            int videoViewWidth = videoView.getHeight();
-            int videoViewHeight= (int)((float)videoViewWidth / videoAspectRatio);
-            layoutParamsPortrait = new FrameLayout.LayoutParams(videoViewWidth, videoViewHeight);
-
-            videoView.setLayoutParams(layoutParamsPortrait);
-
-            // Uncomment code below to enable full screen mode
-//            if (Build.VERSION.SDK_INT < 16) {
-//                getWindow().setFlags(WindowManager.LayoutParams.MATCH_PARENT,
-//                        WindowManager.LayoutParams.MATCH_PARENT);
-//            } else {
-//                View decorView = getWindow().getDecorView();
-//                decorView.setSystemUiVisibility(0);
-//            }
         }
 
         blinkMediaController();
+    }
+
+
+
+    void hideSystemUI() {
+        if (Build.VERSION.SDK_INT < 16) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            decorView.setSystemUiVisibility(SYSTEM_UI_FLAG_MY_FULLSCREEN);
+        }
+    }
+
+    void showSystemUI() {
+        if (Build.VERSION.SDK_INT < 16) {
+            getWindow().setFlags(WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.MATCH_PARENT);
+        } else {
+            decorView.setSystemUiVisibility(0);
+        }
     }
 
     void prepareVideoPlay(String videoHost, String videoId, String videoId2) {
@@ -214,7 +291,17 @@ public class VideoViewActivity extends Activity implements
                     mediaController = new MediaController(VideoViewActivity.this);
                     mediaController.setAlpha(0);
                     mediaController.hide();
+                    mediaController.setOnHiddenListener(new MediaController.OnHiddenListener() {
+                        @Override
+                        public void onHidden() {
+                            if (videoView.isPlaying() &&
+                                    orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                                hideSystemUI();
+                            }
+                        }
+                    });
                     videoView.setMediaController(mediaController);
+
 
                     videoView.setOnPreparedListener(VideoViewActivity.this);
                     videoView.setOnErrorListener(VideoViewActivity.this);
@@ -229,7 +316,7 @@ public class VideoViewActivity extends Activity implements
     // Vitamio
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        // blinkMediaController();
+        blinkMediaController();
 
         View progressBarContainer = findViewById(R.id.loading);
         progressBarContainer.setVisibility(View.GONE);
@@ -239,14 +326,17 @@ public class VideoViewActivity extends Activity implements
 
         videoAspectRatio = mediaPlayer.getVideoAspectRatio();
 
-        if (orientation == 0) {
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            orientation = size.x > size.y ? Configuration.ORIENTATION_LANDSCAPE : Configuration.ORIENTATION_PORTRAIT;
-        }
+        isVideoPrepared = true;
 
-        configureVideoViewOnOrientation();
+        // not to let rotation effect right now, avoid VideoView layout error
+        rootView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (orientationEventListener.canDetectOrientation()) {
+                    orientationEventListener.enable();
+                }
+            }
+        }, 1000);
     }
 
     /**
@@ -328,3 +418,12 @@ public class VideoViewActivity extends Activity implements
     }
 
 }
+
+/*
+* 1. 垂直进入
+* 2. 手动全屏, 旋转全屏 (要记住全屏的原因) (视频prepare好以后, 才允许旋转)
+* 3. 锁定全屏, 当手动全屏时自动锁定
+* 4. 全凭状态下按返回键, 返回垂直状态
+* 5.
+*
+* */

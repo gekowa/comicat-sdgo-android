@@ -19,7 +19,6 @@ import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.data_model.VideoList;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
-import cn.sdgundam.comicatsdgo.gd_api.GDApiServiceCallbacks;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchVideoListListener;
 import cn.sdgundam.comicatsdgo.view.GDCategorySelectionView;
 import cn.sdgundam.comicatsdgo.view.VideoGridItemView;

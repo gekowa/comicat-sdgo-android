@@ -24,7 +24,7 @@
         </activity>
         <!-- android:screenOrientation="portrait" -->
         <activity
-
+            android:screenOrientation="portrait"
             android:name=".VideoViewActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:label="@string/title_activity_video_view"
