@@ -1,14 +1,12 @@
 package cn.sdgundam.comicatsdgo.top_view_fragment;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.GridView;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,31 +14,30 @@ import java.util.List;
 import java.util.Map;
 
 import cn.sdgundam.comicatsdgo.R;
-import cn.sdgundam.comicatsdgo.data_model.VideoList;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
-import cn.sdgundam.comicatsdgo.gd_api.listener.FetchVideoListListener;
+import cn.sdgundam.comicatsdgo.post_list.PostListDataSourceAdapter;
+import cn.sdgundam.comicatsdgo.post_list.PostListDataSourceListener;
 import cn.sdgundam.comicatsdgo.view.GDCategorySelectionView;
 import cn.sdgundam.comicatsdgo.view.VideoGridItemView;
 
 public class VideoFragment extends Fragment implements
-        GDCategorySelectionView.OnGDCategorySelectionListener, FetchVideoListListener
-{
-    int pageIndex = 0;
+        GDCategorySelectionView.OnGDCategorySelectionListener,
+        PostListDataSourceListener {
+
     int currentGDCategory = 0;
-    private Map<Integer, VideoGridViewAdapter> adapters;
-    private Map<Integer, VideoList> videoLists;
-    private Map<Integer, Integer> indices;
+
+    private Map<Integer, VideoGridViewDSA> dataSourceAdapters;
 
     GDApiService apiService;
 
-    static final int PAGE_SIZE = 20;
-
+    static final Integer ALL_CATEGORIES = 0;
     static final List<Integer> GD_CATEGORIES = Arrays.asList(
         32, 16, 64, 256, 128, 512, 1024, 2048
     );
 
     GDCategorySelectionView gdcsv;
+    GridView videoGridView;
 
     static VideoFragment instance = null;
     public static VideoFragment getInstance() {
@@ -56,12 +53,19 @@ public class VideoFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        apiService = new GDApiService(this);
+        dataSourceAdapters = new HashMap<Integer, VideoGridViewDSA>();
 
-        adapters = new HashMap<Integer, VideoGridViewAdapter>();
-        videoLists = new HashMap<Integer, VideoList>();
+        // init for all categories
+        for (int i = 0; i < GD_CATEGORIES.size(); i++) {
+            int gdCategory = GD_CATEGORIES.get(i);
+            VideoGridViewDSA dsa = new VideoGridViewDSA(getActivity(), gdCategory);
+            dsa.setPldsListener(this);
+            dataSourceAdapters.put(gdCategory, dsa);
+        }
 
-        loadListForCurrentGDCategory();
+        VideoGridViewDSA dsa = new VideoGridViewDSA(getActivity(), 0);
+        dsa.setPldsListener(this);
+        dataSourceAdapters.put(0, dsa);
     }
 
     @Override
@@ -74,73 +78,79 @@ public class VideoFragment extends Fragment implements
         gdcsv.setGDCategories(GD_CATEGORIES);
         gdcsv.setGDCategorySelectionListener(this);
 
+        videoGridView = (GridView)rootView.findViewById(R.id.video_grid_view);
+        videoGridView.setNumColumns(2);
+        videoGridView.setDrawSelectorOnTop(true);
+        videoGridView.setHorizontalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_horizontal_spacing));
+        videoGridView.setVerticalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_vertical_spacing));
+
+        switchToGDCategory(0);
+
         return rootView;
     }
 
     @Override
     public void onShowAllClicked() {
-        this.currentGDCategory = 0;
-        pageIndex = 0;
+        switchToGDCategory(0);
     }
 
     @Override
     public void onGDCategorySelected(int gdCategory) {
+        switchToGDCategory(gdCategory);
+    }
+
+    private void switchToGDCategory(int gdCategory) {
         this.currentGDCategory = gdCategory;
+        configureGridView(gdCategory);
     }
 
-    void loadListForCurrentGDCategory() {
-        apiService.fetchVideoList(currentGDCategory, PAGE_SIZE, pageIndex);
+    private void configureGridView(int gdCategory) {
+        VideoGridViewDSA dsa = getCurrentDSA(gdCategory);
+        currentGDCategory = gdCategory;
+
+        videoGridView.setAdapter(dsa);
+        dsa.reloadData();
     }
 
-    VideoGridViewAdapter getAdapterForCurrentGDCategory() {
-        return this.adapters.get(currentGDCategory);
+    public VideoGridViewDSA getCurrentDSA(int gdCategory) {
+        return dataSourceAdapters.get(gdCategory);
+    }
+
+    // region PostListDataSourceListener
+
+    @Override
+    public void dataPrepared() {
+
     }
 
     @Override
-    public void onReceiveVideoList(VideoList videoList) {
-        if (this.currentGDCategory == videoList.getCategory()) {
-
-        }
-    }
-
-    void appendPosts(List<VideoListItem> posts) {
+    public void dataError() {
 
     }
 
     @Override
-    public void onFetchingVideoListWithError(Exception e) {
+    public void noMoreData() {
 
     }
 
-    class VideoGridViewAdapter extends BaseAdapter {
-        Context context;
-        int gdCategory;
+    @Override
+    public void onBeforeLoadingData(int category) {
 
-        public VideoGridViewAdapter(Context context, int gdCategory) {
-            this.context = context;
-            this.gdCategory = gdCategory;
-        }
+    }
 
-        @Override
-        public int getCount() {
-            return 0;
-        }
 
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
+    // endregion
 
-        @Override
-        public long getItemId(int i) {
-            return i;
+    class VideoGridViewDSA extends PostListDataSourceAdapter<VideoListItem> {
+        public VideoGridViewDSA(Context context, int gdCategory) {
+            super(context, gdCategory);
         }
 
         @Override
         public View getView(int i, View convertView, ViewGroup viewGroup) {
             VideoGridItemView view = (VideoGridItemView)convertView;
             if (view == null) {
-                view = new VideoGridItemView(context, null);
+                view = new VideoGridItemView(getContext(), null);
             }
 
             VideoListItem item = (VideoListItem) getItem(i);
@@ -148,5 +158,11 @@ public class VideoFragment extends Fragment implements
 
             return view;
         }
+
+        @Override
+        protected void fetchList(int gdCategory, int pageSize, int pageIndex) {
+            apiService.fetchVideoList(gdCategory, pageSize, pageIndex);
+        }
     }
+
 }

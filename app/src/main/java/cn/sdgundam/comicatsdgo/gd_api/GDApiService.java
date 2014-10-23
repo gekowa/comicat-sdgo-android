@@ -1,12 +1,11 @@
 package cn.sdgundam.comicatsdgo.gd_api;
 
-import android.util.Log;
-
 import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
-import cn.sdgundam.comicatsdgo.data_model.VideoList;
+import cn.sdgundam.comicatsdgo.data_model.PostList;
+import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
+import cn.sdgundam.comicatsdgo.gd_api.listener.FetchGeneralListListener;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchHomeInfoListener;
-import cn.sdgundam.comicatsdgo.gd_api.listener.FetchVideoListListener;
 
 /**
  * Created by xhguo on 10/14/2014.
@@ -27,11 +26,11 @@ public class GDApiService {
                     if (result.getE() != null) {
                         homeInfoListener.onFetchingHomeInfoWithError(result.getE());
                     } else {
-                        HomeInfo homeInfo = result.getWrappingObject();
+                        HomeInfo homeInfo = result.getPayload();
                         if (homeInfo == null) {
                             homeInfoListener.onFetchingHomeInfoWithError(new Exception("未知错误"));
                         } else {
-                            homeInfoListener.onReceiveHomeInfo(result.getWrappingObject());
+                            homeInfoListener.onReceiveHomeInfo(result.getPayload());
                         }
                     }
                 }
@@ -43,30 +42,31 @@ public class GDApiService {
         task.execute();
     }
 
-    FetchVideoListListener videoListListener;
-    public GDApiService(FetchVideoListListener videoListListener) {
+    FetchGeneralListListener videoListListener;
+    public GDApiService(FetchGeneralListListener videoListListener) {
         this.videoListListener = videoListListener;
     }
 
     public final void fetchVideoList(int gdCategory, int pageSize, int pageIndex) {
         FetchVideoListAsyncTask task = new FetchVideoListAsyncTask() {
             @Override
-            protected void onPostExecute(ApiResultWrapper<VideoList> result) {
+            protected void onPostExecute(ApiResultWrapper<PostList<VideoListItem>> result) {
                 super.onPostExecute(result);
 
                 if (videoListListener != null) {
                     if (result.getE() != null) {
-                        videoListListener.onFetchingVideoListWithError(result.getE());
+                        videoListListener.onFetchingPostListWithError(result.getE());
                     } else {
-                        VideoList homeInfo = result.getWrappingObject();
-                        if (homeInfo == null) {
-                            videoListListener.onFetchingVideoListWithError(new Exception("未知错误"));
+                        PostList<VideoListItem> info = result.getPayload();
+                        if (info == null) {
+                            videoListListener.onFetchingPostListWithError(new Exception("未知错误"));
                         } else {
-                            videoListListener.onReceiveVideoList(result.getWrappingObject());
+                            videoListListener.onReceivePostList(result.getPayload());
                         }
                     }
                 }
             }
         };
+        task.execute(gdCategory, pageSize, pageIndex);
     }
 }

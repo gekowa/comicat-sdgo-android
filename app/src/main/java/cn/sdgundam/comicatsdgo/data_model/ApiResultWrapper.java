@@ -5,7 +5,7 @@ package cn.sdgundam.comicatsdgo.data_model;
  */
 public class ApiResultWrapper<T> {
     private Exception e;
-    private T wrappingObject;
+    private T payload;
 
     public Exception getE() {
         return e;
@@ -15,18 +15,18 @@ public class ApiResultWrapper<T> {
         this.e = e;
     }
 
-    public T getWrappingObject() {
-        return wrappingObject;
+    public T getPayload() {
+        return payload;
     }
 
-    public void setWrappingObject(T wrappingObject) {
-        this.wrappingObject = wrappingObject;
+    public void setPayload(T payload) {
+        this.payload = payload;
     }
 
     public ApiResultWrapper() { }
 
-    public ApiResultWrapper(T wrappingObject) {
-        this.wrappingObject = wrappingObject;
+    public ApiResultWrapper(T payload) {
+        this.payload = payload;
     }
 
     public ApiResultWrapper(Exception e) {

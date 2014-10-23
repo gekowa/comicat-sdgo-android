@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.VideoViewActivity;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
@@ -30,11 +31,11 @@ public class VideoGridView extends GridView {
         this.setNumColumns(2);
         this.setDrawSelectorOnTop(true);
 
-        float horSpacingPx = Utility.convertDpToPixel(9, context);
-        this.setHorizontalSpacing((int)horSpacingPx);
+        // float horSpacingPx = Utility.convertDpToPixel(9, context);
+        this.setHorizontalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_horizontal_spacing));
 
-        float verSpacingPx = Utility.convertDpToPixel(6, context);
-        this.setVerticalSpacing((int)verSpacingPx);
+        // float verSpacingPx = Utility.convertDpToPixel(6, context);
+        this.setVerticalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_vertical_spacing));
     }
 
     public void setVideos(VideoListItem[] videos) {

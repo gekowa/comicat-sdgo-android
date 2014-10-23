@@ -14,8 +14,8 @@ import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
+import cn.sdgundam.comicatsdgo.data_model.PostList;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
-import cn.sdgundam.comicatsdgo.data_model.VideoList;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 
 /**
@@ -118,19 +118,19 @@ public class GDInfoBuilder {
         return homeInfo;
     }
 
-    public static VideoList buildVideoList(String json) {
+    public static PostList<VideoListItem> buildVideoList(String json) {
 
         if (json == "") {
             return null;
         }
 
-        VideoList result = null;
+        PostList<VideoListItem> result = null;
         try {
             JSONObject rootObject = new JSONObject(json);
 
             Integer gdCategory = rootObject.getInt("category");
 
-            result = new VideoList(gdCategory);
+            result = new PostList<VideoListItem>(gdCategory);
 
             List<VideoListItem> vliList = new ArrayList<VideoListItem>();
 
@@ -147,14 +147,14 @@ public class GDInfoBuilder {
                         created
                 );
 
-                vli.setVideoHost(d.getString("videoHost"));
-                vli.setVideoId(d.getString("videoId"));
-                vli.setVideoId2(d.getString("videoId2"));
+//                vli.setVideoHost(d.getString("videoHost"));
+//                vli.setVideoId(d.getString("videoId"));
+//                vli.setVideoId2(d.getString("videoId2"));
 
                 vliList.add(vli);
             }
 
-            result.setVideoListItems(vliList);
+            result.setPostListItems(vliList);
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, "JSON parse error: " + e.getMessage());

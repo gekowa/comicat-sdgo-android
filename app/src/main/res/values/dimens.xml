@@ -19,4 +19,7 @@
     <dimen name="gd_category_icon_l_width">60dp</dimen>
     <dimen name="gd_category_icon_l_height">24dp</dimen>
     <dimen name="gd_category_icon_l_margin">6dp</dimen>
+
+    <dimen name="video_grid_horizontal_spacing">9dp</dimen>
+    <dimen name="video_grid_vertical_spacing">6dp</dimen>
 </resources>

@@ -9,33 +9,33 @@ import java.util.Map;
 
 import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
-import cn.sdgundam.comicatsdgo.data_model.VideoList;
+import cn.sdgundam.comicatsdgo.data_model.PostList;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 
 /**
  * Created by xhguo on 10/20/2014.
  */
-public class FetchVideoListAsyncTask extends AsyncTask<Integer, Void, ApiResultWrapper<VideoList>> {
+public class FetchVideoListAsyncTask extends AsyncTask<Integer, Void, ApiResultWrapper<PostList<VideoListItem>>> {
     @Override
-    protected ApiResultWrapper<VideoList> doInBackground(Integer... parameters) {
+    protected ApiResultWrapper<PostList<VideoListItem>> doInBackground(Integer... parameters) {
         Integer gdCategory = parameters[0];
-        Integer pageIndex = parameters[1];
-        Integer pageSize = parameters[2];
+        Integer pageSize = parameters[1];
+        Integer pageIndex = parameters[2];
 
         Map<String, String> apiParams = new HashMap<String, String>();
         apiParams.put("cat", gdCategory.toString());
         apiParams.put("size", pageSize.toString());
         apiParams.put("page", pageIndex.toString());
 
-        ApiResultWrapper<VideoList> result;
+        ApiResultWrapper<PostList<VideoListItem>> result;
 
         try {
             String json = Communicator.requestApi("video-list", apiParams);
-            VideoList videoList = GDInfoBuilder.buildVideoList(json);
-            return new ApiResultWrapper<VideoList>(videoList);
+            PostList<VideoListItem> videoList = GDInfoBuilder.buildVideoList(json);
+            return new ApiResultWrapper<PostList<VideoListItem>>(videoList);
         }
         catch(Exception e) {
-            result = new ApiResultWrapper<VideoList>(e);
+            result = new ApiResultWrapper<PostList<VideoListItem>>(e);
             return result;
         }
     }
