@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -60,6 +61,8 @@ public class HomeFragment extends Fragment implements
     private PullToRefreshLayout ptrLayout;
     private NetworkErrorView nev;
 
+    private boolean allViewSetup = false;
+
     Date lastSwipeRefresh;
 
     @Override
@@ -70,7 +73,17 @@ public class HomeFragment extends Fragment implements
 
         // configure API service
         apiService = new GDApiService(this);
+
+        Log.v(LOG_TAG, "onCreate");
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        Log.v(LOG_TAG, "onCreateView");
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
 
     @Override
     public void onResume() {
@@ -92,29 +105,13 @@ public class HomeFragment extends Fragment implements
                     if (HomeFragment.this.homeInfo == null) {
                         refreshHomeInfo();
                     } else {
-                        setupViews();
+                        if (!allViewSetup) {
+                            setupViews();
+                        }
                     }
                 }
             });
         }
-
-//        swipeLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swipe_container);
-//        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                Boolean shouldForce = lastSwipeRefresh != null && (new Date().getTime() - lastSwipeRefresh.getTime()) / 1000 < 10;
-//                apiService.fetchHomeInfo(shouldForce);
-//                if (shouldForce) {
-//                    lastSwipeRefresh = null;
-//                } else {
-//                    lastSwipeRefresh = new Date();
-//                }
-//            }
-//        });
-//        swipeLayout.setColorScheme(R.color.gundam_1,
-//                R.color.gundam_2,
-//                R.color.gundam_3,
-//                R.color.gundam_4);
 
         ptrLayout = (PullToRefreshLayout)getView().findViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(this.getActivity())
@@ -145,6 +142,36 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        Log.v(LOG_TAG, "onPause");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        Log.v(LOG_TAG, "onDetach");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        this.allViewSetup = false;
+
+        Log.v(LOG_TAG, "onDestroyView");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.v(LOG_TAG, "onDestroy");
+    }
+
+    @Override
     public void onRefreshStarted(View view) {
         Boolean shouldForce = lastSwipeRefresh != null && (new Date().getTime() - lastSwipeRefresh.getTime()) / 1000 < 10;
         apiService.fetchHomeInfo(shouldForce);
@@ -154,14 +181,6 @@ public class HomeFragment extends Fragment implements
             lastSwipeRefresh = new Date();
         }
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        Log.v(LOG_TAG, "onCreateView");
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
 
     @Override
     public void onReceiveHomeInfo(HomeInfo homeInfo) {
@@ -195,6 +214,8 @@ public class HomeFragment extends Fragment implements
         setupUnitList();
         setupPostList();
         setupVideoList();
+
+        allViewSetup = true;
     }
 
     void setupCarousel() {

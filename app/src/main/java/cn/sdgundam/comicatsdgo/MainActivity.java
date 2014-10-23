@@ -1,12 +1,14 @@
 package cn.sdgundam.comicatsdgo;
 
 import android.app.ActionBar;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
+import android.view.animation.AlphaAnimation;
 
 import cn.sdgundam.comicatsdgo.top_view_fragment.HomeFragment;
 import cn.sdgundam.comicatsdgo.top_view_fragment.VideoFragment;
@@ -24,6 +26,8 @@ public class MainActivity extends FragmentActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    private int currentPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +51,34 @@ public class MainActivity extends FragmentActivity
         String[] allTitles = getResources().getStringArray(R.array.top_view_titles);
         mTitle = allTitles[position];
 
-        // update the main content by replacing fragments
-        FragmentManager fm = getSupportFragmentManager();
-        switch(position) {
-            case 0:
-                fm.beginTransaction()
-                    .replace(R.id.container, HomeFragment.getInstance())
-                    .commit();
+        if (position != currentPosition) {
+            // fade out the current
+            AlphaAnimation anim = new AlphaAnimation(1f, 0f);
+            anim.setDuration(500);
+            findViewById(R.id.container).startAnimation(anim);
+        }
+    }
+
+    @Override
+    public void onNavigationDrawerClosedForItemSelected(int position) {
+        if(position != currentPosition) {
+            // update the main content by replacing fragments
+            FragmentManager fm = getSupportFragmentManager();
+            switch (position) {
+                case 0:
+                    fm.beginTransaction()
+                            .replace(R.id.container, HomeFragment.getInstance())
+                            .commit();
 
 //                fm.beginTransaction()
 //                    .replace(R.id.container, VideoFragment.getInstance())
 //                    .commit();
-                break;
-            case 1:
-                fm.beginTransaction()
-                    .replace(R.id.container, VideoFragment.getInstance())
-                    .commit();
-                break;
+                    break;
+                case 1:
+                    fm.beginTransaction()
+                            .replace(R.id.container, VideoFragment.getInstance())
+                            .commit();
+                    break;
 //            case 2:
 //                fm.beginTransaction()
 //                    .replace(R.id.container, NewsFragment.newInstance("1", "2"))
@@ -74,6 +89,9 @@ public class MainActivity extends FragmentActivity
 //                    .replace(R.id.container, OriginFragment.newInstance("1", "2"))
 //                    .commit();
 //                break;
+            }
+
+            currentPosition = position;
         }
     }
 
@@ -83,7 +101,6 @@ public class MainActivity extends FragmentActivity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

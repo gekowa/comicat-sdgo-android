@@ -64,6 +64,8 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+    private boolean hasPendingSelectedItem;
+
     public NavigationDrawerFragment() {
     }
 
@@ -148,6 +150,11 @@ public class NavigationDrawerFragment extends Fragment {
                     return;
                 }
 
+                if (mCallbacks != null && hasPendingSelectedItem) {
+                    hasPendingSelectedItem = false;
+                    mCallbacks.onNavigationDrawerClosedForItemSelected(mCurrentSelectedPosition);
+                }
+
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
 
@@ -196,8 +203,16 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+        if (isDrawerOpen()) {
+            // pending, wait until drawer properly close, avoid laggy aniation
+            if (mCallbacks != null) {
+                mCallbacks.onNavigationDrawerItemSelected(position);
+            }
+            hasPendingSelectedItem = true;
+        } else {
+            if (mCallbacks != null) {
+                mCallbacks.onNavigationDrawerClosedForItemSelected(position);
+            }
         }
     }
 
@@ -278,6 +293,8 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+
+        void onNavigationDrawerClosedForItemSelected(int position);
     }
 
 }
