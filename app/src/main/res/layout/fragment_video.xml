@@ -15,7 +15,6 @@
             android:layout_height="match_parent"
             tools:context="cn.sdgundam.comicatsdgo.top_view_fragment.VideoFragment">
 
-
             <cn.sdgundam.comicatsdgo.view.GDCategorySelectionView
                 android:id="@+id/gd_category_sel_view"
                 android:layout_width="match_parent"

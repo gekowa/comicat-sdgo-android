@@ -20,10 +20,15 @@ import cn.sdgundam.comicatsdgo.post_list.PostListDataSourceAdapter;
 import cn.sdgundam.comicatsdgo.post_list.PostListDataSourceListener;
 import cn.sdgundam.comicatsdgo.view.GDCategorySelectionView;
 import cn.sdgundam.comicatsdgo.view.VideoGridItemView;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class VideoFragment extends Fragment implements
         GDCategorySelectionView.OnGDCategorySelectionListener,
-        PostListDataSourceListener {
+        PostListDataSourceListener,
+        OnRefreshListener {
 
     int currentGDCategory = 0;
 
@@ -36,6 +41,7 @@ public class VideoFragment extends Fragment implements
         32, 16, 64, 256, 128, 512, 1024, 2048
     );
 
+    PullToRefreshLayout ptrLayout;
     GDCategorySelectionView gdcsv;
     GridView videoGridView;
 
@@ -87,6 +93,23 @@ public class VideoFragment extends Fragment implements
         switchToGDCategory(0);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ptrLayout = (PullToRefreshLayout)getView().findViewById(R.id.ptr_layout);
+        ActionBarPullToRefresh.from(this.getActivity())
+                .theseChildrenArePullable(R.id.video_grid_view)
+                .listener(this)
+                .setup(ptrLayout);
+        ((DefaultHeaderTransformer)ptrLayout.getHeaderTransformer()).setProgressBarColor(getResources().getColor(R.color.gd_tint_color));
+    }
+
+    @Override
+    public void onRefreshStarted(View view) {
+
     }
 
     @Override

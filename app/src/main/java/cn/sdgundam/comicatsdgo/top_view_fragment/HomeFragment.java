@@ -210,16 +210,19 @@ public class HomeFragment extends Fragment implements
     }
 
     void setupViews() {
-        setupCarousel();
-        setupUnitList();
-        setupPostList();
-        setupVideoList();
+        View containerView = getView();
+        if (containerView  != null) {
+            setupCarousel(containerView);
+            setupUnitList(containerView);
+            setupPostList(containerView);
+            setupVideoList(containerView);
 
-        allViewSetup = true;
+            allViewSetup = true;
+        }
     }
 
-    void setupCarousel() {
-        int fragmentWidth = getView().getMeasuredWidth();
+    void setupCarousel(View containerView) {
+        int fragmentWidth = containerView.getMeasuredWidth();
         int carouselHeight = getResources().getDimensionPixelSize(R.dimen.carousel_height);
         int carouselWidth = getResources().getDimensionPixelSize(R.dimen.carousel_width);
         int aspectCarouselHeight = (int) (fragmentWidth  * (float)carouselHeight  / carouselWidth);
@@ -230,18 +233,18 @@ public class HomeFragment extends Fragment implements
         carouselView.setCarousel(homeInfo.getCarousel());
     }
 
-    void setupUnitList() {
-        UnitListForHomeView unitList = (UnitListForHomeView) getView().findViewById(R.id.unit_list);
+    void setupUnitList(View containerView) {
+        UnitListForHomeView unitList = (UnitListForHomeView) containerView.findViewById(R.id.unit_list);
         unitList.setUnits(homeInfo.getUnits());
     }
 
-    void setupPostList() {
-        PostListForHomeView postList = (PostListForHomeView)getView().findViewById(R.id.post_list);
+    void setupPostList(View containerView) {
+        PostListForHomeView postList = (PostListForHomeView)containerView.findViewById(R.id.post_list);
         postList.setPosts(homeInfo.getPostList());
     }
 
-    void setupVideoList() {
-        VideoGridView videoList = (VideoGridView)getView().findViewById(R.id.video_list);
+    void setupVideoList(View containerView) {
+        VideoGridView videoList = (VideoGridView)containerView.findViewById(R.id.video_list);
         videoList.setVideos(homeInfo.getVideoList());
     }
 
