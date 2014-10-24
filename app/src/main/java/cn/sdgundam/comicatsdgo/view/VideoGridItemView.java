@@ -72,8 +72,8 @@ public class VideoGridItemView extends RelativeLayout {
     }
 
     void configurePaints() {
-        float titleTextSize = Utility.convertDpToPixel(12.5f, getContext());
-        float dateTextSize = Utility.convertDpToPixel(11f, getContext());
+        float titleTextSize = getResources().getDimensionPixelSize(R.dimen.video_grid_title_text_size);
+        float dateTextSize = getResources().getDimensionPixelSize(R.dimen.video_grid_date_text_size);
 
         titlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         titlePaint.setColor(Color.BLACK);

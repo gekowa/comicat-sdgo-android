@@ -35,4 +35,6 @@
     <string name="title_activity_video_view">视频</string>
     <string name="title_activity_post_view">情报</string>
     <string name="show_all">显示全部</string>
+
+    <string name="no_more_data">没有更多了...</string>
 </resources>

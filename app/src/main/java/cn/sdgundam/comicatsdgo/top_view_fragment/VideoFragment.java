@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.GridView;
 
 import java.util.Arrays;
@@ -28,18 +29,18 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 public class VideoFragment extends Fragment implements
         GDCategorySelectionView.OnGDCategorySelectionListener,
         PostListDataSourceListener,
-        OnRefreshListener {
-
-    int currentGDCategory = 0;
-
-    private Map<Integer, VideoGridViewDSA> dataSourceAdapters;
-
-    GDApiService apiService;
+        OnRefreshListener,
+        AbsListView.OnScrollListener {
 
     static final Integer ALL_CATEGORIES = 0;
     static final List<Integer> GD_CATEGORIES = Arrays.asList(
-        32, 16, 64, 256, 128, 512, 1024, 2048
+            32, 16, 64, 256, 128, 512, 1024, 2048
     );
+
+    int currentGDCategory = 0;
+    VideoGridViewDSA currentDSA;
+    private Map<Integer, VideoGridViewDSA> dataSourceAdapters;
+    GDApiService apiService;
 
     PullToRefreshLayout ptrLayout;
     GDCategorySelectionView gdcsv;
@@ -89,6 +90,7 @@ public class VideoFragment extends Fragment implements
         videoGridView.setDrawSelectorOnTop(true);
         videoGridView.setHorizontalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_horizontal_spacing));
         videoGridView.setVerticalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_vertical_spacing));
+        videoGridView.setOnScrollListener(this);
 
         switchToGDCategory(0);
 
@@ -113,6 +115,37 @@ public class VideoFragment extends Fragment implements
     }
 
     @Override
+    public void onScroll(AbsListView absListView,
+                         int firstVisibleItem,int visibleItemCount,int totalItemCount) {
+
+
+
+//        // If it’s still loading, we check to see if the dataset count has
+//        // changed, if so we conclude it has finished loading and update the current page
+//        // number and total item count.
+//        int currentItemCount = currentDSA.getCount();
+//        if (loading && (totalItemCount > currentItemCount)) {
+//            loading = false;
+//            previousTotalItemCount = totalItemCount;
+//            currentPage++;
+//        }
+
+        // If it isn’t currently loading, we check to see if we have breached
+        // the visibleThreshold and need to reload more data.
+        // If we do need to reload some more data, we execute onLoadMore to fetch the data.
+        if (currentDSA != null) {
+            if (!currentDSA.isLoading() && (totalItemCount - visibleItemCount) <= (firstVisibleItem + 0)) {
+                currentDSA.loadMore();
+            }
+        }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int i) {
+
+    }
+
+    @Override
     public void onShowAllClicked() {
         switchToGDCategory(0);
     }
@@ -128,36 +161,38 @@ public class VideoFragment extends Fragment implements
     }
 
     private void configureGridView(int gdCategory) {
-        VideoGridViewDSA dsa = getCurrentDSA(gdCategory);
         currentGDCategory = gdCategory;
 
-        videoGridView.setAdapter(dsa);
-        dsa.reloadData();
-    }
-
-    public VideoGridViewDSA getCurrentDSA(int gdCategory) {
-        return dataSourceAdapters.get(gdCategory);
+        currentDSA = dataSourceAdapters.get(currentGDCategory);
+        videoGridView.setAdapter(currentDSA);
+        currentDSA.reloadData();
     }
 
     // region PostListDataSourceListener
 
     @Override
-    public void dataPrepared() {
+    public void dataPrepared(int gdCategory) {
+        if (gdCategory == currentGDCategory) {
+            hideAllLoadings();
+        }
+    }
+
+    @Override
+    public void dataError(int gdCategory) {
 
     }
 
     @Override
-    public void dataError() {
-
-    }
-
-    @Override
-    public void noMoreData() {
-
+    public void noMoreData(int gdCategory) {
+        // TODO: don't do anything in onScroll
     }
 
     @Override
     public void onBeforeLoadingData(int category) {
+
+    }
+
+    private void hideAllLoadings() {
 
     }
 
@@ -170,7 +205,7 @@ public class VideoFragment extends Fragment implements
         }
 
         @Override
-        public View getView(int i, View convertView, ViewGroup viewGroup) {
+        public View getDataRow(int i, View convertView, ViewGroup viewGroup) {
             VideoGridItemView view = (VideoGridItemView)convertView;
             if (view == null) {
                 view = new VideoGridItemView(getContext(), null);
@@ -187,5 +222,4 @@ public class VideoFragment extends Fragment implements
             apiService.fetchVideoList(gdCategory, pageSize, pageIndex);
         }
     }
-
 }
