@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.TextPaint;
@@ -151,8 +152,8 @@ public class VideoGridItemView extends RelativeLayout {
             // TODO: draw place holder
         } else {
             // image
-            Bitmap resizedImage = Utility.getResizedBitmap(image, width, imageHeight);
-            canvas.drawBitmap(resizedImage, 0, 0, null);
+            // Bitmap resizedImage = Utility.getResizedBitmap(image, width, imageHeight);
+            canvas.drawBitmap(image, null, new Rect(0, 0, width, imageHeight), null);
         }
 
         int textStripHeight = (int)((float)imageHeight * TEXT_STRIP_ASPECT);
@@ -181,7 +182,8 @@ public class VideoGridItemView extends RelativeLayout {
             canvas.drawBitmap(gdCategoryDrawingCache, 0, titleTop + Utility.convertDpToPixel(6, getContext()), null);
             gdCategoryIconWidth = gdCategoryDrawingCache.getWidth();
         }
-            // date
+
+        // date
         canvas.drawText(Utility.dateStringByDay(getContext(), vli.getCreated()),
                 gdCategoryIconWidth + Utility.convertDpToPixel(6, getContext()),
                 titleTop + Utility.convertDpToPixel(6, getContext()) + datePaint.getTextSize() + textPaddingBottom / 4 /* Magic number */,
@@ -193,20 +195,20 @@ public class VideoGridItemView extends RelativeLayout {
         Picasso.with(getContext()).cancelRequest(imageTarget);
     }
 
-    class ImgaeLoaderAsyncTask extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... strings) {
-
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-
-        @Override
-        protected void onCancelled(Void aVoid) {
-            super.onCancelled(aVoid);
-        }
-    }
+//    class ImgaeLoaderAsyncTask extends AsyncTask<String, Void, Void> {
+//        @Override
+//        protected Void doInBackground(String... strings) {
+//
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void aVoid) {
+//            super.onPostExecute(aVoid);
+//        }
+//
+//        @Override
+//        protected void onCancelled(Void aVoid) {
+//            super.onCancelled(aVoid);
+//        }
+//    }
 }
