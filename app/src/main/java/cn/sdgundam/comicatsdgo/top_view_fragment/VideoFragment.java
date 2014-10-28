@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -23,12 +24,14 @@ import java.util.List;
 import java.util.Map;
 
 import cn.sdgundam.comicatsdgo.R;
+import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.VideoViewActivity;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.post_list.PostListDataSource;
 import cn.sdgundam.comicatsdgo.post_list.PostListDataSourceListener;
 import cn.sdgundam.comicatsdgo.view.GDCategorySelectionView;
+import cn.sdgundam.comicatsdgo.view.NetworkErrorView;
 import cn.sdgundam.comicatsdgo.view.VideoGridItemView;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
@@ -55,6 +58,8 @@ public class VideoFragment extends Fragment implements
     // private Map<Integer, VideoGridViewAdapter> adapters;
     VideoGridViewAdapter adapter;
 
+    ViewGroup progressViewContainer;
+    NetworkErrorView nev;
     PullToRefreshLayout ptrLayout;
     GDCategorySelectionView gdcsv;
     GridView videoListView;
@@ -114,19 +119,40 @@ public class VideoFragment extends Fragment implements
         videoListView.setOnScrollListener(this);
         videoListView.setOnItemClickListener(this);
 
-        switchToGDCategory(0);
-
         ptrLayout = (PullToRefreshLayout)getView().findViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(this.getActivity())
                 .theseChildrenArePullable(R.id.video_grid_view)
                 .listener(this)
                 .setup(ptrLayout);
         ((DefaultHeaderTransformer)ptrLayout.getHeaderTransformer()).setProgressBarColor(getResources().getColor(R.color.gd_tint_color));
+
+        progressViewContainer = (ViewGroup)getView().findViewById(R.id.progress_bar_container);
+        progressViewContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
+
+        nev = (NetworkErrorView)getView().findViewById(R.id.nev);
+        nev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VideoFragment.this.currentDS.reloadData();
+                nev.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        switchToGDCategory(0);
     }
 
     @Override
     public void onRefreshStarted(View view) {
-
+        if (currentDS != null) {
+            currentDS.reloadData();
+        } else {
+            hideAllLoadings();
+        }
     }
 
     @Override
@@ -183,6 +209,7 @@ public class VideoFragment extends Fragment implements
         currentDS = dataSources.get(currentGDCategory);
 
         if (currentDS.getPostListCount() == 0) {
+            showLoading();
             currentDS.reloadData();
         }
         videoListView.setAdapter(adapter);
@@ -199,8 +226,15 @@ public class VideoFragment extends Fragment implements
     }
 
     @Override
-    public void dataError(int gdCategory) {
+    public void dataError(int gdCategory, Exception e) {
+        hideAllLoadings();
 
+        // Display "Network Unavailable" view
+        if (currentDS.getPostListCount() == 0) {
+            nev.setVisibility(View.VISIBLE);
+        }
+
+        Utility.showNetworkErrorAlertDialog(getActivity(), e);
     }
 
     @Override
@@ -213,8 +247,14 @@ public class VideoFragment extends Fragment implements
 
     }
 
-    private void hideAllLoadings() {
+    void showLoading() {
+        progressViewContainer.setVisibility(View.VISIBLE);
+    }
 
+    private void hideAllLoadings() {
+        progressViewContainer.setVisibility(View.INVISIBLE);
+
+        this.ptrLayout.setRefreshComplete();
     }
 
     // endregion
@@ -314,12 +354,15 @@ public class VideoFragment extends Fragment implements
         }
 
         public View getDataRow(int i, View convertView, ViewGroup viewGroup) {
+            Log.d(LOG_TAG, "getDataRow " + i);
             VideoGridItemView view = (VideoGridItemView)convertView;
             if (view == null) {
                 view = new VideoGridItemView(getActivity(), null);
+                Log.d(LOG_TAG, "getDataRow create new" + i);
             }
 
             VideoListItem item = (VideoListItem) getItem(i);
+
             view.setVli(item);
 
             return view;
@@ -342,3 +385,10 @@ public class VideoFragment extends Fragment implements
         }
     }
 }
+
+
+/* TODOs
+* 1. 当没有更多内容显示时, 奇数的情况
+* 2. Loading超时的情况
+* 3. 初始的Loading界面
+* */

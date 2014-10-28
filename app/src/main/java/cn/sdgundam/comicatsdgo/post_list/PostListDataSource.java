@@ -35,6 +35,8 @@ public abstract class PostListDataSource<T> implements FetchGeneralListListener<
     boolean noMoreData;
     boolean loading;
 
+    boolean justReloaded;
+
     public PostListDataSource(int gdCategory) {
         this.gdCategory = gdCategory;
         postList = new ArrayList<T>();
@@ -86,9 +88,10 @@ public abstract class PostListDataSource<T> implements FetchGeneralListListener<
         noMoreData = false;
 
         pageIndex = 0;
-        postList = new ArrayList<T>();
 
         loading = true;
+        justReloaded = true;
+
         pldsListener.onBeforeLoadingData(gdCategory);
 
         fetchList(apiService, gdCategory, PAGE_SIZE, pageIndex);
@@ -122,6 +125,11 @@ public abstract class PostListDataSource<T> implements FetchGeneralListListener<
 
         loading = false;
 
+        if (justReloaded) {
+            justReloaded = false;
+            this.postList = new ArrayList<T>();
+        }
+
         appendPosts(list.getPostListItems());
 
         pldsListener.dataPrepared(gdCategory);
@@ -130,8 +138,9 @@ public abstract class PostListDataSource<T> implements FetchGeneralListListener<
     @Override
     public void onFetchingPostListWithError(Exception e) {
         loading = false;
+
+        pldsListener.dataError(this.gdCategory, e);
     }
 
     // endregion
-
 }

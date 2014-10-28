@@ -114,8 +114,6 @@ public class VideoGridItemView extends View {
         }
     }
 
-
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (vli == null) {

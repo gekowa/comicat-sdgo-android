@@ -5,7 +5,7 @@ package cn.sdgundam.comicatsdgo.post_list;
  */
 public interface PostListDataSourceListener {
     void dataPrepared(int category);
-    void dataError(int category);
+    void dataError(int category, Exception e);
     void noMoreData(int category);
     void onBeforeLoadingData(int category);
 }
