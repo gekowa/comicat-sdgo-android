@@ -28,7 +28,7 @@ import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 /**
  * Created by xhguo on 10/8/2014.
  */
-public class VideoGridItemView extends RelativeLayout {
+public class VideoGridItemView extends View {
     // 视频图宽高比
     static final float IMAGE_ASPECT = 1.785714285714286f;
     // 每个视频View的宽高比

@@ -25,4 +25,6 @@
 
     <dimen name="video_grid_title_text_size">12dp</dimen>
     <dimen name="video_grid_date_text_size">11dp</dimen>
+
+    <dimen name="no_more_data_bottom_padding">32dp</dimen>
 </resources>

@@ -67,6 +67,7 @@ public class GDApiService {
                 }
             }
         };
+
         task.execute(gdCategory, pageSize, pageIndex);
     }
 }

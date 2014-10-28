@@ -106,6 +106,10 @@ public abstract class PostListDataSource<T> implements FetchGeneralListListener<
 
     private void appendPosts(List<T> posts) {
         this.postList.addAll(posts);
+
+        if (posts.size() < PAGE_SIZE) {
+            noMoreData = true;
+        }
     }
 
     protected abstract void fetchList(GDApiService apiService, int gdCategory, int pageSize, int pageIndex);

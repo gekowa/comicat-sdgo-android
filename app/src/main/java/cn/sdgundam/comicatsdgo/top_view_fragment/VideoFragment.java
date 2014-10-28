@@ -1,17 +1,19 @@
 package cn.sdgundam.comicatsdgo.top_view_fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,13 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 import cn.sdgundam.comicatsdgo.R;
+import cn.sdgundam.comicatsdgo.VideoViewActivity;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.post_list.PostListDataSource;
 import cn.sdgundam.comicatsdgo.post_list.PostListDataSourceListener;
 import cn.sdgundam.comicatsdgo.view.GDCategorySelectionView;
 import cn.sdgundam.comicatsdgo.view.VideoGridItemView;
-import cn.sdgundam.comicatsdgo.view.VideoGridView;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
@@ -37,7 +39,10 @@ public class VideoFragment extends Fragment implements
         GDCategorySelectionView.OnGDCategorySelectionListener,
         PostListDataSourceListener,
         OnRefreshListener,
-        AbsListView.OnScrollListener {
+        AbsListView.OnScrollListener,
+        AdapterView.OnItemClickListener {
+
+    static final String LOG_TAG = VideoFragment.class.getSimpleName();
 
     static final Integer ALL_CATEGORIES = 0;
     static final List<Integer> GD_CATEGORIES = Arrays.asList(
@@ -52,7 +57,7 @@ public class VideoFragment extends Fragment implements
 
     PullToRefreshLayout ptrLayout;
     GDCategorySelectionView gdcsv;
-    ListView videoListView;
+    GridView videoListView;
 
     static VideoFragment instance = null;
     public static VideoFragment getInstance() {
@@ -101,18 +106,19 @@ public class VideoFragment extends Fragment implements
         gdcsv.setGDCategories(GD_CATEGORIES);
         gdcsv.setGDCategorySelectionListener(this);
 
-        videoListView = (ListView)getView().findViewById(R.id.video_list_view);
-        // videoListView.setNumColumns(2);
+        videoListView = (GridView)getView().findViewById(R.id.video_grid_view);
+        videoListView.setNumColumns(2);
         videoListView.setDrawSelectorOnTop(true);
-//        videoListView.setHorizontalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_horizontal_spacing));
-//        videoListView.setVerticalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_vertical_spacing));
+        videoListView.setHorizontalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_horizontal_spacing));
+        videoListView.setVerticalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_vertical_spacing));
         videoListView.setOnScrollListener(this);
+        videoListView.setOnItemClickListener(this);
 
         switchToGDCategory(0);
 
         ptrLayout = (PullToRefreshLayout)getView().findViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(this.getActivity())
-                .theseChildrenArePullable(R.id.video_list_view)
+                .theseChildrenArePullable(R.id.video_grid_view)
                 .listener(this)
                 .setup(ptrLayout);
         ((DefaultHeaderTransformer)ptrLayout.getHeaderTransformer()).setProgressBarColor(getResources().getColor(R.color.gd_tint_color));
@@ -127,21 +133,6 @@ public class VideoFragment extends Fragment implements
     public void onScroll(AbsListView absListView,
                          int firstVisibleItem,int visibleItemCount,int totalItemCount) {
 
-
-
-//        // If it’s still loading, we check to see if the dataset count has
-//        // changed, if so we conclude it has finished loading and update the current page
-//        // number and total item count.
-//        int currentItemCount = currentDSA.getCount();
-//        if (loading && (totalItemCount > currentItemCount)) {
-//            loading = false;
-//            previousTotalItemCount = totalItemCount;
-//            currentPage++;
-//        }
-
-        // If it isn’t currently loading, we check to see if we have breached
-        // the visibleThreshold and need to reload more data.
-        // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         if (currentDS != null) {
             if (!currentDS.isLoading() && (totalItemCount - visibleItemCount) <= (firstVisibleItem + 0)) {
                 currentDS.loadMore();
@@ -152,6 +143,23 @@ public class VideoFragment extends Fragment implements
     @Override
     public void onScrollStateChanged(AbsListView absListView, int i) {
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        VideoListItem vli = (VideoListItem)adapterView.getAdapter().getItem(position);
+        if (vli != null) {
+            Intent intent = new Intent(getActivity(), VideoViewActivity.class);
+
+            Bundle b = new Bundle();
+            b.putInt("id", vli.getPostId());
+            b.putString("videoHost", vli.getVideoHost());
+            b.putString("videoId", vli.getVideoId());
+            b.putString("videoId2", vli.getVideoId2());
+
+            intent.putExtras(b);
+            getActivity().startActivity(intent);
+        }
     }
 
     @Override
@@ -227,8 +235,8 @@ public class VideoFragment extends Fragment implements
         Context context;
         int gdCategory;
 
-        static final int VIEW_TYPE_ACTIVITY = 1;
-        static final int VIEW_TYPE_ACC = 2;
+        static final int VIEW_TYPE_DATA = 0;
+        static final int VIEW_TYPE_ACC = 1;
 
         public VideoGridViewAdapter(Context context, int gdCategory) {
             this.context = context;
@@ -237,7 +245,7 @@ public class VideoFragment extends Fragment implements
 
         @Override
         public boolean isEnabled(int position) {
-            return getItemViewType(position) == VIEW_TYPE_ACTIVITY;
+            return getItemViewType(position) == VIEW_TYPE_DATA;
         }
 
         @Override
@@ -247,7 +255,8 @@ public class VideoFragment extends Fragment implements
 
         @Override
         public int getItemViewType(int position) {
-            return (position >= getCount()) ? VIEW_TYPE_ACC : VIEW_TYPE_ACTIVITY;
+            // Log.d(LOG_TAG, "getItemViewType position:" + position);
+            return (position >= currentDS.getPostListCount()) ? VIEW_TYPE_ACC : VIEW_TYPE_DATA;
         }
 
         @Override
@@ -258,14 +267,16 @@ public class VideoFragment extends Fragment implements
             if (currentDS.getPostListCount() == 0) {
                 return 0;
             }
-            return Math.round((float) (currentDS.getPostListCount()) / 2 + 1) /* for footer view*/;
+            return currentDS.getPostListCount() + 1 /* 2 columns */ /* for footer view */;
         }
 
 
         @Override
         public VideoListItem getItem(int position) {
             List<VideoListItem> posts = currentDS.getPostList();
-            return posts .contains(position) ? posts.get(position) : null;
+//            return posts.contains(position) ? posts.get(position) : null;
+
+            return posts.get(position);
         }
 
         @Override
@@ -284,33 +295,50 @@ public class VideoFragment extends Fragment implements
         }
 
         public View getFooterView(View convertView, ViewGroup parent) {
+            // Log.d(LOG_TAG, "getFooterView convertView:" + convertView + " parent:" + parent);
+            FrameLayout container = new FullWidthFixedViewLayout(context);
+
             if (currentDS.isNoMoreData()) {
                 TextView textNoMore = new TextView(context);
                 textNoMore.setHint(context.getResources().getString(R.string.no_more_data));
                 textNoMore.setGravity(Gravity.CENTER);
-                return textNoMore;
+                textNoMore.setPadding(0, 0, 0, getResources().getDimensionPixelSize(R.dimen.no_more_data_bottom_padding));
 
+                container.addView(textNoMore);
             } else if (currentDS.isLoading()) {
                 ProgressBar progressBar = new ProgressBar(context);
-                return progressBar;
-            } else {
-                // display nothing
-                return new ViewStub(context);
+                container.addView(progressBar);
             }
+
+            return container;
         }
 
         public View getDataRow(int i, View convertView, ViewGroup viewGroup) {
-//            VideoGridItemView view = (VideoGridItemView)convertView;
-//            if (view == null) {
-//                view = new VideoGridItemView(getActivity(), null);
-//            }
-//
-//            VideoListItem item = (VideoListItem) getItem(i);
-//            view.setVli(item);
-//
-//            return view;
+            VideoGridItemView view = (VideoGridItemView)convertView;
+            if (view == null) {
+                view = new VideoGridItemView(getActivity(), null);
+            }
 
-            return new TextView(getActivity());
+            VideoListItem item = (VideoListItem) getItem(i);
+            view.setVli(item);
+
+            return view;
+        }
+    }
+
+    private class FullWidthFixedViewLayout extends FrameLayout {
+        public FullWidthFixedViewLayout(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            int targetWidth = VideoFragment.this.videoListView.getMeasuredWidth()
+                    - VideoFragment.this.videoListView.getPaddingLeft()
+                    - VideoFragment.this.videoListView.getPaddingRight();
+            widthMeasureSpec = MeasureSpec.makeMeasureSpec(targetWidth,
+                    MeasureSpec.getMode(widthMeasureSpec));
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
 }

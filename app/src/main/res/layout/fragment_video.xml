@@ -22,18 +22,20 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 />
+            
+            <GridView
+                android:id="@+id/video_grid_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:scrollbarStyle="outsideOverlay"
+                />
+
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/video_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:scrollbarStyle="outsideOverlay"
-            />
 
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 </FrameLayout>

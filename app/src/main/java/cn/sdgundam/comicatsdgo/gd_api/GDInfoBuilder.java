@@ -147,9 +147,9 @@ public class GDInfoBuilder {
                         created
                 );
 
-//                vli.setVideoHost(d.getString("videoHost"));
-//                vli.setVideoId(d.getString("videoId"));
-//                vli.setVideoId2(d.getString("videoId2"));
+                vli.setVideoHost(d.getString("videoHost"));
+                vli.setVideoId(d.getString("videoId"));
+                vli.setVideoId2(d.getString("videoId2"));
 
                 vliList.add(vli);
             }
