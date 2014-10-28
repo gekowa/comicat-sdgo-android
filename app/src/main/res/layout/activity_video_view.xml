@@ -24,20 +24,34 @@
             android:id="@+id/loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="center_horizontal|center_vertical"
             android:layout_gravity="center_horizontal|center_vertical"
             >
             <ProgressBar
                 android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/text_view_loading_video"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="视频加载中..."
-                android:textColor="#cecece"/>
+                android:layout_marginTop="7dp"
+                android:text="@string/loading_video_text"
+                android:gravity="center"
+                android:textColor="#cecece"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/text_view_video_hosted_by"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/video_hosted_by"
+                android:gravity="center"
+                android:textColor="#cecece"
+                android:textSize="11dp"/>
         </LinearLayout>
     </FrameLayout>
 

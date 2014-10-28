@@ -2,14 +2,10 @@ package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.graphics.Point;
+import android.content.res.Resources;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +13,11 @@ import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 //import android.media.MediaPlayer;
 //import android.widget.VideoView;
 //import android.widget.MediaController;
-
-import org.lucasr.twowayview.TwoWayView;
 
 import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.video.OnReceivedYoukuVideoSrc;
@@ -93,6 +88,8 @@ public class VideoViewActivity extends Activity implements
 
         setContentView(R.layout.activity_video_view);
 
+        Resources resources = getResources();
+
         decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(this);
 
@@ -137,6 +134,9 @@ public class VideoViewActivity extends Activity implements
             }
         };
 
+        TextView videoHostedByTextView = (TextView)findViewById(R.id.text_view_video_hosted_by);
+        videoHostedByTextView.setText(resources.getString(R.string.video_hosted_by) +
+                resources.getString(resources.getIdentifier("video_host_" + videoHost, "string", this.getPackageName())));
     }
 
     @Override
@@ -426,4 +426,11 @@ public class VideoViewActivity extends Activity implements
 * 4. 全凭状态下按返回键, 返回垂直状态
 * 5.
 *
+* */
+
+/*
+* TODOs
+* 1. 页面的响应, 选择机体和视频
+* 2. Loading时显示视频来自哪, 17173还是优酷
+* DONE 3. 添加Loading超时
 * */

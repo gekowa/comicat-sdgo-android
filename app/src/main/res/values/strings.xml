@@ -36,5 +36,10 @@
     <string name="title_activity_post_view">情报</string>
     <string name="show_all">显示全部</string>
 
-    <string name="no_more_data">没有更多了...</string>
+    <string name="no_more_data">没有更多了…</string>
+
+    <string name="video_host_2">17173游戏视频</string>
+    <string name="video_host_4">优酷视频</string>
+    <string name="loading_video_text">视频加载中...</string>
+    <string name="video_hosted_by">来自: </string>
 </resources>
