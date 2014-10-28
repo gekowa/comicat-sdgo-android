@@ -2,6 +2,7 @@ package cn.sdgundam.comicatsdgo.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +12,7 @@ import android.os.AsyncTask;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -39,6 +41,8 @@ public class VideoGridItemView extends View {
     static TextPaint titlePaint;
     static TextPaint title2Paint;
     static TextPaint datePaint;
+
+    static Bitmap placeHolderBitmap;
 
     VideoListItem vli;
     Target imageTarget;
@@ -91,40 +95,23 @@ public class VideoGridItemView extends View {
     }
 
     public void setVli(VideoListItem vli) {
-        this.vli = vli;
+        if (this.vli != null && vli != null) {
+            Log.d("setVli", "same as previous? " + (this.vli.getPostId() == vli.getPostId()) + " previous PostId " + this.vli.getPostId());
+        }
+        // only set if not equal or new
+        if (this.vli == null || this.vli.getPostId() != vli.getPostId()) {
+            this.vli = vli;
 
-        Picasso.with(getContext()).load(vli.getImageURL()).into(imageTarget);
+            // set to null before loading image in case the image is cached
+            // also prepare for reuse
+            image = null;
 
-        GDCategorySmallIconView iconView = new GDCategorySmallIconView(getContext(), null);
-//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-//                RelativeLayout.LayoutParams.WRAP_CONTENT,
-//                RelativeLayout.LayoutParams.WRAP_CONTENT
-//        );
-//        iconView.setLayoutParams(layoutParams);
+            Picasso.with(getContext()).load(vli.getImageURL()).into(imageTarget);
 
-        iconView.setGdCategory(vli.getGdPostCategory());
-        gdCategoryDrawingCache = Utility.convertViewToBitmap(iconView);
-
-//        TextView titleView = (TextView)findViewById(R.id.title);
-//        titleView.setText(vli.getTitle());
-//
-//        TextView title2View = (TextView)findViewById(R.id.title2);
-//        title2View.setText(vli.getTitle2());
-//
-//        ImageView imageView = (ImageView)findViewById(R.id.image_view);
-//        // imageView.getLayoutParams().width
-//
-//        Picasso.with(getContext()).load(vli.getImageURL()).into(imageView);
-//
-//        GDCategorySmallIconView iconView = (GDCategorySmallIconView)findViewById(R.id.gd_icon_small);
-//        iconView.setGdCategory(vli.getGdPostCategory());
-//
-//        TextView dateView = (TextView)findViewById(R.id.date_text_view);
-//        dateView.setText(Utility.dateStringByDay(getContext(), vli.getCreated()));
-//
-//        requestLayout();
-//        invalidate();
-
+            GDCategorySmallIconView iconView = new GDCategorySmallIconView(getContext(), null);
+            iconView.setGdCategory(vli.getGdPostCategory());
+            gdCategoryDrawingCache = Utility.convertViewToBitmap(iconView);
+        }
     }
 
 
@@ -141,6 +128,7 @@ public class VideoGridItemView extends View {
         }
     }
 
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -148,8 +136,12 @@ public class VideoGridItemView extends View {
         int width = canvas.getWidth();
         int imageHeight = (int)((float)width / IMAGE_ASPECT);
 
+
         if (image == null) {
-            // TODO: draw place holder
+            if (placeHolderBitmap == null) {
+                placeHolderBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.placeholde_video);
+            }
+            canvas.drawBitmap(placeHolderBitmap , null, new Rect(0, 0, width, imageHeight), null);
         } else {
             // image
             // Bitmap resizedImage = Utility.getResizedBitmap(image, width, imageHeight);
@@ -160,7 +152,7 @@ public class VideoGridItemView extends View {
 
         // overlay
         Paint transGreyPaint = new Paint();
-        transGreyPaint.setColor(Color.argb(60, 100, 100, 100));
+        transGreyPaint.setColor(Color.argb(100, 30, 30, 30));
         canvas.drawRect(0, imageHeight - textStripHeight, width, imageHeight, transGreyPaint);
 
         float textPaddingBottom  = Utility.convertDpToPixel(4.8f, getContext());
@@ -188,6 +180,11 @@ public class VideoGridItemView extends View {
                 gdCategoryIconWidth + Utility.convertDpToPixel(6, getContext()),
                 titleTop + Utility.convertDpToPixel(6, getContext()) + datePaint.getTextSize() + textPaddingBottom / 4 /* Magic number */,
                 datePaint);
+
+//        TextPaint debugPaint = new TextPaint();
+//        debugPaint.setColor(Color.RED);
+//        debugPaint.setTextSize(100);
+//        canvas.drawText(vli.getPostId() + "", 10f, 100f, debugPaint);
     }
 
     @Override
