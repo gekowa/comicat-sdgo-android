@@ -2,6 +2,7 @@ package cn.sdgundam.comicatsdgo.top_view_fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -160,7 +162,9 @@ public class VideoFragment extends Fragment implements
                          int firstVisibleItem,int visibleItemCount,int totalItemCount) {
 
         if (currentDS != null) {
-            if (!currentDS.isLoading() && (totalItemCount - visibleItemCount) <= (firstVisibleItem + 0)) {
+            if (!currentDS.isLoading() &&
+                    !currentDS.isNoMoreData() &&
+                    (totalItemCount - visibleItemCount) <= (firstVisibleItem + 0)) {
                 currentDS.loadMore();
             }
         }
@@ -277,6 +281,9 @@ public class VideoFragment extends Fragment implements
 
         static final int VIEW_TYPE_DATA = 0;
         static final int VIEW_TYPE_ACC = 1;
+        static final int VIEW_TYPE_PLACEHOLDER = 2;
+
+        static final int COLUMNS = 2;
 
         public VideoGridViewAdapter(Context context, int gdCategory) {
             this.context = context;
@@ -290,13 +297,22 @@ public class VideoFragment extends Fragment implements
 
         @Override
         public int getViewTypeCount() {
-            return 2;
+            return 3;
         }
 
         @Override
         public int getItemViewType(int position) {
-            // Log.d(LOG_TAG, "getItemViewType position:" + position);
-            return (position >= currentDS.getPostListCount()) ? VIEW_TYPE_ACC : VIEW_TYPE_DATA;
+            if (position < currentDS.getPostListCount()) {
+                return VIEW_TYPE_DATA;
+            } else if (getCount() - currentDS.getPostListCount() == 2) {
+                if (position == currentDS.getPostListCount()) {
+                    return VIEW_TYPE_PLACEHOLDER;
+                } else {
+                    return VIEW_TYPE_ACC;
+                }
+            } else {
+                return VIEW_TYPE_ACC;
+            }
         }
 
         @Override
@@ -307,15 +323,19 @@ public class VideoFragment extends Fragment implements
             if (currentDS.getPostListCount() == 0) {
                 return 0;
             }
-            return currentDS.getPostListCount() + 1 /* 2 columns */ /* for footer view */;
+
+            // 2 columns
+            if (currentDS.getPostListCount() % 2 == 0) {
+                return currentDS.getPostListCount() + 1;
+            } else {
+                return currentDS.getPostListCount() + 2;
+            }
         }
 
 
         @Override
         public VideoListItem getItem(int position) {
             List<VideoListItem> posts = currentDS.getPostList();
-//            return posts.contains(position) ? posts.get(position) : null;
-
             return posts.get(position);
         }
 
@@ -326,12 +346,15 @@ public class VideoFragment extends Fragment implements
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (getItemViewType(position) == VIEW_TYPE_ACC) {
-                // display the last row
-                return getFooterView(convertView, parent);
+            switch (getItemViewType(position)) {
+                case VIEW_TYPE_DATA:
+                    return getDataRow(position, convertView, parent);
+                case VIEW_TYPE_ACC:
+                    return getFooterView(convertView, parent);
+                case VIEW_TYPE_PLACEHOLDER:
+                default:
+                    return getPlaceHolderView();
             }
-
-            return getDataRow(position, convertView, parent);
         }
 
         public View getFooterView(View convertView, ViewGroup parent) {
@@ -351,6 +374,18 @@ public class VideoFragment extends Fragment implements
             }
 
             return container;
+        }
+
+        public View getPlaceHolderView() {
+            VideoGridItemView view = new VideoGridItemView(context, null) {
+                @Override
+                protected void onDraw(Canvas canvas) {
+                    // do nothing
+                }
+            };
+
+            view.setVli(new VideoListItem(0, "", "", "http://localhost", 0, null));
+            return view;
         }
 
         public View getDataRow(int i, View convertView, ViewGroup viewGroup) {
