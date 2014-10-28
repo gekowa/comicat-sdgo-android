@@ -38,6 +38,7 @@ public class Communicator {
             conn = (HttpURLConnection) url.openConnection();
 
             conn.setConnectTimeout(6000);
+            conn.setReadTimeout(10000);
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setUseCaches(true);
             conn.setDoOutput(true);
