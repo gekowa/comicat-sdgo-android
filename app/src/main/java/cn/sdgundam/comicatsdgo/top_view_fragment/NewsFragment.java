@@ -1,7 +1,9 @@
 package cn.sdgundam.comicatsdgo.top_view_fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.sdgundam.comicatsdgo.PostViewActivity;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
@@ -45,6 +48,9 @@ public class NewsFragment extends Fragment implements
         AdapterView.OnItemClickListener {
 
     static final String LOG_TAG = NewsFragment.class.getSimpleName();
+
+    static final String LIST_STATE_KEY = "ListState";
+    Parcelable listState = null;
 
     static final Integer ALL_CATEGORIES = 0;
     static final List<Integer> GD_CATEGORIES = Arrays.asList(
@@ -90,6 +96,12 @@ public class NewsFragment extends Fragment implements
         NewsListViewDataSource ds = new NewsListViewDataSource(0);
         ds.setPldsListener(this);
         dataSources.put(0, ds);
+
+        adapter = new NewsListViewAdapter(getActivity());
+
+        if (savedInstanceState != null) {
+            listState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+        }
     }
 
     @Nullable
@@ -139,6 +151,16 @@ public class NewsFragment extends Fragment implements
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onRefreshStarted(View view) {
         if (currentDS != null) {
             currentDS.reloadData();
@@ -167,7 +189,13 @@ public class NewsFragment extends Fragment implements
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        // TODO: Add action
+        PostInfo postInfo = (PostInfo)adapterView.getAdapter().getItem(position);
+        Intent intent = new Intent(getActivity(), PostViewActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("id", postInfo.getPostId());
+
+        intent.putExtras(b);
+        getActivity().startActivity(intent);
     }
 
     @Override
@@ -195,6 +223,7 @@ public class NewsFragment extends Fragment implements
             currentDS.reloadData();
         }
         newsListView.setAdapter(adapter);
+
     }
 
     @Override
@@ -252,14 +281,12 @@ public class NewsFragment extends Fragment implements
 
     class NewsListViewAdapter extends BaseAdapter {
         Context context;
-        int gdCategory;
 
         static final int VIEW_TYPE_DATA = 0;
         static final int VIEW_TYPE_ACC = 1;
 
-        public NewsListViewAdapter(Context context, int gdCategory) {
+        public NewsListViewAdapter(Context context) {
             this.context = context;
-            this.gdCategory = gdCategory;
         }
 
         @Override
@@ -323,12 +350,12 @@ public class NewsFragment extends Fragment implements
                 textNoMore.setPadding(0, 0, 0, getResources().getDimensionPixelSize(R.dimen.no_more_data_bottom_padding));
 
                 container.addView(textNoMore);
-            } else if (currentDS.isLoading()) {
+            } else {
                 ProgressBar progressBar = new ProgressBar(context);
                 container.addView(progressBar);
             }
 
-            return null;
+            return container;
         }
 
         public View getDataRow(int i, View convertView, ViewGroup viewGroup) {

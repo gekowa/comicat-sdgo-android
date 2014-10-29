@@ -94,7 +94,7 @@ public class VideoFragment extends Fragment implements
         ds.setPldsListener(this);
         dataSources.put(0, ds);
 
-        adapter = new VideoGridViewAdapter(getActivity(), 0);
+        adapter = new VideoGridViewAdapter(getActivity());
     }
 
     @Override
@@ -277,7 +277,6 @@ public class VideoFragment extends Fragment implements
 
     class VideoGridViewAdapter extends BaseAdapter {
         Context context;
-        int gdCategory;
 
         static final int VIEW_TYPE_DATA = 0;
         static final int VIEW_TYPE_ACC = 1;
@@ -285,9 +284,8 @@ public class VideoFragment extends Fragment implements
 
         static final int COLUMNS = 2;
 
-        public VideoGridViewAdapter(Context context, int gdCategory) {
+        public VideoGridViewAdapter(Context context) {
             this.context = context;
-            this.gdCategory = gdCategory;
         }
 
         @Override
@@ -368,7 +366,7 @@ public class VideoFragment extends Fragment implements
                 textNoMore.setPadding(0, 0, 0, getResources().getDimensionPixelSize(R.dimen.no_more_data_bottom_padding));
 
                 container.addView(textNoMore);
-            } else if (currentDS.isLoading()) {
+            } else {
                 ProgressBar progressBar = new ProgressBar(context);
                 container.addView(progressBar);
             }

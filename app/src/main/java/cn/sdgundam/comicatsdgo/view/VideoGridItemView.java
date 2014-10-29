@@ -52,8 +52,6 @@ public class VideoGridItemView extends View {
     public VideoGridItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        this.setWillNotDraw(false);
-
         imageTarget = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -81,17 +79,23 @@ public class VideoGridItemView extends View {
         float titleTextSize = getResources().getDimensionPixelSize(R.dimen.video_grid_title_text_size);
         float dateTextSize = getResources().getDimensionPixelSize(R.dimen.video_grid_date_text_size);
 
-        titlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        titlePaint.setColor(Color.BLACK);
-        titlePaint.setTextSize(titleTextSize);
+        if (titlePaint == null) {
+            titlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            titlePaint.setColor(Color.BLACK);
+            titlePaint.setTextSize(titleTextSize);
+        }
 
-        title2Paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        title2Paint.setColor(Color.WHITE);
-        title2Paint.setTextSize(titleTextSize);
+        if (title2Paint == null) {
+            title2Paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            title2Paint.setColor(Color.WHITE);
+            title2Paint.setTextSize(titleTextSize);
+        }
 
-        datePaint = new TextPaint();
-        datePaint.setColor(Color.LTGRAY);
-        datePaint.setTextSize(dateTextSize);
+        if (datePaint == null) {
+            datePaint = new TextPaint();
+            datePaint.setColor(Color.GRAY);
+            datePaint.setTextSize(dateTextSize);
+        }
     }
 
     public void setVli(VideoListItem vli) {

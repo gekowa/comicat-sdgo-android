@@ -67,13 +67,17 @@ public class MainActivity extends FragmentActivity
             FragmentManager fm = getSupportFragmentManager();
             switch (position) {
                 case 0:
-                    fm.beginTransaction()
-                            .replace(R.id.container, HomeFragment.getInstance())
-                            .commit();
+//                    fm.beginTransaction()
+//                            .replace(R.id.container, HomeFragment.getInstance())
+//                            .commit();
 
 //                fm.beginTransaction()
 //                    .replace(R.id.container, VideoFragment.getInstance())
 //                    .commit();
+
+                    fm.beginTransaction()
+                            .replace(R.id.container, NewsFragment.getInstance())
+                            .commit();
                     break;
                 case 1:
                     fm.beginTransaction()
