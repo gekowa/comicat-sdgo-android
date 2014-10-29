@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,11 +36,14 @@ public class VideoViewActivity extends Activity implements
         MediaPlayer.OnInfoListener,
         View.OnSystemUiVisibilityChangeListener {
 
+    static final String LOG_TAG = VideoViewActivity.class.getSimpleName();
+
     static final int ORIENTATION_THRESHOLD = 20;
 
     static final int SYSTEM_UI_FLAG_MY_FULLSCREEN =
             View.SYSTEM_UI_FLAG_FULLSCREEN |
-            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
 
     private int postId;
     private String videoHost;
@@ -184,6 +188,8 @@ public class VideoViewActivity extends Activity implements
     }
 
     void configureVideoViewOnOrientation() {
+        Log.d(LOG_TAG, "configureVideoViewOnOrientation orientation:" + orientation);
+
         if (orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
 
             getActionBar().hide();
@@ -316,6 +322,8 @@ public class VideoViewActivity extends Activity implements
     // Vitamio
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
+        Log.d(LOG_TAG, "onPrepared");
+
         blinkMediaController();
 
         View progressBarContainer = findViewById(R.id.loading);
@@ -343,6 +351,7 @@ public class VideoViewActivity extends Activity implements
      * Hack to make the media controller position right
      */
     private void blinkMediaController() {
+        Log.d(LOG_TAG, "blinkMediaController");
         videoView.postDelayed(new Runnable() {
             @Override
             public void run() {
