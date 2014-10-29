@@ -412,7 +412,7 @@ public class VideoViewActivity extends Activity implements
     @Override
     public void clickedOnVideo(int postId, String videoHost, String videoId, String videoId2) {
         Log.d(LOG_TAG, "clickedOnVideo: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
-        
+
         Intent intent = Utility.makeVideoViewActivityIntent(this, postId, videoHost, videoId, videoId2);
         this.startActivity(intent);
     }

@@ -2,6 +2,7 @@ package cn.sdgundam.comicatsdgo.gd_api;
 
 import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
+import cn.sdgundam.comicatsdgo.data_model.PostInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostList;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchGeneralListListener;
@@ -42,9 +43,9 @@ public class GDApiService {
         task.execute();
     }
 
-    FetchGeneralListListener videoListListener;
-    public GDApiService(FetchGeneralListListener videoListListener) {
-        this.videoListListener = videoListListener;
+    FetchGeneralListListener postListListener;
+    public GDApiService(FetchGeneralListListener postListListener) {
+        this.postListListener = postListListener;
     }
 
     public final void fetchVideoList(int gdCategory, int pageSize, int pageIndex) {
@@ -53,15 +54,40 @@ public class GDApiService {
             protected void onPostExecute(ApiResultWrapper<PostList<VideoListItem>> result) {
                 super.onPostExecute(result);
 
-                if (videoListListener != null) {
+                if (postListListener != null) {
                     if (result.getE() != null) {
-                        videoListListener.onFetchingPostListWithError(result.getE());
+                        postListListener.onFetchingPostListWithError(result.getE());
                     } else {
                         PostList<VideoListItem> info = result.getPayload();
                         if (info == null) {
-                            videoListListener.onFetchingPostListWithError(new Exception("未知错误"));
+                            postListListener.onFetchingPostListWithError(new Exception("未知错误"));
                         } else {
-                            videoListListener.onReceivePostList(result.getPayload());
+                            postListListener.onReceivePostList(result.getPayload());
+                        }
+                    }
+                }
+            }
+        };
+
+        task.execute(gdCategory, pageSize, pageIndex);
+    }
+
+
+    public final void fetchNewsList(int gdCategory, int pageSize, int pageIndex) {
+        FetchNewsListAsyncTask task = new FetchNewsListAsyncTask() {
+            @Override
+            protected void onPostExecute(ApiResultWrapper<PostList<PostInfo>> result) {
+                super.onPostExecute(result);
+
+                if (postListListener != null) {
+                    if (result.getE() != null) {
+                        postListListener.onFetchingPostListWithError(result.getE());
+                    } else {
+                        PostList<PostInfo> info = result.getPayload();
+                        if (info == null) {
+                            postListListener.onFetchingPostListWithError(new Exception("未知错误"));
+                        } else {
+                            postListListener.onReceivePostList(result.getPayload());
                         }
                     }
                 }

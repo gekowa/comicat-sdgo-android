@@ -249,17 +249,19 @@ public class VideoFragment extends Fragment implements
 
     }
 
+    // endregion
+
     void showLoading() {
         progressViewContainer.setVisibility(View.VISIBLE);
     }
 
     private void hideAllLoadings() {
+
         progressViewContainer.setVisibility(View.INVISIBLE);
 
         this.ptrLayout.setRefreshComplete();
     }
 
-    // endregion
 
     class VideoGridViewDataSource extends PostListDataSource<VideoListItem> {
 

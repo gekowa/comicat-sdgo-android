@@ -162,4 +162,43 @@ public class GDInfoBuilder {
 
         return result;
     }
+
+    public static PostList<PostInfo> buildPostList(String json) {
+        if (json == "") {
+            return null;
+        }
+
+        PostList<PostInfo> result = null;
+        try {
+            JSONObject rootObject = new JSONObject(json);
+
+            Integer gdCategory = rootObject.getInt("category");
+
+            result = new PostList<PostInfo>(gdCategory);
+
+            List<PostInfo> postInfoList = new ArrayList<PostInfo>();
+
+            JSONArray postsJSONArray = rootObject.getJSONArray("posts");
+            for (int i = 0; i < postsJSONArray.length(); i++) {
+                JSONObject d = postsJSONArray.getJSONObject(i);
+                Date created = Utility.parseDateSafe(d.getString("created"));
+                PostInfo p = new PostInfo(
+                        d.getInt("postId"),
+                        d.getString("title"),
+                        d.getInt("gdPostCategory"),
+                        created,
+                        0
+                );
+
+                postInfoList.add(p);
+            }
+
+            result.setPostListItems(postInfoList);
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "JSON parse error: " + e.getMessage());
+        }
+
+        return result;
+    }
 }

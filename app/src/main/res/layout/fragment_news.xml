@@ -1,13 +1,78 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="cn.sdgundam.comicatsdgo.top_view_fragment.NewsFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
+        android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="新闻" />
+        android:layout_alignParentTop="true">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="cn.sdgundam.comicatsdgo.top_view_fragment.VideoFragment">
+
+            <cn.sdgundam.comicatsdgo.view.GDCategorySelectionView
+                android:id="@+id/gd_category_sel_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ListView
+                    android:id="@+id/news_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:layout_marginTop="8dp"
+
+                    android:scrollbarStyle="outsideOverlay"
+                    />
+
+                <cn.sdgundam.comicatsdgo.view.NetworkErrorView
+                    android:id="@+id/nev"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible"/>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+    </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/progress_bar_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible"
+        android:gravity="center"
+        >
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <!--android:background="#99000000"-->
+        <!--android:paddingLeft="32dp"-->
+        <!--android:paddingRight="32dp"-->
+        <!--android:paddingTop="12dp"-->
+        <!--android:paddingBottom="12dp"-->
+    </LinearLayout>
 </FrameLayout>

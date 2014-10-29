@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.animation.AlphaAnimation;
 
 import cn.sdgundam.comicatsdgo.top_view_fragment.HomeFragment;
+import cn.sdgundam.comicatsdgo.top_view_fragment.NewsFragment;
 import cn.sdgundam.comicatsdgo.top_view_fragment.VideoFragment;
 
 
@@ -79,11 +80,11 @@ public class MainActivity extends FragmentActivity
                             .replace(R.id.container, VideoFragment.getInstance())
                             .commit();
                     break;
-//            case 2:
-//                fm.beginTransaction()
-//                    .replace(R.id.container, NewsFragment.newInstance("1", "2"))
-//                    .commit();
-//                break;
+                case 2:
+                    fm.beginTransaction()
+                            .replace(R.id.container, NewsFragment.getInstance())
+                            .commit();
+                    break;
 //            case 3:
 //                fm.beginTransaction()
 //                    .replace(R.id.container, OriginFragment.newInstance("1", "2"))
