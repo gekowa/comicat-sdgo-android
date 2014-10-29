@@ -179,15 +179,13 @@ public class VideoFragment extends Fragment implements
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         VideoListItem vli = (VideoListItem)adapterView.getAdapter().getItem(position);
         if (vli != null) {
-            Intent intent = new Intent(getActivity(), VideoViewActivity.class);
+            Intent intent = Utility.makeVideoViewActivityIntent(
+                    getActivity(),
+                    vli.getPostId(),
+                    vli.getVideoHost(),
+                    vli.getVideoId(),
+                    vli.getVideoId2());
 
-            Bundle b = new Bundle();
-            b.putInt("id", vli.getPostId());
-            b.putString("videoHost", vli.getVideoHost());
-            b.putString("videoId", vli.getVideoId());
-            b.putString("videoId2", vli.getVideoId2());
-
-            intent.putExtras(b);
             getActivity().startActivity(intent);
         }
     }

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import cn.sdgundam.comicatsdgo.PostViewActivity;
 import cn.sdgundam.comicatsdgo.R;
+import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.VideoViewActivity;
 import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 
@@ -138,7 +139,7 @@ public class CarouselView extends RelativeLayout {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Carousel " + position + " clicked.", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getContext(), "Carousel " + position + " clicked.", Toast.LENGTH_SHORT).show();
 
                     CarouselInfo ci = carousel[position];
 
@@ -158,14 +159,13 @@ public class CarouselView extends RelativeLayout {
                         case 2:
                             // video
                         {
-                            intent = new Intent(getContext(), VideoViewActivity.class);
-                            Bundle b = new Bundle();
-                            b.putInt("id", ci.getPostId());
-                            b.putString("videoHost", ci.getVideoHost());
-                            b.putString("videoId", ci.getVideoId());
-                            b.putString("videoId2", ci.getVideoId2());
+                            intent = Utility.makeVideoViewActivityIntent(
+                                    getContext(),
+                                    ci.getPostId(),
+                                    ci.getVideoHost(),
+                                    ci.getVideoId(),
+                                    ci.getVideoId2());
 
-                            intent.putExtras(b);
                             getContext().startActivity(intent);
                         }
                             break;

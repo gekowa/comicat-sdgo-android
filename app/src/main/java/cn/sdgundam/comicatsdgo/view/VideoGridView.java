@@ -51,15 +51,13 @@ public class VideoGridView extends GridView {
 //                Toast.makeText(getContext(),
 //                        String.format("Video: %s (index: %s) clicked", vli.getPostId(), i), Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(getContext(), VideoViewActivity.class);
+                Intent intent = Utility.makeVideoViewActivityIntent(
+                        getContext(),
+                        vli.getPostId(),
+                        vli.getVideoHost(),
+                        vli.getVideoId(),
+                        vli.getVideoId2());
 
-                Bundle b = new Bundle();
-                b.putInt("id", vli.getPostId());
-                b.putString("videoHost", vli.getVideoHost());
-                b.putString("videoId", vli.getVideoId());
-                b.putString("videoId2", vli.getVideoId2());
-
-                intent.putExtras(b);
                 getContext().startActivity(intent);
             }
         });

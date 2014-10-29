@@ -2,9 +2,11 @@ package cn.sdgundam.comicatsdgo;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.os.Bundle;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -116,5 +118,19 @@ public class Utility {
         }
 
         alert.show();
+    }
+
+    public static Intent makeVideoViewActivityIntent(Context context, int postId, String videoHost, String videoId, String videoId2) {
+        Intent intent = new Intent(context, VideoViewActivity.class);
+
+        Bundle b = new Bundle();
+        b.putInt("id", postId);
+        b.putString("videoHost", videoHost);
+        b.putString("videoId", videoId);
+        b.putString("videoId2", videoId2);
+
+        intent.putExtras(b);
+
+        return intent;
     }
 }

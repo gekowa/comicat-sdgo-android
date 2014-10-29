@@ -1,6 +1,7 @@
 package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.hardware.SensorManager;
@@ -15,6 +16,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //import android.media.MediaPlayer;
 //import android.widget.VideoView;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.video.OnReceivedYoukuVideoSrc;
 
+import cn.sdgundam.comicatsdgo.video.VideoInfoListener;
 import io.vov.vitamio.LibsChecker;
 import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
@@ -34,7 +37,8 @@ public class VideoViewActivity extends Activity implements
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnErrorListener,
         MediaPlayer.OnInfoListener,
-        View.OnSystemUiVisibilityChangeListener {
+        View.OnSystemUiVisibilityChangeListener,
+        VideoInfoListener {
 
     static final String LOG_TAG = VideoViewActivity.class.getSimpleName();
 
@@ -276,7 +280,8 @@ public class VideoViewActivity extends Activity implements
 //        webView.setWebChromeClient(webClient);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(youkuJSInterface, "YoukuJSInterface");
-        webView.loadUrl("file:///android_asset/youku.html");
+        // webView.loadUrl("file:///android_asset/youku.html");
+        webView.loadUrl("http://www.sdgundam.cn/pages/app/video-interface/youku.html");
     }
 
     @Override
@@ -392,10 +397,27 @@ public class VideoViewActivity extends Activity implements
     }
 
     void prepareWebView() {
+        VideoInfoInterface vii = new VideoInfoInterface(this);
+
         webView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view-video-android.aspx?id=%d", postId));
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(vii, "$VLI");
     }
 
-    public class YoukuJSInterface {
+    @Override
+    public void clickedOnUnit(String unitId) {
+        Toast.makeText(VideoViewActivity.this, "Unit: " + unitId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void clickedOnVideo(int postId, String videoHost, String videoId, String videoId2) {
+        Log.d(LOG_TAG, "clickedOnVideo: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
+        
+        Intent intent = Utility.makeVideoViewActivityIntent(this, postId, videoHost, videoId, videoId2);
+        this.startActivity(intent);
+    }
+
+    class YoukuJSInterface {
         OnReceivedYoukuVideoSrc vva;
         public YoukuJSInterface(OnReceivedYoukuVideoSrc vva) {
             this.vva = vva;
@@ -423,6 +445,23 @@ public class VideoViewActivity extends Activity implements
             this.videoSrc3gphd = videoSrc3gphd;
 
             vva.onReceivedYoukuVideoSrc(videoSrc3gphd);
+        }
+    }
+
+    class VideoInfoInterface {
+        VideoInfoListener vil;
+        public VideoInfoInterface(VideoInfoListener vil) {
+            this.vil = vil;
+        }
+
+        @JavascriptInterface
+        public void gotoUnit(String unitId) {
+            vil.clickedOnUnit(unitId);
+        }
+
+        @JavascriptInterface
+        public void gotoVideo(int postId, String videoHost, String videoId, String videoId2) {
+            vil.clickedOnVideo(postId, videoHost, videoId, videoId2);
         }
     }
 
