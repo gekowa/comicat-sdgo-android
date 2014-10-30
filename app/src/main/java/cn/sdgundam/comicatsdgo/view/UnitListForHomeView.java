@@ -105,7 +105,11 @@ public class UnitListForHomeView extends HListView {
 
             UnitInfoShort unit = (UnitInfoShort)getItem(i);
 
-            Picasso.with(context).load(Utility.getUnitImageURLByUnitId(unit.getUnitId())).resize(unitImageSize, unitImageSize).into(view);
+            Picasso.with(context)
+                    .load(Utility.getUnitImageURLByUnitId(unit.getUnitId()))
+                    .resize(unitImageSize, unitImageSize)
+                    .placeholder(R.drawable.placeholder_unit)
+                    .into(view);
 
             return view;
         }
