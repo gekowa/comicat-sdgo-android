@@ -1,5 +1,7 @@
 package cn.sdgundam.comicatsdgo.gd_api;
 
+import android.content.Context;
+
 import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
@@ -12,12 +14,21 @@ import cn.sdgundam.comicatsdgo.gd_api.listener.FetchHomeInfoListener;
  * Created by xhguo on 10/14/2014.
  */
 public class GDApiService {
+    Context context;
+
+    public GDApiService(Context context) {
+        this.context = context;
+    }
+
+    static final int HOME_INFO_LIFETIME = 300;  // seconds 5 min
+    static final String HOME_INFO_CACHE_FILE = "home_info.cache";
+
     FetchHomeInfoListener homeInfoListener;
-    public GDApiService(FetchHomeInfoListener homeInfoListener) {
+    public void setHomeInfoListener(FetchHomeInfoListener homeInfoListener) {
         this.homeInfoListener = homeInfoListener;
     }
 
-    public final void fetchHomeInfo(Boolean force) {
+    void createFetchHomeInfoTaskAndExecute() {
         FetchHomeInfoAsyncTask task = new FetchHomeInfoAsyncTask() {
             @Override
             protected void onPostExecute(ApiResultWrapper<HomeInfo> result) {
@@ -35,16 +46,23 @@ public class GDApiService {
                         }
                     }
                 }
-
-
             }
         };
 
         task.execute();
     }
 
+    public final void fetchHomeInfo(Boolean force) {
+        if (force) {
+            createFetchHomeInfoTaskAndExecute();
+        } else {
+
+        }
+
+    }
+
     FetchGeneralListListener postListListener;
-    public GDApiService(FetchGeneralListListener postListListener) {
+    public void setPostListListener(FetchGeneralListListener postListListener) {
         this.postListListener = postListListener;
     }
 
@@ -95,5 +113,10 @@ public class GDApiService {
         };
 
         task.execute(gdCategory, pageSize, pageIndex);
+    }
+
+
+    public final void checkForOriginUpdate(boolean force) {
+
     }
 }

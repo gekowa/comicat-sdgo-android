@@ -270,7 +270,7 @@ public class NewsFragment extends Fragment implements
     class NewsListViewDataSource extends PostListDataSource<PostInfo> {
 
         NewsListViewDataSource(int gdCategory) {
-            super(gdCategory);
+            super(NewsFragment.this.getActivity(), gdCategory);
         }
 
         @Override

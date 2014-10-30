@@ -72,7 +72,8 @@ public class HomeFragment extends Fragment implements
         setHasOptionsMenu(true);
 
         // configure API service
-        apiService = new GDApiService(this);
+        apiService = new GDApiService(this.getActivity());
+        apiService.setHomeInfoListener(this);
 
         Log.v(LOG_TAG, "onCreate");
     }

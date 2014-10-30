@@ -27,9 +27,9 @@ public abstract class PostListDataSource<T> implements FetchGeneralListListener<
     int pageIndex;
     int gdCategory;
 
-    PostListDataSourceListener pldsListener;
+    Context context;
 
-    GDApiService apiService;
+    PostListDataSourceListener pldsListener;
 
     List<T> postList;
     boolean noMoreData;
@@ -37,11 +37,15 @@ public abstract class PostListDataSource<T> implements FetchGeneralListListener<
 
     boolean justReloaded;
 
-    public PostListDataSource(int gdCategory) {
+    GDApiService apiService;
+
+    public PostListDataSource(Context context, int gdCategory) {
+        this.context = context;
         this.gdCategory = gdCategory;
         postList = new ArrayList<T>();
 
-        apiService = new GDApiService(this);
+        apiService = new GDApiService(context);
+        apiService.setPostListListener(this);
     }
 
     public int getPageIndex() {
