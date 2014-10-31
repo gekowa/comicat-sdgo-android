@@ -2,6 +2,10 @@ package cn.sdgundam.comicatsdgo.gd_api;
 
 import android.content.Context;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
@@ -42,7 +46,8 @@ public class GDApiService {
                         if (homeInfo == null) {
                             homeInfoListener.onFetchingHomeInfoWithError(new Exception("未知错误"));
                         } else {
-                            homeInfoListener.onReceiveHomeInfo(result.getPayload());
+                            ObjectCache.saveObjectToFile(context, homeInfo, HOME_INFO_CACHE_FILE);
+                            homeInfoListener.onReceiveHomeInfo(homeInfo);
                         }
                     }
                 }
@@ -56,9 +61,17 @@ public class GDApiService {
         if (force) {
             createFetchHomeInfoTaskAndExecute();
         } else {
+            HomeInfo cachedHomeInfo = ObjectCache.loadObjectFromFile(context, HOME_INFO_CACHE_FILE);
+            if (cachedHomeInfo != null) {
+                homeInfoListener.onReceiveHomeInfo(cachedHomeInfo);
 
+                if (Math.abs(Utility.getDateDiff(cachedHomeInfo.getGenerated(), new Date(), TimeUnit.SECONDS)) > HOME_INFO_LIFETIME) {
+                    createFetchHomeInfoTaskAndExecute();
+                }
+            } else {
+                createFetchHomeInfoTaskAndExecute();
+            }
         }
-
     }
 
     FetchGeneralListListener postListListener;

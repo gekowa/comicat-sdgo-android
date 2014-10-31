@@ -1,9 +1,11 @@
 package cn.sdgundam.comicatsdgo.data_model;
 
+import java.io.Serializable;
+
 /**
  * Created by xhguo on 9/25/2014.
  */
-public class UnitInfoShort {
+public class UnitInfoShort implements Serializable {
     String unitId;
     String modelName;
     String rank;

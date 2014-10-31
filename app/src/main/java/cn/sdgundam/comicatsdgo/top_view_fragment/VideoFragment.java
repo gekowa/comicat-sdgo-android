@@ -266,7 +266,7 @@ public class VideoFragment extends Fragment implements
     class VideoGridViewDataSource extends PostListDataSource<VideoListItem> {
 
         VideoGridViewDataSource(int gdCategory) {
-            super(gdCategory);
+            super(VideoFragment.this.getActivity(), gdCategory);
         }
 
         @Override
