@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.View;
@@ -101,23 +102,14 @@ public class VideoViewActivity extends Activity implements
             videoId = "XODAzNzY5MzE2";
         }
 
+        Log.d(LOG_TAG, "onStart: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
+
         setContentView(R.layout.activity_video_view);
 
         Resources resources = getResources();
 
         decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(this);
-
-        videoView = (VideoView)findViewById(R.id.video_view);
-//        videoView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (VideoViewActivity.this.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-//                    hideSystemUI();
-//                }
-//            }
-//        });
-//        prepareVideoPlay(videoHost, videoId, videoId2);
 
         webView = (WebView)findViewById(R.id.web_view);
         prepareWebView();
@@ -161,22 +153,40 @@ public class VideoViewActivity extends Activity implements
                 prepareVideoPlay(videoHost, videoId, videoId2);
             }
         });
+        
+        videoView = (VideoView)findViewById(R.id.video_view);
+       
+        // Debug
+        if (BuildConfig.DEBUG) {
+            getActionBar().setTitle(postId + "");
+        }
+
+        Log.d(LOG_TAG, "onStart End");
     }
+
 
     @Override
     protected void onResume() {
+        Log.d(LOG_TAG, "onResume Start");
         super.onResume();
 
         if (orientationEventListener.canDetectOrientation() && isVideoPrepared) {
             orientationEventListener.enable();
         }
+
+        Log.d(LOG_TAG, "onResume End");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         orientationEventListener.disable();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        videoView.stopPlayback();
     }
 
     @Override
@@ -237,8 +247,6 @@ public class VideoViewActivity extends Activity implements
         blinkMediaController();
     }
 
-
-
     void hideSystemUI() {
         if (Build.VERSION.SDK_INT < 16) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -261,7 +269,15 @@ public class VideoViewActivity extends Activity implements
         if (videoHost.equals("2")) {
             // 17173
             videoURL = getVideoURL17173(videoId);
-            play();
+
+            // delay the play for
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    play();
+                }
+            }, 1000);
+
         } else if (videoHost.equals("4")) {
             // youku
             prepareYoukuVideoPlay(videoId);
@@ -310,11 +326,13 @@ public class VideoViewActivity extends Activity implements
     }
 
     void play () {
+        Log.d(LOG_TAG, "play start");
         if (this.videoURL != null && this.videoView != null) {
             // play it
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(LOG_TAG, "play run start");
                     mediaController = new MediaController(VideoViewActivity.this);
                     mediaController.setAlpha(0);
                     mediaController.hide();
@@ -335,6 +353,8 @@ public class VideoViewActivity extends Activity implements
                     videoView.setOnInfoListener(VideoViewActivity.this);
 
                     videoView.setVideoPath(videoURL);
+
+                    Log.d(LOG_TAG, "play run end");
                 }
             });
         }
@@ -403,7 +423,7 @@ public class VideoViewActivity extends Activity implements
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
 //        videoView.setVisibility(View.GONE);
-//        finish();
+        Toast.makeText(this, "Video Error: " + what + "," + extra, Toast.LENGTH_SHORT).show();
         return false;
     }
 
@@ -434,11 +454,6 @@ public class VideoViewActivity extends Activity implements
     @Override
     public void clickedOnVideo(int postId, String videoHost, String videoId, String videoId2) {
         Log.d(LOG_TAG, "clickedOnVideo: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
-
-//        // stop playback and release resources
-//        if (this.videoView.isPlaying()) {
-//            this.videoView.stopPlayback();
-//        }
 
         Intent intent = Utility.makeVideoViewActivityIntent(this, postId, videoHost, videoId, videoId2);
         this.startActivity(intent);
@@ -496,16 +511,16 @@ public class VideoViewActivity extends Activity implements
 
 /*
 * 1. 垂直进入
-* 2. 手动全屏, 旋转全屏 (要记住全屏的原因) (视频prepare好以后, 才允许旋转)
+* 2. 手动全屏, 旋转全屏 (要记住全屏的原因) (视频prepare好以� 才允许旋�
 * 3. 锁定全屏, 当手动全屏时自动锁定
-* 4. 全凭状态下按返回键, 返回垂直状态
+* 4. 全凭状态下按返回键, 返回垂直状�
 * 5.
 *
 * */
 
 /*
 * TODOs
-* 1. 页面的响应, 选择机体和视频
+* 1. 页面的响� 选择机体和视�
 * 2. Loading时显示视频来自哪, 17173还是优酷
 * DONE 3. 添加Loading超时
 * */
