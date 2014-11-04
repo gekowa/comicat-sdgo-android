@@ -183,10 +183,10 @@ public class VideoGridItemView extends View {
                 titleTop + Utility.convertDpToPixel(6, getContext()) + datePaint.getTextSize() + textPaddingBottom / 4 /* Magic number */,
                 datePaint);
 
-//        TextPaint debugPaint = new TextPaint();
-//        debugPaint.setColor(Color.RED);
-//        debugPaint.setTextSize(100);
-//        canvas.drawText(vli.getPostId() + "", 10f, 100f, debugPaint);
+        TextPaint debugPaint = new TextPaint();
+        debugPaint.setColor(Color.RED);
+        debugPaint.setTextSize(100);
+        canvas.drawText(vli.getPostId() + "", 10f, 100f, debugPaint);
     }
 
     @Override

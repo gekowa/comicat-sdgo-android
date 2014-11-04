@@ -11,6 +11,7 @@
         android:id="@+id/video_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="4.1"
         >
 
         <io.vov.vitamio.widget.VideoView
@@ -52,12 +53,22 @@
                 android:textColor="#cecece"
                 android:textSize="11dp"/>
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btn_play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/placeholde_video"
+            android:adjustViewBounds="true"
+            ></ImageView>
     </FrameLayout>
 
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1.9"
+        />
 
 </LinearLayout>

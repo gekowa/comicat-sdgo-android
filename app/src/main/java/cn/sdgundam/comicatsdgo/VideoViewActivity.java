@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +78,11 @@ public class VideoViewActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
@@ -110,7 +117,7 @@ public class VideoViewActivity extends Activity implements
 //                }
 //            }
 //        });
-        prepareVideoPlay(videoHost, videoId, videoId2);
+//        prepareVideoPlay(videoHost, videoId, videoId2);
 
         webView = (WebView)findViewById(R.id.web_view);
         prepareWebView();
@@ -145,6 +152,15 @@ public class VideoViewActivity extends Activity implements
         TextView videoHostedByTextView = (TextView)findViewById(R.id.text_view_video_hosted_by);
         videoHostedByTextView.setText(resources.getString(R.string.video_hosted_by) +
                 resources.getString(resources.getIdentifier("video_host_" + videoHost, "string", this.getPackageName())));
+
+        ImageView playButton = (ImageView)findViewById(R.id.btn_play);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setVisibility(View.GONE);
+                prepareVideoPlay(videoHost, videoId, videoId2);
+            }
+        });
     }
 
     @Override
@@ -165,7 +181,7 @@ public class VideoViewActivity extends Activity implements
 
     @Override
     public void onSystemUiVisibilityChange(int i) {
-        if (i != SYSTEM_UI_FLAG_MY_FULLSCREEN) {
+        if ((i & SYSTEM_UI_FLAG_MY_FULLSCREEN) != i) {
             mediaController.show();
         }
     }
@@ -199,7 +215,7 @@ public class VideoViewActivity extends Activity implements
             getActionBar().hide();
 
             layoutParamsPortrait = (FrameLayout.LayoutParams)videoView.getLayoutParams();
-            videoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            videoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
             hideSystemUI();
 
@@ -341,6 +357,10 @@ public class VideoViewActivity extends Activity implements
 
         isVideoPrepared = true;
 
+        ((LinearLayout.LayoutParams)videoContainer.getLayoutParams()).weight = 0;
+
+        videoView.start();
+
         // not to let rotation effect right now, avoid VideoView layout error
         rootView.postDelayed(new Runnable() {
             @Override
@@ -382,9 +402,9 @@ public class VideoViewActivity extends Activity implements
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        videoView.setVisibility(View.GONE);
-        finish();
-        return true;
+//        videoView.setVisibility(View.GONE);
+//        finish();
+        return false;
     }
 
     @Override
@@ -407,11 +427,18 @@ public class VideoViewActivity extends Activity implements
     @Override
     public void clickedOnUnit(String unitId) {
         Toast.makeText(VideoViewActivity.this, "Unit: " + unitId, Toast.LENGTH_SHORT).show();
+
+        this.videoView.stopPlayback();
     }
 
     @Override
     public void clickedOnVideo(int postId, String videoHost, String videoId, String videoId2) {
         Log.d(LOG_TAG, "clickedOnVideo: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
+
+//        // stop playback and release resources
+//        if (this.videoView.isPlaying()) {
+//            this.videoView.stopPlayback();
+//        }
 
         Intent intent = Utility.makeVideoViewActivityIntent(this, postId, videoHost, videoId, videoId2);
         this.startActivity(intent);
