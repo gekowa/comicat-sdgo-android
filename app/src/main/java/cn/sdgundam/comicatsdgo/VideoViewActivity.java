@@ -61,7 +61,7 @@ public class VideoViewActivity extends Activity implements
 
     private View decorView;
     private VideoView videoView;
-    private WebView webView;
+    private WebView infoWebView;
     private MediaController mediaController;
     private View rootView;
     private FrameLayout videoContainer;
@@ -75,6 +75,7 @@ public class VideoViewActivity extends Activity implements
     private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
     private boolean isVideoPrepared;
     private boolean isOrientationLocked;
+    private boolean isRestarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,9 +142,13 @@ public class VideoViewActivity extends Activity implements
             }
         };
 
-        TextView videoHostedByTextView = (TextView)findViewById(R.id.text_view_video_hosted_by);
-        videoHostedByTextView.setText(resources.getString(R.string.video_hosted_by) +
-                resources.getString(resources.getIdentifier("video_host_" + videoHost, "string", this.getPackageName())));
+        TextView videoHostedByTextView = (TextView) findViewById(R.id.text_view_video_hosted_by);
+        try {
+            videoHostedByTextView.setText(resources.getString(R.string.video_hosted_by) +
+                    resources.getString(resources.getIdentifier("video_host_" + videoHost, "string", this.getPackageName())));
+        } catch (Resources.NotFoundException e) {
+            videoHostedByTextView.setVisibility(View.INVISIBLE);
+        }
 
         ImageView playButton = (ImageView)findViewById(R.id.btn_play);
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -161,20 +166,20 @@ public class VideoViewActivity extends Activity implements
             getActionBar().setTitle(postId + "");
         }
 
-        Log.d(LOG_TAG, "onStart End");
+        Log.d(LOG_TAG, "onStart End " + postId);
     }
 
 
     @Override
     protected void onResume() {
-        Log.d(LOG_TAG, "onResume Start");
+        Log.d(LOG_TAG, "onResume begin" + postId);
         super.onResume();
 
         if (orientationEventListener.canDetectOrientation() && isVideoPrepared) {
             orientationEventListener.enable();
         }
 
-        Log.d(LOG_TAG, "onResume End");
+        Log.d(LOG_TAG, "onResume end" + postId);
     }
 
     @Override
@@ -187,6 +192,11 @@ public class VideoViewActivity extends Activity implements
     protected void onStop() {
         super.onStop();
         videoView.stopPlayback();
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        isRestarted = true;
     }
 
     @Override
@@ -229,7 +239,7 @@ public class VideoViewActivity extends Activity implements
 
             hideSystemUI();
 
-            webView.setVisibility(View.INVISIBLE);
+            infoWebView.setVisibility(View.INVISIBLE);
         }
         else if (orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
 
@@ -241,7 +251,7 @@ public class VideoViewActivity extends Activity implements
 
             showSystemUI();
 
-            webView.setVisibility(View.VISIBLE);
+            infoWebView.setVisibility(View.VISIBLE);
         }
 
         blinkMediaController();
@@ -270,13 +280,17 @@ public class VideoViewActivity extends Activity implements
             // 17173
             videoURL = getVideoURL17173(videoId);
 
-            // delay the play for
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    play();
-                }
-            }, 1000);
+            if (isRestarted) {
+                // delay the play if restarts
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        play();
+                    }
+                }, 1000);
+            } else {
+                play();
+            }
 
         } else if (videoHost.equals("4")) {
             // youku
@@ -326,7 +340,7 @@ public class VideoViewActivity extends Activity implements
     }
 
     void play () {
-        Log.d(LOG_TAG, "play start");
+        Log.d(LOG_TAG, "play begin" + postId);
         if (this.videoURL != null && this.videoView != null) {
             // play it
             runOnUiThread(new Runnable() {
@@ -396,28 +410,35 @@ public class VideoViewActivity extends Activity implements
      * Hack to make the media controller position right
      */
     private void blinkMediaController() {
-        Log.d(LOG_TAG, "blinkMediaController");
-        videoView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mediaController.show();
-            }
-        }, 500);
-        videoView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mediaController.setAlpha(0);
-                mediaController.hide();
-            }
-        }, 600);
-        videoView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mediaController.show();
-
-                mediaController.setAlpha(1);
-            }
-        }, 800);
+        Log.d(LOG_TAG, "blinkMediaController" + postId);
+        if (mediaController != null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mediaController != null) {
+                        mediaController.show();
+                    }
+                }
+            }, 500);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mediaController != null) {
+                        mediaController.setAlpha(0);
+                        mediaController.hide();
+                    }
+                }
+            }, 600);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mediaController != null) {
+                        mediaController.show();
+                        mediaController.setAlpha(1);
+                    }
+                }
+            }, 800);
+        }
     }
 
     @Override

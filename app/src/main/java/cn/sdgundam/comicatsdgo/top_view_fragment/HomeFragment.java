@@ -1,6 +1,7 @@
 package cn.sdgundam.comicatsdgo.top_view_fragment;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -8,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -262,7 +265,25 @@ public class HomeFragment extends Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // TODO: load again here.
+        switch (item.getItemId()) {
+            case R.id.menu_item_video_5862: {
+                Intent intent = Utility.makeVideoViewActivityIntent(getActivity(), 5862, "2", "1024609", "");
+                this.getActivity().startActivity(intent);
+            }
+                return true;
+            case R.id.menu_item_video_5002: {
+                Intent intent = Utility.makeVideoViewActivityIntent(getActivity(), 5002, "2", "983675", "");
+                this.getActivity().startActivity(intent);
+            }
+                return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.home, menu);
     }
 
     @Override
