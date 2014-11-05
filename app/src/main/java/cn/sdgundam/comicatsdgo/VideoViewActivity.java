@@ -176,8 +176,8 @@ public class VideoViewActivity extends Activity implements
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setVisibility(View.GONE);
-                prepareVideoPlay(videoHost, videoId, videoId2);
+                v.setVisibility(View.INVISIBLE);
+                prepareVideoPlay();
             }
         });
         
@@ -206,7 +206,7 @@ public class VideoViewActivity extends Activity implements
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                uiBlocker.setVisibility(View.GONE);
+                uiBlocker.setVisibility(View.INVISIBLE);
             }
         }, 1800);
 
@@ -324,7 +324,7 @@ public class VideoViewActivity extends Activity implements
         }
     }
 
-    void prepareVideoPlay(String videoHost, String videoId, String videoId2) {
+    void prepareVideoPlay() {
         if (videoHost.equals("2")) {
             // 17173
             videoURL = getVideoURL17173(videoId);
@@ -577,8 +577,21 @@ public class VideoViewActivity extends Activity implements
     public void clickedOnVideo(int postId, String videoHost, String videoId, String videoId2) {
         Log.d(LOG_TAG, "clickedOnVideo: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
 
-        Intent intent = Utility.makeVideoViewActivityIntent(this, postId, videoHost, videoId, videoId2);
-        this.startActivity(intent);
+//        Intent intent = Utility.makeVideoViewActivityIntent(this, postId, videoHost, videoId, videoId2);
+//        this.startActivity(intent);
+
+        this.postId = postId;
+        this.videoHost = videoHost;
+        this.videoId = videoId;
+        this.videoId2 = videoId2;
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                prepareWebView();
+                prepareVideoPlay();
+            }
+        });
     }
 
     class YoukuJSInterface {
