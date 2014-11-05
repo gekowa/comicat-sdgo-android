@@ -82,8 +82,8 @@ public class VideoViewActivity extends Activity implements
     private Runnable videoTimeoutActions;
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
@@ -104,7 +104,14 @@ public class VideoViewActivity extends Activity implements
 
         Log.d(LOG_TAG, "onStart: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
 
+        ActivityStack.getInstance().push("Video", postId + "");
+
         setContentView(R.layout.activity_video_view);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         Resources resources = getResources();
 
@@ -191,6 +198,8 @@ public class VideoViewActivity extends Activity implements
     protected void onStop() {
         super.onStop();
         videoView.stopPlayback();
+
+        ActivityStack.getInstance().pop();
     }
 
     @Override
