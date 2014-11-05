@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+    android:background="@color/gd_tint_color"
     tools:context="cn.sdgundam.comicatsdgo.VideoViewActivity">
     
     <FrameLayout
@@ -69,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1.9"
+        android:layout_marginTop="2dp"
         />
 
 </LinearLayout>
