@@ -27,6 +27,8 @@ import android.widget.Toast;
 //import android.widget.VideoView;
 //import android.widget.MediaController;
 
+import java.util.Arrays;
+
 import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.video.OnReceivedYoukuVideoSrc;
 
@@ -52,6 +54,7 @@ public class VideoViewActivity extends Activity implements
             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
             View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
     static final int VIDEO_PREPARE_TIMEOUT = 10000;  // ms
+    static final String[] SUPPORTED_VIDEO_HOSTS = new String[] {"2", "4"};
 
     private int postId;
     private String videoHost;
@@ -66,6 +69,7 @@ public class VideoViewActivity extends Activity implements
     private MediaController mediaController;
     private View rootView;
     private FrameLayout videoContainer;
+    private View uiBlocker;
 
     private OrientationEventListener orientationEventListener;
 
@@ -85,6 +89,13 @@ public class VideoViewActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_video_view);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
             postId = extra.getInt("id");
@@ -102,16 +113,21 @@ public class VideoViewActivity extends Activity implements
             videoId = "XODAzNzY5MzE2";
         }
 
+        if (Arrays.binarySearch(SUPPORTED_VIDEO_HOSTS, videoHost) < 0) {
+            new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.unsupported_video_host))
+                    .setMessage(getString(R.string.watch_this_video_on_pc))
+                    .setPositiveButton(getString(R.string.button_text_OK), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            VideoViewActivity.this.finish();
+                        }
+                    })
+                    .show();
+        }
+
         Log.d(LOG_TAG, "onStart: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
 
-        ActivityStack.getInstance().push("Video", postId + "");
-
-        setContentView(R.layout.activity_video_view);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         Resources resources = getResources();
 
@@ -166,6 +182,8 @@ public class VideoViewActivity extends Activity implements
         });
         
         videoView = (VideoView)findViewById(R.id.video_view);
+
+        uiBlocker = findViewById(R.id.ui_blocker);
        
         // Debug
         if (BuildConfig.DEBUG) {
@@ -178,28 +196,42 @@ public class VideoViewActivity extends Activity implements
 
     @Override
     protected void onResume() {
-        Log.d(LOG_TAG, "onResume begin" + postId);
+        Log.d(LOG_TAG, "onResume begin " + postId);
         super.onResume();
 
         if (orientationEventListener.canDetectOrientation() && isVideoPrepared) {
             orientationEventListener.enable();
         }
 
-        Log.d(LOG_TAG, "onResume end" + postId);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                uiBlocker.setVisibility(View.GONE);
+            }
+        }, 1800);
+
+        Log.d(LOG_TAG, "onResume end " + postId);
     }
 
     @Override
     protected void onPause() {
+        Log.d(LOG_TAG, "onPause begin " + postId);
         super.onPause();
         orientationEventListener.disable();
+
+        if (videoTimeoutHandler != null) {
+            videoTimeoutHandler.removeCallbacks(videoTimeoutActions);
+        }
+        Log.d(LOG_TAG, "onPause end " + postId);
     }
 
     @Override
     protected void onStop() {
+        Log.d(LOG_TAG, "onStop begin " + postId);
         super.onStop();
         videoView.stopPlayback();
 
-        ActivityStack.getInstance().pop();
+        Log.d(LOG_TAG, "onStop end " + postId);
     }
 
     @Override
@@ -207,6 +239,13 @@ public class VideoViewActivity extends Activity implements
         super.onRestart();
 
         isRestarted = true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // TODO: infoWebView scroll position
     }
 
     @Override

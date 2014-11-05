@@ -1,75 +1,98 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_view"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gd_tint_color"
-    tools:context="cn.sdgundam.comicatsdgo.VideoViewActivity">
-    
-    <FrameLayout
-        android:id="@+id/video_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="4.1"
-        >
+    tools:context="cn.sdgundam.comicatsdgo.VideoViewActivity"
+    >
 
-        <io.vov.vitamio.widget.VideoView
-            android:id="@+id/video_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-        <LinearLayout
-            android:id="@+id/loading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal|center_vertical"
-            android:layout_gravity="center_horizontal|center_vertical"
-            >
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/text_view_loading_video"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="@string/loading_video_text"
-                android:gravity="center"
-                android:textColor="#cecece"
-                android:textSize="18dp"/>
-
-            <TextView
-                android:id="@+id/text_view_video_hosted_by"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="@string/video_hosted_by"
-                android:gravity="center"
-                android:textColor="#cecece"
-                android:textSize="11dp"/>
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/btn_play"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/placeholde_video"
-            android:adjustViewBounds="true"
-            ></ImageView>
-    </FrameLayout>
-
-    <WebView
-        android:id="@+id/web_view"
+    <LinearLayout
+        android:id="@+id/root_view"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1.9"
-        android:layout_marginTop="2dp"
-        />
+        >
 
-</LinearLayout>
+        <FrameLayout
+            android:id="@+id/video_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4.1"
+            >
+
+            <io.vov.vitamio.widget.VideoView
+                android:id="@+id/video_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <LinearLayout
+                android:id="@+id/loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_gravity="center_horizontal|center_vertical"
+                >
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text_view_loading_video"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:text="@string/loading_video_text"
+                    android:gravity="center"
+                    android:textColor="#cecece"
+                    android:textSize="18dp"/>
+
+                <TextView
+                    android:id="@+id/text_view_video_hosted_by"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:text="@string/video_hosted_by"
+                    android:gravity="center"
+                    android:textColor="#cecece"
+                    android:textSize="11dp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btn_play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/placeholde_video"
+                android:adjustViewBounds="true"
+                ></ImageView>
+        </FrameLayout>
+
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.9"
+            android:paddingTop="2dp"
+            android:background="@color/gd_tint_color"
+            />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/ui_blocker"
+        android:background="#99666666"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="1.618"
+            android:scaleY="1.618"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+</FrameLayout>
+

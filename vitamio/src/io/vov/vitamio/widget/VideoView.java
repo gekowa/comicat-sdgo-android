@@ -147,18 +147,29 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 
     public void surfaceCreated(SurfaceHolder holder) {
       mSurfaceHolder = holder;
-      if (mMediaPlayer != null && mCurrentState == STATE_SUSPEND && mTargetState == STATE_RESUME) {
-        mMediaPlayer.setDisplay(mSurfaceHolder);
-        resume();
-      } else {
-        openVideo();
-      }
+        try {
+            if (mMediaPlayer != null && mCurrentState == STATE_SUSPEND && mTargetState == STATE_RESUME) {
+                mMediaPlayer.setDisplay(mSurfaceHolder);
+                resume();
+            } else {
+                openVideo();
+            }
+        }
+        catch (IllegalStateException e) {
+            // do nothing
+            e.printStackTrace();
+        }
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
       mSurfaceHolder = null;
       if (mMediaController != null) mMediaController.hide();
-      release(true);
+      try {
+          release(true);
+      } catch (IllegalStateException e) {
+          // do nothing
+          e.printStackTrace();
+      }
     }
   };
   private Uri mUri;
