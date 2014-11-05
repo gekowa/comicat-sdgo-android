@@ -1,6 +1,8 @@
 package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
@@ -29,7 +31,7 @@ import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.video.OnReceivedYoukuVideoSrc;
 
 import cn.sdgundam.comicatsdgo.video.VideoInfoListener;
-import io.vov.vitamio.LibsChecker;
+import cn.sdgundam.comicatsdgo.video.VitamioLibsChecker;
 import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 import io.vov.vitamio.MediaPlayer;
@@ -44,13 +46,12 @@ public class VideoViewActivity extends Activity implements
         VideoInfoListener {
 
     static final String LOG_TAG = VideoViewActivity.class.getSimpleName();
-
     static final int ORIENTATION_THRESHOLD = 20;
-
     static final int SYSTEM_UI_FLAG_MY_FULLSCREEN =
             View.SYSTEM_UI_FLAG_FULLSCREEN |
             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
             View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+    static final int VIDEO_PREPARE_TIMEOUT = 10000;  // ms
 
     private int postId;
     private String videoHost;
@@ -77,10 +78,8 @@ public class VideoViewActivity extends Activity implements
     private boolean isOrientationLocked;
     private boolean isRestarted = false;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private Handler videoTimeoutHandler;
+    private Runnable videoTimeoutActions;
 
     @Override
     protected void onStart() {
@@ -112,7 +111,7 @@ public class VideoViewActivity extends Activity implements
         decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(this);
 
-        webView = (WebView)findViewById(R.id.web_view);
+        infoWebView = (WebView)findViewById(R.id.web_view);
         prepareWebView();
 
         videoContainer = (FrameLayout)findViewById(R.id.video_container);
@@ -192,6 +191,8 @@ public class VideoViewActivity extends Activity implements
     protected void onStop() {
         super.onStop();
         videoView.stopPlayback();
+    }
+
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -332,15 +333,20 @@ public class VideoViewActivity extends Activity implements
 
     @Override
     public void onReceivedYoukuVideoSrc(final String videoSrc) {
-        if (!LibsChecker.checkVitamioLibs(VideoViewActivity.this))
-            return;
-
         videoURL = videoSrc;
         play();
     }
 
     void play () {
         Log.d(LOG_TAG, "play begin" + postId);
+
+//        if (!LibsChecker.checkVitamioLibs(VideoViewActivity.this)) {
+//            // TODO: prompt vitamio fails
+//            return;
+//        }
+
+        VitamioLibsChecker.checkVitamioLibs(this);
+
         if (this.videoURL != null && this.videoView != null) {
             // play it
             runOnUiThread(new Runnable() {
@@ -361,7 +367,6 @@ public class VideoViewActivity extends Activity implements
                     });
                     videoView.setMediaController(mediaController);
 
-
                     videoView.setOnPreparedListener(VideoViewActivity.this);
                     videoView.setOnErrorListener(VideoViewActivity.this);
                     videoView.setOnInfoListener(VideoViewActivity.this);
@@ -371,6 +376,39 @@ public class VideoViewActivity extends Activity implements
                     Log.d(LOG_TAG, "play run end");
                 }
             });
+
+            videoTimeoutActions = new Runnable() {
+                @Override
+                public void run() {
+                    // when timeout
+
+                    int videoViewState = videoView.getCurrentState();
+
+                    if (!isVideoPrepared || videoViewState == VideoView.STATE_ERROR) {
+                        Log.d(LOG_TAG, "video prepare timeout.");
+
+                        try {
+                            new AlertDialog.Builder(VideoViewActivity.this)
+                                    .setTitle(VideoViewActivity.this.getString(R.string.data_loading_failure))
+                                    .setPositiveButton(getString(R.string.button_text_OK), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            VideoViewActivity.this.finish();
+                                        }
+                                    })
+                                    .setMessage(getString(R.string.network_error_check_try_again))
+                                    .show();
+                        } catch (WindowManager.BadTokenException e) {
+                            // do nothing...
+                        }
+
+//                        videoView.suspend();
+                    }
+                }
+            };
+
+            videoTimeoutHandler = new Handler();
+            videoTimeoutHandler.postDelayed(videoTimeoutActions, VIDEO_PREPARE_TIMEOUT);
         }
     }
 
@@ -444,8 +482,23 @@ public class VideoViewActivity extends Activity implements
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
 //        videoView.setVisibility(View.GONE);
-        Toast.makeText(this, "Video Error: " + what + "," + extra, Toast.LENGTH_SHORT).show();
-        return false;
+        // Toast.makeText(this, "Video Error: " + what + "," + extra, Toast.LENGTH_SHORT).show();
+
+        if (videoTimeoutHandler != null) {
+            videoTimeoutHandler.removeCallbacks(videoTimeoutActions);
+        }
+
+        new AlertDialog.Builder(VideoViewActivity.this)
+                .setTitle(VideoViewActivity.this.getString(R.string.data_loading_failure))
+                .setPositiveButton(getString(R.string.button_text_OK), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        VideoViewActivity.this.finish();
+                    }
+                })
+                .setMessage(getString(R.string.network_error_check_try_again))
+                .show();
+        return true;
     }
 
     @Override
@@ -460,9 +513,9 @@ public class VideoViewActivity extends Activity implements
     void prepareWebView() {
         VideoInfoInterface vii = new VideoInfoInterface(this);
 
-        webView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view-video-android.aspx?id=%d", postId));
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(vii, "$VLI");
+        infoWebView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view-video-android.aspx?id=%d", postId));
+        infoWebView.getSettings().setJavaScriptEnabled(true);
+        infoWebView.addJavascriptInterface(vii, "$VLI");
     }
 
     @Override
@@ -532,16 +585,16 @@ public class VideoViewActivity extends Activity implements
 
 /*
 * 1. 垂直进入
-* 2. 手动全屏, 旋转全屏 (要记住全屏的原因) (视频prepare好以� 才允许旋�
+* 2. 手动全屏, 旋转全屏 (要记住全屏的原因) (视频prepare好以� 才允许旋�
 * 3. 锁定全屏, 当手动全屏时自动锁定
-* 4. 全凭状态下按返回键, 返回垂直状�
+* 4. 全凭状态下按返回键, 返回垂直状�
 * 5.
 *
 * */
 
 /*
 * TODOs
-* 1. 页面的响� 选择机体和视�
+* 1. 页面的响� 选择机体和视�
 * 2. Loading时显示视频来自哪, 17173还是优酷
 * DONE 3. 添加Loading超时
 * */

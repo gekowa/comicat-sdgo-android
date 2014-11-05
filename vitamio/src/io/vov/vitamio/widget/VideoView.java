@@ -69,16 +69,16 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
   public static final int VIDEO_LAYOUT_SCALE = 1;
   public static final int VIDEO_LAYOUT_STRETCH = 2;
   public static final int VIDEO_LAYOUT_ZOOM = 3;
-  private static final int STATE_ERROR = -1;
-  private static final int STATE_IDLE = 0;
-  private static final int STATE_PREPARING = 1;
-  private static final int STATE_PREPARED = 2;
-  private static final int STATE_PLAYING = 3;
-  private static final int STATE_PAUSED = 4;
-  private static final int STATE_PLAYBACK_COMPLETED = 5;
-  private static final int STATE_SUSPEND = 6;
-  private static final int STATE_RESUME = 7;
-  private static final int STATE_SUSPEND_UNSUPPORTED = 8;
+  public static final int STATE_ERROR = -1;
+  public static final int STATE_IDLE = 0;
+  public static final int STATE_PREPARING = 1;
+  public static final int STATE_PREPARED = 2;
+  public static final int STATE_PLAYING = 3;
+  public static final int STATE_PAUSED = 4;
+  public static final int STATE_PLAYBACK_COMPLETED = 5;
+  public static final int STATE_SUSPEND = 6;
+  public static final int STATE_RESUME = 7;
+  public static final int STATE_SUSPEND_UNSUPPORTED = 8;
   OnVideoSizeChangedListener mSizeChangedListener = new OnVideoSizeChangedListener() {
     public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
       Log.d("onVideoSizeChanged: (%dx%d)", width, height);
@@ -744,4 +744,8 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
   protected boolean isInPlaybackState() {
     return (mMediaPlayer != null && mCurrentState != STATE_ERROR && mCurrentState != STATE_IDLE && mCurrentState != STATE_PREPARING);
   }
+
+    public int getCurrentState() {
+        return mCurrentState;
+    }
 }
