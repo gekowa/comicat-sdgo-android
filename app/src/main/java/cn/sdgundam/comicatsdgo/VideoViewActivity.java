@@ -3,7 +3,6 @@ package cn.sdgundam.comicatsdgo;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.hardware.SensorManager;
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +48,7 @@ public class VideoViewActivity extends Activity implements
         VideoInfoListener {
 
     static final String LOG_TAG = VideoViewActivity.class.getSimpleName();
+
     static final int ORIENTATION_THRESHOLD = 20;
     static final int SYSTEM_UI_FLAG_MY_FULLSCREEN =
             View.SYSTEM_UI_FLAG_FULLSCREEN |
@@ -56,6 +57,7 @@ public class VideoViewActivity extends Activity implements
     static final int VIDEO_PREPARE_TIMEOUT = 10000;  // ms
     static final String[] SUPPORTED_VIDEO_HOSTS = new String[] {"2", "4"};
 
+    // state variables
     private int postId;
     private String videoHost;
     private String videoId;
@@ -63,24 +65,24 @@ public class VideoViewActivity extends Activity implements
 
     private String videoURL;
 
+    private float videoAspectRatio;
+
+    private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    private boolean isVideoPrepared;
+    private boolean isOrientationLocked;
+    private boolean isRestarted = false;
+
+    // Views
     private View decorView;
     private VideoView videoView;
     private WebView infoWebView;
     private MediaController mediaController;
     private View rootView;
     private FrameLayout videoContainer;
+    private FrameLayout.LayoutParams layoutParamsPortrait;
     private View uiBlocker;
 
     private OrientationEventListener orientationEventListener;
-
-    private float videoAspectRatio;
-
-    private FrameLayout.LayoutParams layoutParamsPortrait;
-
-    private int orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-    private boolean isVideoPrepared;
-    private boolean isOrientationLocked;
-    private boolean isRestarted = false;
 
     private Handler videoTimeoutHandler;
     private Runnable videoTimeoutActions;
@@ -96,23 +98,9 @@ public class VideoViewActivity extends Activity implements
     protected void onStart() {
         super.onStart();
 
-        Bundle extra = getIntent().getExtras();
-        if (extra != null) {
-            postId = extra.getInt("id");
-            videoHost = extra.getString("videoHost");
-            videoId = extra.getString("videoId");
-            videoId2 = extra.getString("videoId2");
-        } else {
+        initialize(getIntent().getExtras());
 
-            // 17173
-//            videoHost = "2";
-//            videoId = "18408422";
-
-            // youku
-            videoHost = "4";
-            videoId = "XODAzNzY5MzE2";
-        }
-
+        // check supported video hosts
         if (Arrays.binarySearch(SUPPORTED_VIDEO_HOSTS, videoHost) < 0) {
             new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.unsupported_video_host))
@@ -128,18 +116,9 @@ public class VideoViewActivity extends Activity implements
 
         Log.d(LOG_TAG, "onStart: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
 
+        initializeViews();
 
-        Resources resources = getResources();
-
-        decorView = getWindow().getDecorView();
-        decorView.setOnSystemUiVisibilityChangeListener(this);
-
-        infoWebView = (WebView)findViewById(R.id.web_view);
-        prepareWebView();
-
-        videoContainer = (FrameLayout)findViewById(R.id.video_container);
-
-        rootView = findViewById(R.id.root_view);
+        prepareInfoWebView();
 
         orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
             @Override
@@ -164,6 +143,44 @@ public class VideoViewActivity extends Activity implements
             }
         };
 
+        // Debug
+        if (BuildConfig.DEBUG) {
+            getActionBar().setTitle(postId + "");
+        }
+
+        Log.d(LOG_TAG, "onStart End " + postId);
+    }
+
+    private void initialize(Bundle extra) {
+        if (extra != null) {
+            postId = extra.getInt("id");
+            videoHost = extra.getString("videoHost");
+            videoId = extra.getString("videoId");
+            videoId2 = extra.getString("videoId2");
+        } else {
+
+            // 17173
+//            videoHost = "2";
+//            videoId = "18408422";
+
+            // youku
+            videoHost = "4";
+            videoId = "XODAzNzY5MzE2";
+        }
+    }
+
+    private void initializeViews() {
+        Resources resources = getResources();
+
+        decorView = getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener(this);
+
+        infoWebView = (WebView)findViewById(R.id.web_view);
+
+        videoContainer = (FrameLayout)findViewById(R.id.video_container);
+
+        rootView = findViewById(R.id.root_view);
+
         TextView videoHostedByTextView = (TextView) findViewById(R.id.text_view_video_hosted_by);
         try {
             videoHostedByTextView.setText(resources.getString(R.string.video_hosted_by) +
@@ -180,17 +197,10 @@ public class VideoViewActivity extends Activity implements
                 prepareVideoPlay();
             }
         });
-        
+
         videoView = (VideoView)findViewById(R.id.video_view);
 
         uiBlocker = findViewById(R.id.ui_blocker);
-       
-        // Debug
-        if (BuildConfig.DEBUG) {
-            getActionBar().setTitle(postId + "");
-        }
-
-        Log.d(LOG_TAG, "onStart End " + postId);
     }
 
 
@@ -228,6 +238,7 @@ public class VideoViewActivity extends Activity implements
     @Override
     protected void onStop() {
         Log.d(LOG_TAG, "onStop begin " + postId);
+
         super.onStop();
         videoView.stopPlayback();
 
@@ -271,7 +282,9 @@ public class VideoViewActivity extends Activity implements
                     orientationEventListener.enable();
                 }
             }, 2500);
-        } else {
+        } else if (orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            // TODO: pop from stack
+            // TODO: if none, use super
             super.onBackPressed();
         }
     }
@@ -322,6 +335,14 @@ public class VideoViewActivity extends Activity implements
         } else {
             decorView.setSystemUiVisibility(0);
         }
+    }
+
+    void blockUI() {
+        uiBlocker.setVisibility(View.VISIBLE);
+    }
+
+    void unblockUI() {
+        uiBlocker.setVisibility(View.INVISIBLE);
     }
 
     void prepareVideoPlay() {
@@ -558,8 +579,26 @@ public class VideoViewActivity extends Activity implements
         return String.format("http://v.17173.com/api/%s-4.m3u8", videoId);
     }
 
-    void prepareWebView() {
+    void prepareInfoWebView() {
         VideoInfoInterface vii = new VideoInfoInterface(this);
+
+        infoWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+
+                unblockUI();
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+
+                unblockUI();
+            }
+        });
+
+        blockUI();
 
         infoWebView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view-video-android.aspx?id=%d", postId));
         infoWebView.getSettings().setJavaScriptEnabled(true);
@@ -588,7 +627,7 @@ public class VideoViewActivity extends Activity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                prepareWebView();
+                prepareInfoWebView();
                 prepareVideoPlay();
             }
         });
