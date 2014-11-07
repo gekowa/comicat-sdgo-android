@@ -81,6 +81,8 @@ public class VideoViewActivity extends Activity implements
     private FrameLayout videoContainer;
     private FrameLayout.LayoutParams layoutParamsPortrait;
     private View uiBlocker;
+    private ImageView playButton;
+    private ViewGroup loadingView;
 
     private OrientationEventListener orientationEventListener;
 
@@ -181,6 +183,8 @@ public class VideoViewActivity extends Activity implements
 
         rootView = findViewById(R.id.root_view);
 
+        loadingView = (ViewGroup)findViewById(R.id.loading);
+
         TextView videoHostedByTextView = (TextView) findViewById(R.id.text_view_video_hosted_by);
         try {
             videoHostedByTextView.setText(resources.getString(R.string.video_hosted_by) +
@@ -189,12 +193,13 @@ public class VideoViewActivity extends Activity implements
             videoHostedByTextView.setVisibility(View.INVISIBLE);
         }
 
-        ImageView playButton = (ImageView)findViewById(R.id.btn_play);
+        playButton = (ImageView)findViewById(R.id.btn_play);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.setVisibility(View.INVISIBLE);
-                prepareVideoPlay();
+                loadingView.setVisibility(View.VISIBLE);
+                startVideoPlay();
             }
         });
 
@@ -202,7 +207,6 @@ public class VideoViewActivity extends Activity implements
 
         uiBlocker = findViewById(R.id.ui_blocker);
     }
-
 
     @Override
     protected void onResume() {
@@ -346,6 +350,27 @@ public class VideoViewActivity extends Activity implements
     }
 
     void prepareVideoPlay() {
+        isVideoPrepared = false;
+
+        orientationEventListener.disable();
+
+        // ui things
+        // display play button
+        showPlayButton();
+        hideVideoLoading();
+    }
+
+    private void hideVideoLoading() {
+        loadingView.setVisibility(View.INVISIBLE);
+    }
+
+    private void showPlayButton() {
+        playButton.setVisibility(View.VISIBLE);
+    }
+
+    void startVideoPlay() {
+        blockUI();
+
         if (videoHost.equals("2")) {
             // 17173
             videoURL = getVideoURL17173(videoId);
@@ -364,11 +389,11 @@ public class VideoViewActivity extends Activity implements
 
         } else if (videoHost.equals("4")) {
             // youku
-            prepareYoukuVideoPlay(videoId);
+            startYoukuVideoPlay(videoId);
         }
     }
 
-    void prepareYoukuVideoPlay(String videoId) {
+    void startYoukuVideoPlay(String videoId) {
         GetYoukuVideoInfoAsyncTask task = new GetYoukuVideoInfoAsyncTask() {
             @Override
             protected void onPostExecute(String s) {
@@ -486,10 +511,11 @@ public class VideoViewActivity extends Activity implements
     public void onPrepared(MediaPlayer mediaPlayer) {
         Log.d(LOG_TAG, "onPrepared");
 
-        blinkMediaController();
+        unblockUI();
 
-        View progressBarContainer = findViewById(R.id.loading);
-        progressBarContainer.setVisibility(View.GONE);
+        hideVideoLoading();
+
+        blinkMediaController();
 
         ViewGroup controllerAnchor = (ViewGroup) findViewById(R.id.video_container);
         mediaController.setAnchorView(controllerAnchor);
@@ -594,10 +620,13 @@ public class VideoViewActivity extends Activity implements
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
 
+                // TODO: alert some error...
+
                 unblockUI();
             }
         });
 
+        // blockUI here is not because the info webview needs ui to be blocked, for the VideoView actually
         blockUI();
 
         infoWebView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view-video-android.aspx?id=%d", postId));
@@ -623,6 +652,10 @@ public class VideoViewActivity extends Activity implements
         this.videoHost = videoHost;
         this.videoId = videoId;
         this.videoId2 = videoId2;
+
+        // videoView.stopPlayback();
+
+        videoView.setVisibility(View.INVISIBLE);
 
         runOnUiThread(new Runnable() {
             @Override
