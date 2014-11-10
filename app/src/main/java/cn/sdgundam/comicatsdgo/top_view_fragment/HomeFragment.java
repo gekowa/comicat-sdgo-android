@@ -275,6 +275,10 @@ public class HomeFragment extends Fragment implements
                 Intent intent = Utility.makeVideoViewActivityIntent(getActivity(), 5002, "2", "983675", "");
                 this.getActivity().startActivity(intent);
             }
+            case R.id.menu_item_video_sample: {
+                Intent intent = Utility.makeVideoViewActivityIntent(getActivity(), 5002, "2", "18720707", "");
+                this.getActivity().startActivity(intent);
+            }
                 return true;
         }
         return super.onOptionsItemSelected(item);

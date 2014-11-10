@@ -204,8 +204,9 @@ public class VideoViewActivity extends Activity implements
         });
 
         videoView = (VideoView)findViewById(R.id.video_view);
+        videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE_VERTICALLY, 0);
 
-        uiBlocker = findViewById(R.id.ui_blocker);
+        // uiBlocker = findViewById(R.id.ui_blocker);
     }
 
     @Override
@@ -217,12 +218,12 @@ public class VideoViewActivity extends Activity implements
             orientationEventListener.enable();
         }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                uiBlocker.setVisibility(View.INVISIBLE);
-            }
-        }, 1800);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                uiBlocker.setVisibility(View.INVISIBLE);
+//            }
+//        }, 1800);
 
         Log.d(LOG_TAG, "onResume end " + postId);
     }
@@ -301,7 +302,12 @@ public class VideoViewActivity extends Activity implements
             getActionBar().hide();
 
             layoutParamsPortrait = (FrameLayout.LayoutParams)videoView.getLayoutParams();
-            videoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            FrameLayout.LayoutParams landscapeLayout = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            videoView.setLayoutParams(landscapeLayout);
+
+            videoView.requestLayout();
+
+            videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0);
 
             hideSystemUI();
 
@@ -314,6 +320,8 @@ public class VideoViewActivity extends Activity implements
             if (layoutParamsPortrait != null) {
                 videoView.setLayoutParams(layoutParamsPortrait);
             }
+
+            videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE_VERTICALLY, 0);
 
             showSystemUI();
 
@@ -342,11 +350,11 @@ public class VideoViewActivity extends Activity implements
     }
 
     void blockUI() {
-        uiBlocker.setVisibility(View.VISIBLE);
+//        uiBlocker.setVisibility(View.VISIBLE);
     }
 
     void unblockUI() {
-        uiBlocker.setVisibility(View.INVISIBLE);
+//        uiBlocker.setVisibility(View.INVISIBLE);
     }
 
     void prepareVideoPlay() {
@@ -524,7 +532,7 @@ public class VideoViewActivity extends Activity implements
 
         isVideoPrepared = true;
 
-        ((LinearLayout.LayoutParams)videoContainer.getLayoutParams()).weight = 0;
+        // ((LinearLayout.LayoutParams)videoContainer.getLayoutParams()).weight = 0;
 
         videoView.start();
 

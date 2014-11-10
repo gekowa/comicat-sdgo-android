@@ -69,6 +69,7 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
   public static final int VIDEO_LAYOUT_SCALE = 1;
   public static final int VIDEO_LAYOUT_STRETCH = 2;
   public static final int VIDEO_LAYOUT_ZOOM = 3;
+  public static final int VIDEO_LAYOUT_SCALE_VERTICALLY = 4;
   public static final int STATE_ERROR = -1;
   public static final int STATE_IDLE = 0;
   public static final int STATE_PREPARING = 1;
@@ -336,6 +337,12 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
     } else if (layout == VIDEO_LAYOUT_ZOOM) {
       lp.width = windowRatio > videoRatio ? windowWidth : (int) (videoRatio * windowHeight);
       lp.height = windowRatio < videoRatio ? windowHeight : (int) (windowWidth / videoRatio);
+    } else if (layout == VIDEO_LAYOUT_SCALE_VERTICALLY) {
+       if (mSurfaceHeight == 0 || mSurfaceWidth == 0) {
+           lp.width = windowWidth;
+       } else {
+           lp.width = (int) (videoRatio * lp.height);
+       }
     } else {
       boolean full = layout == VIDEO_LAYOUT_STRETCH;
       lp.width = (full || windowRatio < videoRatio) ? windowWidth : (int) (videoRatio * windowHeight);

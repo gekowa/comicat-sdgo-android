@@ -7,4 +7,7 @@
     <item android:id="@+id/menu_item_video_5002"
         android:title="Video 5002"
         android:showAsAction="never"></item>
+    <item android:id="@+id/menu_item_video_sample"
+        android:title="Sample Video"
+        android:showAsAction="never"></item>
 </menu>

@@ -16,19 +16,19 @@
             android:id="@+id/video_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4.1"
-            >
+            android:background="#000">
 
             <io.vov.vitamio.widget.VideoView
                 android:id="@+id/video_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="220dp"
+                android:layout_gravity="center_horizontal"
                 />
 
             <LinearLayout
                 android:id="@+id/loading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center_horizontal|center_vertical"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -73,27 +73,27 @@
         <WebView
             android:id="@+id/web_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.9"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:paddingTop="2dp"
             android:background="@color/gd_tint_color"
             />
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/ui_blocker"
-        android:background="#99666666"
-        android:clickable="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--<FrameLayout-->
+        <!--android:id="@+id/ui_blocker"-->
+        <!--android:background="#99666666"-->
+        <!--android:clickable="true"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleX="1.618"
-            android:scaleY="1.618"
-            android:layout_gravity="center"/>
-    </FrameLayout>
+        <!--<ProgressBar-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:scaleX="1.618"-->
+            <!--android:scaleY="1.618"-->
+            <!--android:layout_gravity="center"/>-->
+    <!--</FrameLayout>-->
 </FrameLayout>
 
