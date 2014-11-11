@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
@@ -303,11 +304,18 @@ public class VideoViewActivity extends Activity implements
 
             layoutParamsPortrait = (FrameLayout.LayoutParams)videoView.getLayoutParams();
             FrameLayout.LayoutParams landscapeLayout = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            landscapeLayout.gravity = Gravity.CENTER_HORIZONTAL;
             videoView.setLayoutParams(landscapeLayout);
 
-            videoView.requestLayout();
 
-            videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0);
+                    videoView.requestLayout();
+                }
+            }, 500);
 
             hideSystemUI();
 
@@ -467,6 +475,15 @@ public class VideoViewActivity extends Activity implements
                             }
                         }
                     });
+//                    mediaController.setOnShownListener(new MediaController.OnShownListener() {
+//                        @Override
+//                        public void onShown() {
+//                            if (videoView.isPlaying() &&
+//                                    orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+//                                showSystemUI();
+//                            }
+//                        }
+//                    });
                     videoView.setMediaController(mediaController);
 
                     videoView.setOnPreparedListener(VideoViewActivity.this);
