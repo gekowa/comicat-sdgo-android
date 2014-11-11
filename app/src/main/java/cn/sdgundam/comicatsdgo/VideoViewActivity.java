@@ -83,7 +83,9 @@ public class VideoViewActivity extends Activity implements
     private FrameLayout.LayoutParams layoutParamsPortrait;
     private View uiBlocker;
     private ImageView playButton;
+    private ViewGroup playButtonContainer;
     private ViewGroup loadingView;
+    private ViewGroup videoOverlay;
 
     private OrientationEventListener orientationEventListener;
 
@@ -194,15 +196,22 @@ public class VideoViewActivity extends Activity implements
             videoHostedByTextView.setVisibility(View.INVISIBLE);
         }
 
+        playButtonContainer = (ViewGroup)findViewById(R.id.btn_play_container);
+
         playButton = (ImageView)findViewById(R.id.btn_play);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.setVisibility(View.INVISIBLE);
-                loadingView.setVisibility(View.VISIBLE);
+                playButtonContainer.setVisibility(View.INVISIBLE);
+
+                showVideoLoading();
+
                 startVideoPlay();
             }
         });
+
+        videoOverlay = (ViewGroup)findViewById(R.id.video_overlay);
 
         videoView = (VideoView)findViewById(R.id.video_view);
         videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE_VERTICALLY, 0);
@@ -233,9 +242,10 @@ public class VideoViewActivity extends Activity implements
     protected void onPause() {
         Log.d(LOG_TAG, "onPause begin " + postId);
         super.onPause();
-        orientationEventListener.disable();
 
+        orientationEventListener.disable();
         disableVideoTimeout();
+
         Log.d(LOG_TAG, "onPause end " + postId);
     }
 
@@ -369,10 +379,32 @@ public class VideoViewActivity extends Activity implements
         uiBlocker.setVisibility(View.INVISIBLE);
     }
 
+    private void hideVideoLoading() {
+        loadingView.setVisibility(View.INVISIBLE);
+    }
+
+    private void showVideoLoading() {
+        loadingView.setVisibility(View.VISIBLE);
+    }
+
+    private void showVideoOverlay() {
+        videoOverlay.setVisibility(View.VISIBLE);
+    }
+
+    private void hideVideoOverlay() {
+        videoOverlay.setVisibility(View.INVISIBLE);
+    }
+
     void prepareVideoPlay() {
         isVideoPrepared = false;
 
+        showVideoOverlay();
+
         orientationEventListener.disable();
+
+        if (mediaController != null) {
+            mediaController.hide();
+        }
 
         // ui things
         // display play button
@@ -380,12 +412,9 @@ public class VideoViewActivity extends Activity implements
         hideVideoLoading();
     }
 
-    private void hideVideoLoading() {
-        loadingView.setVisibility(View.INVISIBLE);
-    }
-
     private void showPlayButton() {
         playButton.setVisibility(View.VISIBLE);
+        playButtonContainer.setVisibility(View.VISIBLE);
     }
 
     void startVideoPlay() {
@@ -488,6 +517,7 @@ public class VideoViewActivity extends Activity implements
 //                            }
 //                        }
 //                    });
+
                     videoView.setMediaController(mediaController);
 
                     videoView.setOnPreparedListener(VideoViewActivity.this);
@@ -541,8 +571,8 @@ public class VideoViewActivity extends Activity implements
         Log.d(LOG_TAG, "onPrepared");
 
         unblockUI();
-
         hideVideoLoading();
+        hideVideoOverlay();
 
         blinkMediaController();
 
@@ -665,7 +695,7 @@ public class VideoViewActivity extends Activity implements
     public void clickedOnUnit(String unitId) {
         Toast.makeText(VideoViewActivity.this, "Unit: " + unitId, Toast.LENGTH_SHORT).show();
 
-        this.videoView.stopPlayback();
+        // this.videoView.stopPlayback();
     }
 
     @Override
@@ -677,10 +707,17 @@ public class VideoViewActivity extends Activity implements
         this.videoId = videoId;
         this.videoId2 = videoId2;
 
+        disableVideoTimeout();
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 blockUI();
+
+                if (mediaController != null) {
+                    mediaController.hide();
+                }
+
                 videoView.pause();
                 // videoView.setVisibility(View.INVISIBLE);
                 prepareInfoWebView();

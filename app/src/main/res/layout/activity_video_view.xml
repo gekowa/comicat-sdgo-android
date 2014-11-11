@@ -25,57 +25,64 @@
                 android:layout_gravity="center_horizontal"
                 />
 
-            <LinearLayout
-                android:id="@+id/loading"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_horizontal|center_vertical"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:visibility="invisible"
-                >
-                <!--<ProgressBar-->
-                    <!--android:id="@+id/progress_bar"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content" />-->
-
-                <TextView
-                    android:id="@+id/text_view_loading_video"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:text="@string/loading_video_text"
-                    android:gravity="center"
-                    android:textColor="#cecece"
-                    android:textSize="18dp"/>
-
-                <TextView
-                    android:id="@+id/text_view_video_hosted_by"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:text="@string/video_hosted_by"
-                    android:gravity="center"
-                    android:textColor="#cecece"
-                    android:textSize="11dp"/>
-            </LinearLayout>
-
             <FrameLayout
-                android:id="@+id/btn_play_container"
                 android:background="#000"
+                android:id="@+id/video_overlay"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent"
+                >
 
-                <ImageView
-                    android:id="@+id/btn_play"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/btn_play"
-                    android:adjustViewBounds="true"
-                    ></ImageView>
+                <LinearLayout
+                    android:id="@+id/loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:visibility="invisible"
+                    >
+                    <!--<ProgressBar-->
+                        <!--android:id="@+id/progress_bar"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content" />-->
+
+                    <TextView
+                        android:id="@+id/text_view_loading_video"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="@string/loading_video_text"
+                        android:gravity="center"
+                        android:textColor="#cecece"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/text_view_video_hosted_by"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="@string/video_hosted_by"
+                        android:gravity="center"
+                        android:textColor="#cecece"
+                        android:textSize="11dp"/>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/btn_play_container"
+                    android:background="#000"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <ImageView
+                        android:id="@+id/btn_play"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/btn_play"
+                        android:adjustViewBounds="true"
+                        ></ImageView>
+                </FrameLayout>
             </FrameLayout>
-
         </FrameLayout>
 
         <WebView
@@ -83,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingTop="2dp"
+            android:paddingTop="0dp"
             android:background="@color/gd_tint_color"
             />
 
@@ -91,19 +98,25 @@
 
     <FrameLayout
         android:id="@+id/ui_blocker"
+        android:background="#9999"
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:background="#EE444444"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleX="1.618"
-            android:scaleY="1.618"
-            android:paddingT="24dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+
             android:layout_gravity="center"
             />
+        <!--
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+        -->
     </FrameLayout>
 </FrameLayout>
 
