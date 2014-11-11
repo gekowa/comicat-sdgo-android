@@ -207,7 +207,7 @@ public class VideoViewActivity extends Activity implements
         videoView = (VideoView)findViewById(R.id.video_view);
         videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE_VERTICALLY, 0);
 
-        // uiBlocker = findViewById(R.id.ui_blocker);
+        uiBlocker = findViewById(R.id.ui_blocker);
     }
 
     @Override
@@ -235,10 +235,14 @@ public class VideoViewActivity extends Activity implements
         super.onPause();
         orientationEventListener.disable();
 
+        disableVideoTimeout();
+        Log.d(LOG_TAG, "onPause end " + postId);
+    }
+
+    private void disableVideoTimeout() {
         if (videoTimeoutHandler != null) {
             videoTimeoutHandler.removeCallbacks(videoTimeoutActions);
         }
-        Log.d(LOG_TAG, "onPause end " + postId);
     }
 
     @Override
@@ -358,11 +362,11 @@ public class VideoViewActivity extends Activity implements
     }
 
     void blockUI() {
-//        uiBlocker.setVisibility(View.VISIBLE);
+        uiBlocker.setVisibility(View.VISIBLE);
     }
 
     void unblockUI() {
-//        uiBlocker.setVisibility(View.INVISIBLE);
+        uiBlocker.setVisibility(View.INVISIBLE);
     }
 
     void prepareVideoPlay() {
@@ -604,9 +608,7 @@ public class VideoViewActivity extends Activity implements
 //        videoView.setVisibility(View.GONE);
         // Toast.makeText(this, "Video Error: " + what + "," + extra, Toast.LENGTH_SHORT).show();
 
-        if (videoTimeoutHandler != null) {
-            videoTimeoutHandler.removeCallbacks(videoTimeoutActions);
-        }
+        disableVideoTimeout();
 
         new AlertDialog.Builder(VideoViewActivity.this)
                 .setTitle(VideoViewActivity.this.getString(R.string.data_loading_failure))
@@ -670,25 +672,33 @@ public class VideoViewActivity extends Activity implements
     public void clickedOnVideo(int postId, String videoHost, String videoId, String videoId2) {
         Log.d(LOG_TAG, "clickedOnVideo: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
 
-//        Intent intent = Utility.makeVideoViewActivityIntent(this, postId, videoHost, videoId, videoId2);
-//        this.startActivity(intent);
-
         this.postId = postId;
         this.videoHost = videoHost;
         this.videoId = videoId;
         this.videoId2 = videoId2;
 
-        // videoView.stopPlayback();
-
-        videoView.setVisibility(View.INVISIBLE);
-
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                blockUI();
+                videoView.pause();
+                // videoView.setVisibility(View.INVISIBLE);
                 prepareInfoWebView();
-                prepareVideoPlay();
+
             }
         });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        prepareVideoPlay();
+                    }
+                });
+            }
+        }, 500);
     }
 
     class YoukuJSInterface {
