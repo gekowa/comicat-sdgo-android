@@ -12,24 +12,25 @@
         android:layout_height="match_parent"
         >
 
+        <!--android:background="#F00"-->
         <FrameLayout
             android:id="@+id/video_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#000">
+            >
 
             <io.vov.vitamio.widget.VideoView
                 android:id="@+id/video_view"
                 android:layout_width="wrap_content"
                 android:layout_height="220dp"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center"
                 />
 
             <FrameLayout
                 android:background="#000"
                 android:id="@+id/video_overlay"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 >
 
                 <LinearLayout
@@ -67,9 +68,9 @@
                         android:textSize="11dp"/>
                 </LinearLayout>
 
+                <!--android:background="#0F0"-->
                 <FrameLayout
                     android:id="@+id/btn_play_container"
-                    android:background="#000"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
 
@@ -80,6 +81,7 @@
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/btn_play"
                         android:adjustViewBounds="true"
+
                         ></ImageView>
                 </FrameLayout>
             </FrameLayout>
@@ -90,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingTop="0dp"
+            android:paddingTop="2dp"
             android:background="@color/gd_tint_color"
             />
 
@@ -98,25 +100,24 @@
 
     <FrameLayout
         android:id="@+id/ui_blocker"
-        android:background="#9999"
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
+        <FrameLayout
+            android:background="@drawable/round_corner_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-
             android:layout_gravity="center"
-            />
-        <!--
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-        -->
+            android:padding="17dp">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+
+        </FrameLayout>
     </FrameLayout>
 </FrameLayout>
 
