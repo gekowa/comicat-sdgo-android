@@ -6,8 +6,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cn.sdgundam.comicatsdgo.Utility;
@@ -15,6 +19,7 @@ import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostList;
+import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 
@@ -200,5 +205,80 @@ public class GDInfoBuilder {
         }
 
         return result;
+    }
+
+    static Boolean isMethodDeclared(Method[] methods, Class parameterType, String methodName) {
+        Boolean found = false;
+        for (Method m : methods) {
+            Log.d("isMethodDeclared: ", m.getName());
+            if (m.getName() == methodName &&
+                m.getParameterTypes().length == 1 &&
+                m.getParameterTypes().equals(new Class[] {parameterType})) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
+    public static UnitInfo buildUnitInfo(String json) {
+        if (json == "") {
+            return null;
+        }
+
+        UnitInfo unitInfo = new UnitInfo();
+        try {
+            JSONObject rootObject = new JSONObject(json);
+
+            String generatedString = rootObject.getString("generated");
+            Date generated = Utility.parseDateSafe(generatedString);
+            unitInfo.setGenerated(generated);
+
+            JSONObject unitJSONOBject = rootObject.getJSONObject("unit");
+            Iterator<String> allKeys = unitJSONOBject.keys();
+
+            Method[] allDeclardMethods = UnitInfo.class.getDeclaredMethods();
+            ArrayList<Method> allSetters = new ArrayList<Method>();
+            // filter for all setters
+            for (Method m : allDeclardMethods) {
+                if (m.getName().startsWith("set")) {
+                    allSetters.add(m);
+                }
+            }
+            Method[] allSettersArray = allSetters.toArray(new Method[0]);
+
+
+            while(allKeys.hasNext()) {
+                String key = allKeys.next();
+                Log.d("buildUnitInfo: ", key);
+                try {
+                    String firstLetter = key.substring(0, 1).toUpperCase();
+                    String keyForReflector = "set" + firstLetter + key.substring(1, key.length());
+
+                    for (Class _class : new Class[] {String.class, Integer.class, Float.class}) {
+                        if (isMethodDeclared(allSettersArray, _class, keyForReflector)) {
+                            Method setter = UnitInfo.class.getDeclaredMethod(keyForReflector, _class);
+                            if (setter != null) {
+                                setter.invoke(unitInfo, unitJSONOBject.get(key));
+                            }
+                            break;
+                        }
+                    }
+
+
+                } catch(NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "JSON parse error: " + e.getMessage());
+        }
+
+        return unitInfo;
     }
 }

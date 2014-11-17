@@ -10,9 +10,11 @@ import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostList;
+import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchGeneralListListener;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchHomeInfoListener;
+import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitInfoListener;
 
 /**
  * Created by xhguo on 10/14/2014.
@@ -23,6 +25,8 @@ public class GDApiService {
     public GDApiService(Context context) {
         this.context = context;
     }
+
+    // region HomeInfo
 
     static final int HOME_INFO_LIFETIME = 300;  // seconds 5 min
     static final String HOME_INFO_CACHE_FILE = "home_info.cache";
@@ -73,6 +77,10 @@ public class GDApiService {
             }
         }
     }
+
+    // endregion
+
+    // region PostList
 
     FetchGeneralListListener postListListener;
     public void setPostListListener(FetchGeneralListListener postListListener) {
@@ -126,6 +134,60 @@ public class GDApiService {
         };
 
         task.execute(gdCategory, pageSize, pageIndex);
+    }
+
+    // endregion
+
+    // region UnitInfo
+
+    static final int UNIT_INFO_LIFETIME = 43200;  // seconds 5 min
+    static final String UNIT_INFO_CACHE_FILE = "unit-%s.cache";
+
+    FetchUnitInfoListener unitInfoListener;
+    public void setUnitInfoListener(FetchUnitInfoListener unitInfoListener) {
+        this.unitInfoListener = unitInfoListener;
+    }
+
+    public void createFetchUnitInfoTaskAndExecute(final String unitId) {
+        FetchUnitInfoAsyncTask task = new FetchUnitInfoAsyncTask() {
+            @Override
+            protected void onPostExecute(ApiResultWrapper<UnitInfo> result) {
+                super.onPostExecute(result);
+
+                if (unitInfoListener != null) {
+                    if (result.getE() != null) {
+                        unitInfoListener.onFetchingUnitInfoWithError(result.getE());
+                    } else {
+                        UnitInfo unitInfo = result.getPayload();
+                        if (unitInfo == null) {
+                            unitInfoListener.onFetchingUnitInfoWithError(new Exception("未知错误"));
+                        } else {
+                            ObjectCache.saveObjectToFile(context, unitInfo, String.format(UNIT_INFO_CACHE_FILE, unitId));
+                            unitInfoListener.onReceiveUnitInfo(unitInfo);
+                        }
+                    }
+                }
+            }
+        };
+
+        task.execute(unitId);
+    }
+
+    public void fetchUnitInfo(String unitId, Boolean force) {
+        if (force) {
+            createFetchUnitInfoTaskAndExecute(unitId);
+        } else {
+            UnitInfo cached = ObjectCache.loadObjectFromFile(context, String.format(UNIT_INFO_CACHE_FILE, unitId));
+            if (cached != null) {
+                unitInfoListener.onReceiveUnitInfo(cached);
+
+                if (Math.abs(Utility.getDateDiff(cached.getGenerated(), new Date(), TimeUnit.SECONDS)) > UNIT_INFO_LIFETIME) {
+                    createFetchUnitInfoTaskAndExecute(unitId);
+                }
+            } else {
+                createFetchUnitInfoTaskAndExecute(unitId);
+            }
+        }
     }
 
 

@@ -15,7 +15,7 @@ public class UnitInfo {
     String rank;
     String warType;
     String landform;
-    int origin;
+    Integer origin;
     String originTitle;
     String story;
     String regdate;
@@ -24,27 +24,27 @@ public class UnitInfo {
     String howToGet;
 
     // 4p
-    boolean sniping;
-    boolean modification;
-    boolean oversize;
-    boolean repair;
+    Boolean sniping;
+    Boolean modification;
+    Boolean oversize;
+    Boolean repair;
 
     // stats
-    float attackG;
-    float defenseG;
-    float mobilityG;
-    float controlG;
+    Float attackG;
+    Float defenseG;
+    Float mobilityG;
+    Float controlG;
 
-    float sum3D;
-    float sum4D;
+    Float sum3D;
+    Float sum4D;
 
     // weapons
-    int weapon1;
-    int weapon2;
-    int weapon3;
-    int weapon4;
-    int weapon5;
-    int weapon6;
+    Integer weapon1;
+    Integer weapon2;
+    Integer weapon3;
+    Integer weapon4;
+    Integer weapon5;
+    Integer weapon6;
     String weaponName1;
     String weaponName2;
     String weaponName3;
@@ -84,12 +84,12 @@ public class UnitInfo {
     String weaponEx6Line1;
     String weaponEx6Line2;
 
-    int numberOfWeapons;
+    Integer numberOfWeapons;
 
     // skills
-    int skill1;
-    int skill2;
-    int skill3;
+    Integer skill1;
+    Integer skill2;
+    Integer skill3;
     String skillName1;
     String skillName2;
     String skillName3;
@@ -100,8 +100,8 @@ public class UnitInfo {
     String skillEx2;
     String skillEx3;
 
-    int ratings;
-    float ratingValue;
+    Integer ratings;
+    Float ratingValue;
 
     String groupName1;
     String groupName2;
@@ -110,8 +110,8 @@ public class UnitInfo {
     String shopBuyPrice;
     String shopRissCash;
 // String shopRissCashPrice;
-    String shopRissPoint;
-// String shopRissPointPrice;
+    String shopRissPoInteger;
+// String shopRissPoIntegerPrice;
     String shopMixBuy;
     String etc;
     String capsule1;
@@ -139,6 +139,7 @@ public class UnitInfo {
     UnitMixMaterial[] canMixAsKey; // array of UnitMixMaterial
     UnitMixMaterial[] canMixAsMaterial; // array of UnitMixMaterial
 
+    public UnitInfo() {}
     public UnitInfo(String unitId, String modelName) {
         this.unitId = unitId;
         this.modelName = modelName;
@@ -192,11 +193,11 @@ public class UnitInfo {
         this.landform = landform;
     }
 
-    public int getOrigin() {
+    public Integer getOrigin() {
         return origin;
     }
 
-    public void setOrigin(int origin) {
+    public void setOrigin(Integer origin) {
         this.origin = origin;
     }
 
@@ -280,99 +281,99 @@ public class UnitInfo {
         this.repair = repair;
     }
 
-    public float getAttackG() {
+    public Float getAttackG() {
         return attackG;
     }
 
-    public void setAttackG(float attackG) {
+    public void setAttackG(Float attackG) {
         this.attackG = attackG;
     }
 
-    public float getDefenseG() {
+    public Float getDefenseG() {
         return defenseG;
     }
 
-    public void setDefenseG(float defenseG) {
+    public void setDefenseG(Float defenseG) {
         this.defenseG = defenseG;
     }
 
-    public float getMobilityG() {
+    public Float getMobilityG() {
         return mobilityG;
     }
 
-    public void setMobilityG(float mobilityG) {
+    public void setMobilityG(Float mobilityG) {
         this.mobilityG = mobilityG;
     }
 
-    public float getControlG() {
+    public Float getControlG() {
         return controlG;
     }
 
-    public void setControlG(float controlG) {
+    public void setControlG(Float controlG) {
         this.controlG = controlG;
     }
 
-    public float getSum3D() {
+    public Float getSum3D() {
         return sum3D;
     }
 
-    public void setSum3D(float sum3D) {
+    public void setSum3D(Float sum3D) {
         this.sum3D = sum3D;
     }
 
-    public float getSum4D() {
+    public Float getSum4D() {
         return sum4D;
     }
 
-    public void setSum4D(float sum4D) {
+    public void setSum4D(Float sum4D) {
         this.sum4D = sum4D;
     }
 
-    public int getWeapon1() {
+    public Integer getWeapon1() {
         return weapon1;
     }
 
-    public void setWeapon1(int weapon1) {
+    public void setWeapon1(Integer weapon1) {
         this.weapon1 = weapon1;
     }
 
-    public int getWeapon2() {
+    public Integer getWeapon2() {
         return weapon2;
     }
 
-    public void setWeapon2(int weapon2) {
+    public void setWeapon2(Integer weapon2) {
         this.weapon2 = weapon2;
     }
 
-    public int getWeapon3() {
+    public Integer getWeapon3() {
         return weapon3;
     }
 
-    public void setWeapon3(int weapon3) {
+    public void setWeapon3(Integer weapon3) {
         this.weapon3 = weapon3;
     }
 
-    public int getWeapon4() {
+    public Integer getWeapon4() {
         return weapon4;
     }
 
-    public void setWeapon4(int weapon4) {
+    public void setWeapon4(Integer weapon4) {
         this.weapon4 = weapon4;
     }
 
-    public int getWeapon5() {
+    public Integer getWeapon5() {
         return weapon5;
     }
 
-    public void setWeapon5(int weapon5) {
+    public void setWeapon5(Integer weapon5) {
         this.weapon5 = weapon5;
     }
 
-    public int getWeapon6() {
+    public Integer getWeapon6() {
         return weapon6;
     }
 
-    public void setWeapon6(int weapon6) {
+    public void setWeapon6(Integer weapon6) {
         this.weapon6 = weapon6;
     }
 
@@ -664,35 +665,35 @@ public class UnitInfo {
         this.weaponEx6Line2 = weaponEx6Line2;
     }
 
-    public int getNumberOfWeapons() {
+    public Integer getNumberOfWeapons() {
         return numberOfWeapons;
     }
 
-    public void setNumberOfWeapons(int numberOfWeapons) {
+    public void setNumberOfWeapons(Integer numberOfWeapons) {
         this.numberOfWeapons = numberOfWeapons;
     }
 
-    public int getSkill1() {
+    public Integer getSkill1() {
         return skill1;
     }
 
-    public void setSkill1(int skill1) {
+    public void setSkill1(Integer skill1) {
         this.skill1 = skill1;
     }
 
-    public int getSkill2() {
+    public Integer getSkill2() {
         return skill2;
     }
 
-    public void setSkill2(int skill2) {
+    public void setSkill2(Integer skill2) {
         this.skill2 = skill2;
     }
 
-    public int getSkill3() {
+    public Integer getSkill3() {
         return skill3;
     }
 
-    public void setSkill3(int skill3) {
+    public void setSkill3(Integer skill3) {
         this.skill3 = skill3;
     }
 
@@ -768,19 +769,19 @@ public class UnitInfo {
         this.skillEx3 = skillEx3;
     }
 
-    public int getRatings() {
+    public Integer getRatings() {
         return ratings;
     }
 
-    public void setRatings(int ratings) {
+    public void setRatings(Integer ratings) {
         this.ratings = ratings;
     }
 
-    public float getRatingValue() {
+    public Float getRatingValue() {
         return ratingValue;
     }
 
-    public void setRatingValue(float ratingValue) {
+    public void setRatingValue(Float ratingValue) {
         this.ratingValue = ratingValue;
     }
 
@@ -824,12 +825,12 @@ public class UnitInfo {
         this.shopRissCash = shopRissCash;
     }
 
-    public String getShopRissPoint() {
-        return shopRissPoint;
+    public String getShopRissPoInteger() {
+        return shopRissPoInteger;
     }
 
-    public void setShopRissPoint(String shopRissPoint) {
-        this.shopRissPoint = shopRissPoint;
+    public void setShopRissPoInteger(String shopRissPoInteger) {
+        this.shopRissPoInteger = shopRissPoInteger;
     }
 
     public String getShopMixBuy() {
