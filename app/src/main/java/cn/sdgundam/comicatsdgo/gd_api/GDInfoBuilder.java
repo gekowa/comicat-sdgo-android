@@ -207,20 +207,6 @@ public class GDInfoBuilder {
         return result;
     }
 
-    static Boolean isMethodDeclared(Method[] methods, Class parameterType, String methodName) {
-        Boolean found = false;
-        for (Method m : methods) {
-            Log.d("isMethodDeclared: ", m.getName());
-            if (m.getName() == methodName &&
-                m.getParameterTypes().length == 1 &&
-                m.getParameterTypes().equals(new Class[] {parameterType})) {
-                found = true;
-                break;
-            }
-        }
-        return found;
-    }
-
     public static UnitInfo buildUnitInfo(String json) {
         if (json == "") {
             return null;
@@ -238,15 +224,14 @@ public class GDInfoBuilder {
             Iterator<String> allKeys = unitJSONOBject.keys();
 
             Method[] allDeclardMethods = UnitInfo.class.getDeclaredMethods();
-            ArrayList<Method> allSetters = new ArrayList<Method>();
+            ArrayList<String> allSetterNames = new ArrayList<String>();
             // filter for all setters
             for (Method m : allDeclardMethods) {
-                if (m.getName().startsWith("set")) {
-                    allSetters.add(m);
+                if (m.getName().startsWith("set") &&
+                        m.getParameterTypes().length == 1) {
+                    allSetterNames.add(m.getName() + "_" + m.getParameterTypes()[0].toString());
                 }
             }
-            Method[] allSettersArray = allSetters.toArray(new Method[0]);
-
 
             while(allKeys.hasNext()) {
                 String key = allKeys.next();
@@ -256,10 +241,16 @@ public class GDInfoBuilder {
                     String keyForReflector = "set" + firstLetter + key.substring(1, key.length());
 
                     for (Class _class : new Class[] {String.class, Integer.class, Float.class}) {
-                        if (isMethodDeclared(allSettersArray, _class, keyForReflector)) {
+                        if (allSetterNames.indexOf(keyForReflector + "_" + _class.toString()) >= 0) {
                             Method setter = UnitInfo.class.getDeclaredMethod(keyForReflector, _class);
                             if (setter != null) {
-                                setter.invoke(unitInfo, unitJSONOBject.get(key));
+                                if (_class.toString().equals(String.class.toString())) {
+                                    setter.invoke(unitInfo, unitJSONOBject.getString(key));
+                                } else if (_class.toString().equals(Integer.class.toString())) {
+                                    setter.invoke(unitInfo, unitJSONOBject.getInt(key));
+                                } else if (_class.toString().equals(Float.class.toString())) {
+                                    setter.invoke(unitInfo, (float)unitJSONOBject.getDouble(key));
+                                }
                             }
                             break;
                         }
