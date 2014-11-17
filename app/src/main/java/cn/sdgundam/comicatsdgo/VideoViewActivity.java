@@ -80,7 +80,8 @@ public class VideoViewActivity extends Activity implements
     private MediaController mediaController;
     private View rootView;
     private FrameLayout videoContainer;
-    private FrameLayout.LayoutParams layoutParamsPortrait;
+    private FrameLayout.LayoutParams layoutParamsPortraitForVideoView;
+    private LinearLayout.LayoutParams layoutParamsPortraitForVideoContainer;
     private View uiBlocker;
     private ImageView playButton;
     private ViewGroup playButtonContainer;
@@ -316,12 +317,15 @@ public class VideoViewActivity extends Activity implements
 
             getActionBar().hide();
 
-            layoutParamsPortrait = (FrameLayout.LayoutParams)videoView.getLayoutParams();
+//            layoutParamsPortraitForVideoContainer = (LinearLayout.LayoutParams)videoContainer.getLayoutParams();
+//            LinearLayout.LayoutParams landscapeLayoutForVideoContainer = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//            landscapeLayoutForVideoContainer.weight = 1;
+//            videoContainer.setLayoutParams(landscapeLayoutForVideoContainer);
+
+            layoutParamsPortraitForVideoView = (FrameLayout.LayoutParams)videoView.getLayoutParams();
             FrameLayout.LayoutParams landscapeLayout = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             landscapeLayout.gravity = Gravity.CENTER_HORIZONTAL;
             videoView.setLayoutParams(landscapeLayout);
-
-
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -339,8 +343,8 @@ public class VideoViewActivity extends Activity implements
 
             getActionBar().show();
 
-            if (layoutParamsPortrait != null) {
-                videoView.setLayoutParams(layoutParamsPortrait);
+            if (layoutParamsPortraitForVideoView != null) {
+                videoView.setLayoutParams(layoutParamsPortraitForVideoView);
             }
 
             videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE_VERTICALLY, 0);
