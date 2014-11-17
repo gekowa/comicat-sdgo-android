@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -119,6 +120,8 @@ public class CarouselView extends RelativeLayout {
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
+//            FrameLayout imageContainer = new FrameLayout()
+
             ImageView imageView = new ImageView(getContext());
 
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
@@ -127,6 +130,9 @@ public class CarouselView extends RelativeLayout {
             );
 
             imageView.setLayoutParams(layoutParams);
+
+            imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
             int realPosition= (carousel.length + position) % carousel.length;
             CarouselInfo ci = carousel[realPosition];
