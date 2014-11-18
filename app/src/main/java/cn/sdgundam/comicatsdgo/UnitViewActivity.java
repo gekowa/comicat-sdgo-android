@@ -10,6 +10,7 @@ import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitInfoListener;
 import cn.sdgundam.comicatsdgo.view.GaugeBarView;
+import cn.sdgundam.comicatsdgo.view.ScrollingTextView;
 
 
 public class UnitViewActivity extends Activity implements FetchUnitInfoListener {
@@ -17,6 +18,8 @@ public class UnitViewActivity extends Activity implements FetchUnitInfoListener 
     GaugeBarView defenseGauge;
     GaugeBarView mobilityGauge;
     GaugeBarView controlGauge;
+
+    ScrollingTextView modelNameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,12 @@ public class UnitViewActivity extends Activity implements FetchUnitInfoListener 
         controlGauge = (GaugeBarView)findViewById(R.id.gauge_control);
 
         playAnimations();
+
+        modelNameTextView = (ScrollingTextView)findViewById(R.id.model_name_text_view);
+        modelNameTextView.setSpeed(12);
+        modelNameTextView.setText("非常长的文字很长很长没完没了不旋转不算完滚动了才行哎哟简直要死人命了那还能咋办呢");
+
+
     }
 
     private void playAnimations() {
