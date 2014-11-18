@@ -207,6 +207,22 @@ public class GDInfoBuilder {
         return result;
     }
 
+    static ArrayList<String> allUnitInfoSetterNames;
+    static ArrayList<String> getAllUnitInfoSetterNames() {
+        if (allUnitInfoSetterNames == null) {
+            Method[] allDeclardMethods = UnitInfo.class.getDeclaredMethods();
+            allUnitInfoSetterNames = new ArrayList<String>();
+            // filter for all setters
+            for (Method m : allDeclardMethods) {
+                if (m.getName().startsWith("set") &&
+                        m.getParameterTypes().length == 1) {
+                    allUnitInfoSetterNames.add(m.getName() + "_" + m.getParameterTypes()[0].toString());
+                }
+            }
+        }
+        return allUnitInfoSetterNames;
+    }
+
     public static UnitInfo buildUnitInfo(String json) {
         if (json == "") {
             return null;
@@ -223,25 +239,15 @@ public class GDInfoBuilder {
             JSONObject unitJSONOBject = rootObject.getJSONObject("unit");
             Iterator<String> allKeys = unitJSONOBject.keys();
 
-            Method[] allDeclardMethods = UnitInfo.class.getDeclaredMethods();
-            ArrayList<String> allSetterNames = new ArrayList<String>();
-            // filter for all setters
-            for (Method m : allDeclardMethods) {
-                if (m.getName().startsWith("set") &&
-                        m.getParameterTypes().length == 1) {
-                    allSetterNames.add(m.getName() + "_" + m.getParameterTypes()[0].toString());
-                }
-            }
-
             while(allKeys.hasNext()) {
                 String key = allKeys.next();
-                Log.d("buildUnitInfo: ", key);
+                // Log.d("buildUnitInfo: ", key);
                 try {
                     String firstLetter = key.substring(0, 1).toUpperCase();
                     String keyForReflector = "set" + firstLetter + key.substring(1, key.length());
 
                     for (Class _class : new Class[] {String.class, Integer.class, Float.class}) {
-                        if (allSetterNames.indexOf(keyForReflector + "_" + _class.toString()) >= 0) {
+                        if (getAllUnitInfoSetterNames().indexOf(keyForReflector + "_" + _class.toString()) >= 0) {
                             Method setter = UnitInfo.class.getDeclaredMethod(keyForReflector, _class);
                             if (setter != null) {
                                 if (_class.toString().equals(String.class.toString())) {
@@ -255,8 +261,6 @@ public class GDInfoBuilder {
                             break;
                         }
                     }
-
-
                 } catch(NoSuchMethodException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {

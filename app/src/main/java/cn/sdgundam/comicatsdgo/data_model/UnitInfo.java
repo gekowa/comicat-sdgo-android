@@ -1,11 +1,12 @@
 package cn.sdgundam.comicatsdgo.data_model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by xhguo on 9/25/2014.
  */
-public class UnitInfo {
+public class UnitInfo implements Serializable {
 
     Date generated;
 

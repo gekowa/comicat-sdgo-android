@@ -34,4 +34,8 @@
     <dimen name="news_list_item_title_height">32dp</dimen>
 
     <dimen name="video_view_height">220dp</dimen>
+
+    <dimen name="unit_gauge_bar_height">16dp</dimen>
+    <dimen name="unit_gauge_bar_text_size">11dp</dimen>
+    <dimen name="unit_gauge_bar_width">160dp</dimen>
 </resources>

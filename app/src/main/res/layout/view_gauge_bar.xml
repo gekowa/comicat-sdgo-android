@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/unit_gauge_bar_height">
+
+    <ImageView android:id="@+id/gauge_bg_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/unit_gauge_bar_height"
+        android:src="@drawable/gauge_bg"
+        android:scaleType="fitXY" />
+
+    <ImageView android:id="@+id/gauge_image_view"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/unit_gauge_bar_height"
+        android:layout_alignLeft="@id/gauge_bg_image_view"
+        android:src="@drawable/gauge_attack"
+        android:scaleType="fitXY" />
+
+    <TextView android:id="@+id/gauge_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/gauge_image_view"
+        android:singleLine="true"
+        android:paddingRight="6dp"
+        android:textColor="#FFF"
+        android:textSize="@dimen/unit_gauge_bar_text_size"
+        android:textStyle="bold"
+        android:text="120"
+        android:ellipsize="none"
+        android:visibility="invisible"
+        />
+</merge>

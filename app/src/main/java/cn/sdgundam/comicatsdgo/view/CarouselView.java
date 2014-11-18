@@ -12,10 +12,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.imbryk.viewpager.LoopViewPager;
 import com.squareup.picasso.Picasso;
@@ -27,7 +25,6 @@ import java.util.ArrayList;
 import cn.sdgundam.comicatsdgo.PostViewActivity;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.VideoViewActivity;
 import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
 
 /**
@@ -75,7 +72,7 @@ public class CarouselView extends RelativeLayout {
     public CarouselView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        LayoutInflater.from(context).inflate(R.layout.carousel_view, this, true);
+        LayoutInflater.from(context).inflate(R.layout.view_carousel, this, true);
     }
 
     public void startAutoScroll(int delayTimeInMills) {
