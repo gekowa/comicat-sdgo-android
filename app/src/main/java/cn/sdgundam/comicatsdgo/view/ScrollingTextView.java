@@ -2,61 +2,73 @@ package cn.sdgundam.comicatsdgo.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.text.TextPaint;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.TextView;
+import android.view.textservice.TextServicesManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import cn.sdgundam.comicatsdgo.Utility;
 
 /**
  * Created by xhguo on 11/17/2014.
  */
 public class ScrollingTextView extends View {
     private String text;
+    private int textSize = 15;
+    private int textColor = Color.BLACK;
     private int speed;
 
     private Timer scroller;
     private float stringWidth;
     private Rect textBounds;
     private boolean running;
-    private float position;
+    private float textPosition;
 
     private static TextPaint textPaint;
 
     private Handler taskHandler;
 
-    private static final int SCROLL_TEXT_GAP = 37;
+    private static final String GAP_TEXT = "GD";
+    private static int textGap = 60;
 
     public ScrollingTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         taskHandler = new Handler();
-    }
 
-    static TextPaint getTextPaint() {
-        if (textPaint == null) {
-            textPaint = new TextPaint();
-            textPaint.setTextSize(30);
-        }
-        return textPaint;
+        textPaint = new TextPaint();
+        textPaint.setTextSize(textSize);
+        textPaint.setColor(textColor);
     }
 
     public void setText(String text) {
         this.text = text;
 
-        position = 0;
-        stringWidth = getTextPaint().measureText(text);
+        textPosition = 0;
+        stringWidth = textPaint.measureText(text);
+
         textBounds = new Rect();
-        getTextPaint().getTextBounds(text, 0, text.length(), textBounds);
+        textPaint.getTextBounds(text, 0, text.length(), textBounds);
 
         if (stringWidth >= this.getWidth()) {
             setupScroller();
         }
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+        textPaint.setTextSize(textSize);
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+        textPaint.setColor(textColor);
     }
 
     public void setSpeed(int speed) {
@@ -70,18 +82,23 @@ public class ScrollingTextView extends View {
 
     void setupScroller() {
         if (scroller == null && speed > 0 && text != null) {
-            scroller = new Timer("Scroller");
+            Rect gapTextBounds = new Rect();
+            textPaint.getTextBounds(GAP_TEXT, 0, GAP_TEXT.length(), gapTextBounds);
+            textGap = gapTextBounds.right - gapTextBounds.left;
+
+            scroller = new Timer("ScrollingText");
             scroller.schedule(new TimerTask() {
+
                 @Override
                 public void run() {
                     if (running) {
-                        position -= 0.5f;
+                        textPosition -= 1f;
 
-                        if (position + stringWidth < 0) {
-                            position = SCROLL_TEXT_GAP;
+                        if (textPosition + stringWidth < 0) {
+                            textPosition = textGap;
                         }
 
-                        if (position == 0) {
+                        if (textPosition == 0) {
                             running = false;
                             taskHandler.postDelayed(new Runnable() {
                                 @Override
@@ -106,18 +123,23 @@ public class ScrollingTextView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (textPaint != null) {
+            setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec),
+                    textBounds.bottom - textBounds.top + getPaddingTop() + getPaddingBottom());
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawText(text, position, -textBounds.top, textPaint);
+        canvas.drawText(text, textPosition, -textBounds.top, textPaint);
 
         if (stringWidth > this.getWidth() &&
-                position < this.getWidth() - stringWidth) {
-            float position2 = position + stringWidth + SCROLL_TEXT_GAP;
+                textPosition < this.getWidth() - stringWidth) {
+            float position2 = textPosition + stringWidth + textGap;
             canvas.drawText(text, position2, -textBounds.top, textPaint);
         }
     }

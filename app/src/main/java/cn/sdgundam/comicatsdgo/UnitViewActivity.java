@@ -1,6 +1,7 @@
 package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,8 +44,10 @@ public class UnitViewActivity extends Activity implements FetchUnitInfoListener 
         playAnimations();
 
         modelNameTextView = (ScrollingTextView)findViewById(R.id.model_name_text_view);
-        modelNameTextView.setSpeed(12);
-        modelNameTextView.setText("非常长的文字很长很长没完没了不旋转不算完滚动了才行哎哟简直要死人命了那还能咋办呢");
+        modelNameTextView.setSpeed(16);
+        modelNameTextView.setTextColor(Color.BLACK);
+        modelNameTextView.setTextSize((int)Utility.convertDpToPixel(18f, this));
+        modelNameTextView.setText("非常长的文字很长很长没完没了");
 
 
     }
