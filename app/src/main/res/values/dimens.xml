@@ -38,4 +38,9 @@
     <dimen name="unit_gauge_bar_height">16dp</dimen>
     <dimen name="unit_gauge_bar_text_size">11dp</dimen>
     <dimen name="unit_gauge_bar_width">160dp</dimen>
+
+    <dimen name="unit_view_model_name_text_size">17dp</dimen>
+    <dimen name="unit_view_image_size">300px</dimen>
+
+
 </resources>

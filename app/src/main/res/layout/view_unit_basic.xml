@@ -1,60 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:gd="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    >
 
-    <LinearLayout android:orientation="vertical"
+    <!-- 名称 和 rank -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <cn.sdgundam.comicatsdgo.view.ScrollingTextView
+            android:id="@+id/model_name_text_view"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:layout_marginRight="20dp"/>
 
-            <!--<TextView-->
-                <!--android:id="@+id/model_name_text_view"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:layout_weight="1"-->
-                <!--android:text="标题标题标题标题标题标题"-->
-                <!--/>-->
+        <TextView
+            android:id="@+id/rank_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="#3F6FAD"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="#3F6FAD"
+            android:textStyle="bold"
+            android:text=" rank"
+            />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/rank_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textColor="#3F6FAD"
-                android:text="AR rank"
-                />
-        </LinearLayout>
+    <!-- 图 和 条状图 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:id="@+id/unit_image_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".42"
+            android:layout_marginRight="11dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".58">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
+            <!-- gauge bars and simple stats -->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
 
-                <!-- All gauge bars and simple stats -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:text="攻击" />
+
+                <cn.sdgundam.comicatsdgo.view.GaugeBarView
+                    android:id="@+id/gauge_attack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    gd:gaugeType="Attack" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:text="防守" />
+
+                <cn.sdgundam.comicatsdgo.view.GaugeBarView
+                    android:id="@+id/gauge_defense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    gd:gaugeType="Defense" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:text="机动" />
+
+                <cn.sdgundam.comicatsdgo.view.GaugeBarView
+                    android:id="@+id/gauge_mobility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    gd:gaugeType="Mobility" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:text="操控" />
+
+                <cn.sdgundam.comicatsdgo.view.GaugeBarView
+                    android:id="@+id/gauge_control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    gd:gaugeType="Control" />
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:text="能力(3D)总和"
+                    android:textColor="#F00" />
+
+                <TextView
+                    android:id="@+id/sum_3d_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="20dp"
+                    android:textColor="#F00" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:text="4D总和"
+                     />
+
+                <TextView
+                    android:id="@+id/sum_4d_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="20dp"
+                    />
+
+            </RelativeLayout>
         </LinearLayout>
-
-        <ViewPager
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></ViewPager>
-
     </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

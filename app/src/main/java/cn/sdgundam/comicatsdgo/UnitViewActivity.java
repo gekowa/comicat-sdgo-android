@@ -12,15 +12,11 @@ import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitInfoListener;
 import cn.sdgundam.comicatsdgo.view.GaugeBarView;
 import cn.sdgundam.comicatsdgo.view.ScrollingTextView;
+import cn.sdgundam.comicatsdgo.view.UnitBasicDataView;
 
 
 public class UnitViewActivity extends Activity implements FetchUnitInfoListener {
-    GaugeBarView attackGauge;
-    GaugeBarView defenseGauge;
-    GaugeBarView mobilityGauge;
-    GaugeBarView controlGauge;
-
-    ScrollingTextView modelNameTextView;
+    UnitBasicDataView basicDataView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,36 +25,14 @@ public class UnitViewActivity extends Activity implements FetchUnitInfoListener 
 
         GDApiService apiService = new GDApiService(this);
         apiService.setUnitInfoListener(this);
-        apiService.fetchUnitInfo("10021", true);
+        apiService.fetchUnitInfo("10212", true);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        attackGauge = (GaugeBarView)findViewById(R.id.gauge_attack);
-        defenseGauge = (GaugeBarView)findViewById(R.id.gauge_defense);
-        mobilityGauge = (GaugeBarView)findViewById(R.id.gauge_mobility);
-        controlGauge = (GaugeBarView)findViewById(R.id.gauge_control);
-
-        playAnimations();
-
-        modelNameTextView = (ScrollingTextView)findViewById(R.id.model_name_text_view);
-        modelNameTextView.setSpeed(16);
-        modelNameTextView.setTextColor(Color.BLACK);
-        modelNameTextView.setTextSize((int)Utility.convertDpToPixel(18f, this));
-        modelNameTextView.setText("非常长的文字很长很长没完没了");
-
-
-    }
-
-    private void playAnimations() {
-        Toast.makeText(this, "Animating...", Toast.LENGTH_SHORT).show();
-
-        attackGauge.playAnimation();
-        defenseGauge.playAnimation();
-        mobilityGauge.playAnimation();
-        controlGauge.playAnimation();
+        basicDataView = (UnitBasicDataView)findViewById(R.id.unit_basic_data_view);
     }
 
     @Override
@@ -82,8 +56,21 @@ public class UnitViewActivity extends Activity implements FetchUnitInfoListener 
 
     @Override
     public void onReceiveUnitInfo(UnitInfo unitInfo) {
+        configureBasicDataView(unitInfo);
 
+        basicDataView.playAnimations();
+    }
 
+    private void configureBasicDataView(UnitInfo unitInfo) {
+        basicDataView.setModelName(unitInfo.getModelName());
+        basicDataView.setUnitId(unitInfo.getUnitId());
+        basicDataView.setRank(unitInfo.getRank());
+        basicDataView.setAttackValue(unitInfo.getAttackG());
+        basicDataView.setDefenseValue(unitInfo.getDefenseG());
+        basicDataView.setMobilityValue(unitInfo.getMobilityG());
+        basicDataView.setControlValue(unitInfo.getControlG());
+        basicDataView.setSum3DValue(unitInfo.getSum3D());
+        basicDataView.setSum4DValue(unitInfo.getSum4D());
     }
 
     @Override

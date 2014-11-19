@@ -34,7 +34,7 @@ public class ScrollingTextView extends View {
 
     private Handler taskHandler;
 
-    private static final String GAP_TEXT = "GD";
+    private static final String GAP_TEXT = "GDRO";
     private static int textGap = 60;
 
     public ScrollingTextView(Context context, AttributeSet attrs) {
@@ -92,13 +92,13 @@ public class ScrollingTextView extends View {
                 @Override
                 public void run() {
                     if (running) {
-                        textPosition -= 1f;
+                        textPosition -= 1.8f;
 
                         if (textPosition + stringWidth < 0) {
                             textPosition = textGap;
                         }
 
-                        if (textPosition == 0) {
+                        if ((int)textPosition == 0) {
                             running = false;
                             taskHandler.postDelayed(new Runnable() {
                                 @Override
@@ -116,14 +116,15 @@ public class ScrollingTextView extends View {
                         });
                     }
                 }
-            }, 0, speed);
+            }, 2000, speed);
+
             running = true;
         }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (textPaint != null) {
+        if (textBounds != null) {
             setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec),
                     textBounds.bottom - textBounds.top + getPaddingTop() + getPaddingBottom());
         } else {

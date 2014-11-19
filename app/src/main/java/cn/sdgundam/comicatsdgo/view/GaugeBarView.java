@@ -84,7 +84,7 @@ public class GaugeBarView extends RelativeLayout {
     }
 
     public void playAnimation() {
-        ResizeAnimation ani1 = new ResizeAnimation(gaugeImageView, 200);
+        ResizeAnimation ani1 = new ResizeAnimation(gaugeImageView, (int)((float)getWidth() * gaugePercent));
         ani1.setDuration(ANIMATION_DURATION);
         gaugeImageView.startAnimation(ani1);
 

@@ -315,19 +315,11 @@ public class UnitInfo implements Serializable {
     }
 
     public Float getSum3D() {
-        return sum3D;
-    }
-
-    public void setSum3D(Float sum3D) {
-        this.sum3D = sum3D;
+        return attackG + defenseG + mobilityG;
     }
 
     public Float getSum4D() {
-        return sum4D;
-    }
-
-    public void setSum4D(Float sum4D) {
-        this.sum4D = sum4D;
+        return getSum3D() + controlG;
     }
 
     public Integer getWeapon1() {
