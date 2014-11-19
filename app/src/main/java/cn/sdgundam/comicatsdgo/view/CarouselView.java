@@ -43,7 +43,7 @@ public class CarouselView extends RelativeLayout {
     public void setCarousel(CarouselInfo[] carousel) {
         this.carousel = carousel;
 
-        pager = (LoopViewPager) this.findViewById(R.id.the_view_pager);
+        pager = (LoopViewPager) this.findViewById(R.id.carousel_view_pager);
         pager.setAdapter(new CarouselPageAdapter2());
         // pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager.setOnTouchListener(new View.OnTouchListener() {
@@ -58,7 +58,7 @@ public class CarouselView extends RelativeLayout {
             }
         });
 
-        PageIndicator indicator = (LinePageIndicator) this.findViewById(R.id.indicator);
+        PageIndicator indicator = (LinePageIndicator) this.findViewById(R.id.carousel_page_indicator);
         indicator.setViewPager(pager);
 
         autoScrollHandler = new AutoScrollHandler();

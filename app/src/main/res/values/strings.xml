@@ -44,5 +44,11 @@
     <string name="watch_this_video_on_pc">请用电脑访问漫猫网站来观看此视频.</string>
     <string name="title_activity_unit_view">Unit View</string>
     <string name="hello_world">Hello world!</string>
+    <string name="unit_stat_attack">攻击</string>
+    <string name="unit_stat_defense">防守</string>
+    <string name="unit_stat_mobility">机动</string>
+    <string name="unit_stat_control">操控</string>
+    <string name="unit_stat_sum_3d">能力(3D)总和</string>
+    <string name="unit_stat_sum_4d">4D总和</string>
 
 </resources>

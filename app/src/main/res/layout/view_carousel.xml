@@ -6,13 +6,13 @@
     android:layout_height="match_parent">
 
     <com.imbryk.viewpager.LoopViewPager
-        android:id="@+id/the_view_pager"
+        android:id="@+id/carousel_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
 
     <com.viewpagerindicator.LinePageIndicator
-        android:id="@+id/indicator"
+        android:id="@+id/carousel_page_indicator"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
         android:layout_width="match_parent"

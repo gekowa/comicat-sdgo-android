@@ -3,9 +3,12 @@ package cn.sdgundam.comicatsdgo;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.viewpagerindicator.TabPageIndicator;
 
 import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
@@ -17,6 +20,12 @@ import cn.sdgundam.comicatsdgo.view.UnitBasicDataView;
 
 public class UnitViewActivity extends Activity implements FetchUnitInfoListener {
     UnitBasicDataView basicDataView;
+    ViewPager unitDetailViewPager;
+    TabPageIndicator pageIndicator;
+
+    static final String[] UNIT_DETAIL_TABS_TITLES = [
+
+            ]
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,26 +42,31 @@ public class UnitViewActivity extends Activity implements FetchUnitInfoListener 
         super.onStart();
 
         basicDataView = (UnitBasicDataView)findViewById(R.id.unit_basic_data_view);
+        unitDetailViewPager = (ViewPager)findViewById(R.id.unit_detail_vp);
+
+        pageIndicator = (TabPageIndicator)findViewById(R.id.unit_view_vpi);
+        pageIndicator.setViewPager(unitDetailViewPager);
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.unit_view, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.unit_view, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public void onReceiveUnitInfo(UnitInfo unitInfo) {

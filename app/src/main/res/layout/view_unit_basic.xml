@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="攻击" />
+                    android:text="@string/unit_stat_attack" />
 
                 <cn.sdgundam.comicatsdgo.view.GaugeBarView
                     android:id="@+id/gauge_attack"
@@ -93,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="防守" />
+                    android:text="@string/unit_stat_defense" />
 
                 <cn.sdgundam.comicatsdgo.view.GaugeBarView
                     android:id="@+id/gauge_defense"
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="机动" />
+                    android:text="@string/unit_stat_mobility" />
 
                 <cn.sdgundam.comicatsdgo.view.GaugeBarView
                     android:id="@+id/gauge_mobility"
@@ -131,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="操控" />
+                    android:text="@string/unit_stat_control" />
 
                 <cn.sdgundam.comicatsdgo.view.GaugeBarView
                     android:id="@+id/gauge_control"
@@ -150,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="能力(3D)总和"
+                    android:text="@string/unit_stat_sum_3d"
                     android:textColor="#F00" />
 
                 <TextView
@@ -172,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="4D总和"
+                    android:text="@string/unit_stat_sum_4d"
                      />
 
                 <TextView
