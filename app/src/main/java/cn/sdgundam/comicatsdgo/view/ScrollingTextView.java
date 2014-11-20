@@ -45,6 +45,7 @@ public class ScrollingTextView extends View {
         textPaint = new TextPaint();
         textPaint.setTextSize(textSize);
         textPaint.setColor(textColor);
+        textPaint.setFlags(TextPaint.ANTI_ALIAS_FLAG);
     }
 
     public void setText(String text) {

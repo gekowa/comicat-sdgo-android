@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <cn.sdgundam.comicatsdgo.view.UnitSingleWeaponView
+        android:id="@+id/unit_weapon_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        />
+
+    <cn.sdgundam.comicatsdgo.view.UnitSingleWeaponView
+        android:id="@+id/unit_weapon_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        />
+
+    <cn.sdgundam.comicatsdgo.view.UnitSingleWeaponView
+        android:id="@+id/unit_weapon_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        />
+
+    <cn.sdgundam.comicatsdgo.view.UnitSingleWeaponView
+        android:id="@+id/unit_weapon_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        />
+
+    <cn.sdgundam.comicatsdgo.view.UnitSingleWeaponView
+        android:id="@+id/unit_weapon_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        />
+
+    <cn.sdgundam.comicatsdgo.view.UnitSingleWeaponView
+        android:id="@+id/unit_weapon_6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        />
+</LinearLayout>

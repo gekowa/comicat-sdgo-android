@@ -36,9 +36,6 @@ public class UnitInfo implements Serializable {
     Float mobilityG;
     Float controlG;
 
-    Float sum3D;
-    Float sum4D;
-
     // weapons
     Integer weapon1;
     Integer weapon2;
@@ -84,8 +81,6 @@ public class UnitInfo implements Serializable {
     String weaponEx5Line2;
     String weaponEx6Line1;
     String weaponEx6Line2;
-
-    Integer numberOfWeapons;
 
     // skills
     Integer skill1;
@@ -659,11 +654,15 @@ public class UnitInfo implements Serializable {
     }
 
     public Integer getNumberOfWeapons() {
-        return numberOfWeapons;
-    }
-
-    public void setNumberOfWeapons(Integer numberOfWeapons) {
-        this.numberOfWeapons = numberOfWeapons;
+        if (weapon4 == 0) {
+            return 3;
+        } else if (weapon5 == 0) {
+            return 4;
+        } else if (weapon6 == 0) {
+            return 5;
+        } else {
+            return 6;
+        }
     }
 
     public Integer getSkill1() {
