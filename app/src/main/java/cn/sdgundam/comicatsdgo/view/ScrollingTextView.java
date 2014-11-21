@@ -27,7 +27,7 @@ public class ScrollingTextView extends View {
     private Timer scroller;
     private float stringWidth;
     private Rect textBounds;
-    private boolean running;
+    private boolean running = false;
     private float textPosition;
 
     private static TextPaint textPaint;
@@ -57,9 +57,18 @@ public class ScrollingTextView extends View {
         textBounds = new Rect();
         textPaint.getTextBounds(text, 0, text.length(), textBounds);
 
-        if (stringWidth >= this.getWidth()) {
-            setupScroller();
-        }
+//        if (stringWidth >= this.getWidth()) {
+//            setupScroller();
+//        }
+
+        post(new Runnable() {
+            @Override
+            public void run() {
+                if (stringWidth >= ScrollingTextView.this.getWidth()) {
+                    setupScroller();
+                }
+            }
+        });
     }
 
     public void setTextSize(int textSize) {
@@ -74,11 +83,6 @@ public class ScrollingTextView extends View {
 
     public void setSpeed(int speed) {
         this.speed = speed;
-
-        scroller = null;
-        if (stringWidth >= this.getWidth()) {
-            setupScroller();
-        }
     }
 
     void setupScroller() {

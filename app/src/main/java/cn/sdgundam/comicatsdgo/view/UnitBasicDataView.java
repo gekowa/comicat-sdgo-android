@@ -119,9 +119,14 @@ public class UnitBasicDataView extends LinearLayout {
     }
 
     public void playAnimations() {
-        attackGauge.playAnimation();
-        defenseGauge.playAnimation();
-        mobilityGauge.playAnimation();
-        controlGauge.playAnimation();
+        post(new Runnable() {
+            @Override
+            public void run() {
+                attackGauge.playAnimation();
+                defenseGauge.playAnimation();
+                mobilityGauge.playAnimation();
+                controlGauge.playAnimation();
+            }
+        });
     }
 }
