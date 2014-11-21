@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cn.sdgundam.comicatsdgo.UnitViewActivity"
+
     >
 
     <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
@@ -35,19 +36,8 @@
                     android:id="@+id/unit_view_vpi"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/custom_tab_indicator"
-                    android:textAppearance="@style/CustomTabPageIndicator.Text"
-                    android:textColor="#FF555555"
-                    android:textSize="16sp"
-                    android:divider="@drawable/custom_tab_indicator_divider"
-                    android:dividerPadding="10dp"
-                    android:showDividers="middle"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:fadingEdge="horizontal"
-                    android:fadingEdgeLength="8dp"
+                    style="@style/CustomTabPageIndicator"
                     />
-
 
                 <cn.sdgundam.comicatsdgo.extension.HeightAdaptableViewPager
                     android:id="@+id/unit_detail_vp"
@@ -58,7 +48,6 @@
 
         </ScrollView>
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
-
 
     <cn.sdgundam.comicatsdgo.view.NetworkErrorView
         android:id="@+id/nev"

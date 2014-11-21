@@ -13,33 +13,35 @@ public class HeightAdaptableViewPager extends ViewPager {
         super(context, attrs);
     }
 
+    int lastHeight;
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        View view = getChildAt(this.getCurrentItem());
+        View view = findViewWithTag(getCurrentItem());
         if (view != null) {
             view.measure(widthMeasureSpec, heightMeasureSpec);
+            setMeasuredDimension(getMeasuredWidth(), measureHeight(heightMeasureSpec, view));
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
-        setMeasuredDimension(getMeasuredWidth(), measureHeight(heightMeasureSpec, view));
     }
 
     private int measureHeight(int measureSpec, View view) {
-        int result = 0;
+        int height = lastHeight;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
 
         if (specMode == MeasureSpec.EXACTLY) {
-            result = specSize;
+            height = specSize;
         } else {
             // set the height from the base view if available
             if (view != null) {
-                result = view.getMeasuredHeight();
+                height = view.getMeasuredHeight();
             }
             if (specMode == MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
+                height = Math.min(height, specSize);
             }
         }
-        return result;
+        return height;
     }
 }

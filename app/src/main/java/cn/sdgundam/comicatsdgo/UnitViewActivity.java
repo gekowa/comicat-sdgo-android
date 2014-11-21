@@ -3,10 +3,14 @@ package cn.sdgundam.comicatsdgo;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +35,8 @@ public class UnitViewActivity extends Activity implements
         FetchUnitInfoListener,
         OnRefreshListener {
 
+    private static final String LOG_TAG = UnitViewActivity.class.getSimpleName();
+
     private UnitBasicDataView basicDataView;
     private ViewPager unitDetailViewPager;
     private TabPageIndicator pageIndicator;
@@ -41,6 +47,9 @@ public class UnitViewActivity extends Activity implements
     private GDApiService apiService;
     private PullToRefreshLayout ptrLayout;
     private NetworkErrorView nev;
+
+    // details view cache
+    private static View unitWeaponView;
 
     private String unitId;
     private UnitInfo unitInfo;
@@ -103,7 +112,8 @@ public class UnitViewActivity extends Activity implements
             unitId = extra.getString("id");
         }
 
-        unitId = "10212";
+        // unitId = "24713"; // 飞翼高达凤凰
+        unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
     }
 
     void loadUnitInfo() {
@@ -178,6 +188,8 @@ public class UnitViewActivity extends Activity implements
 
         String[] unitViewTabTitles;
 
+
+
         public UnitViewDetailsPagerAdapter(Context context) {
             super();
 
@@ -196,7 +208,7 @@ public class UnitViewActivity extends Activity implements
 
         @Override
         public boolean isViewFromObject(View view, Object o) {
-            return view == (View)o;
+            return view == o;
         }
 
         @Override
@@ -206,49 +218,94 @@ public class UnitViewActivity extends Activity implements
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
+            Log.d(LOG_TAG, "instantiateItem: " + position);
+            View view;
             if (unitInfo == null) {
-                View emptyView = new UnitViewPlaceHolder(context, null);
-                container.addView(emptyView);
-                return emptyView;
+                view = getEmptyView(position);
+                container.addView(view);
+                return view;
             }
 
             if (position == 0) {
+                view = getUnitWeaponView();
 
-                UnitWeaponsView weaponListView = new UnitWeaponsView(context, null);
-                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                weaponListView.setLayoutParams(layoutParams);
-                weaponListView.setUnitInfo(unitInfo);
-                container.addView(weaponListView);
-                return weaponListView;
             } else {
-                View emptyView = new UnitViewPlaceHolder(context, null);
-                container.addView(emptyView);
-                return emptyView;
+                view = getEmptyView(position);
             }
+
+            view.setTag(position);
+            container.addView(view);
+            return view;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
+            Log.d(LOG_TAG, "destroyItem: " + position);
             container.removeView((View)object);
+        }
+
+        View getEmptyView(int position) {
+            UnitViewPlaceHolder emptyView = new UnitViewPlaceHolder(context, null);
+            emptyView.setText(position + "");
+            emptyView.setLayoutParams(
+                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            return emptyView;
+        }
+
+        View getUnitWeaponView() {
+            if (unitWeaponView == null) {
+                Log.d(LOG_TAG, "getUnitWeaponView creating new");
+                unitWeaponView = new UnitWeaponsView(context, null);
+                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                unitWeaponView.setLayoutParams(layoutParams);
+                ((UnitWeaponsView) unitWeaponView).setUnitInfo(unitInfo);
+            }
+            return unitWeaponView;
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            super.setPrimaryItem(container, position, object);
         }
     }
 
     class UnitViewPlaceHolder extends View {
+        String text;
+
+        final int[] COLORS = new int[] {
+            Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW,
+        };
+
         UnitViewPlaceHolder(Context context, AttributeSet attrs) {
             super(context, attrs);
         }
 
+        public void setText(String text) {
+            this.text = text;
+        }
+
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), 200);
         }
 
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
+
+            Paint solidRed = new Paint();
+            solidRed.setColor(Color.RED);
+
+            TextPaint yellowText = new TextPaint();
+            yellowText.setColor(Color.YELLOW);
+            yellowText.setTextSize(24);
+            // solidRed.setColor(COLORS[(int)(COLORS.length * Math.random())]);
+
+            canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), solidRed);
+            canvas.drawText(text, 100, 100, yellowText);
         }
     }
 }
