@@ -9,12 +9,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
         >
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp">
 
             <TextView
                 android:id="@+id/weapon_caption_text_view"
@@ -26,19 +28,22 @@
                 android:id="@+id/weapon_property_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:textColor="#40C45E" />
 
             <TextView
                 android:id="@+id/weapon_effect_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:textColor="#FFAB54" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp">
 
             <TextView
                 android:id="@+id/weapon_name_text_view"
@@ -49,6 +54,7 @@
                 android:id="@+id/weapon_range_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:textColor="#F00"/>
         </LinearLayout>
 
@@ -74,5 +80,6 @@
         android:layout_height="27dp"
         android:layout_alignParentRight="true"
         android:paddingTop="8dp"
-        android:scaleType="fitXY"></ImageView>
+        android:paddingRight="10dp"
+        android:scaleType="fitXY"/>
 </merge>

@@ -45,7 +45,7 @@
     <string name="button_text_OK">好</string>
     <string name="unsupported_video_host">此视频不支持手机播放</string>
     <string name="watch_this_video_on_pc">请用电脑访问漫猫网站来观看此视频.</string>
-    <string name="title_activity_unit_view">Unit View</string>
+    <string name="title_activity_unit_view">机体</string>
     <string name="hello_world">Hello world!</string>
 
     <string name="unit_stat_attack">攻击</string>
