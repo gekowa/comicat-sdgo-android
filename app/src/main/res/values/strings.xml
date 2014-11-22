@@ -62,4 +62,12 @@
         <item>视频</item>
     </string-array>
 
+    <string name="unit_view_tab_title_weapons">武器</string>
+    <string name="unit_view_tab_title_skills">技能</string>
+    <string name="unit_view_tab_title_details">资料</string>
+    <string name="unit_related_video">视频</string>
+
+
+
+
 </resources>

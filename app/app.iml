@@ -83,6 +83,7 @@
     <orderEntry type="library" exported="" name="paginglistview-1.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-v13-20.0.0" level="project" />
+    <orderEntry type="library" exported="" name="StickyScrollViewItems-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.3.4" level="project" />
     <orderEntry type="library" exported="" name="twowayview-0.1.1" level="project" />
     <orderEntry type="library" exported="" name="hlistview-1.2.2" level="project" />

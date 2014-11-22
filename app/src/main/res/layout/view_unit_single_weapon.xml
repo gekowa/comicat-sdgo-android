@@ -2,7 +2,8 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <LinearLayout
         android:orientation="vertical"
@@ -56,15 +57,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#02A49C"
-            android:textSize="13dp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/weapon_ex_line2_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#02A49C"
-            android:textSize="13dp"/>
-        
+            android:textSize="12dp"/>
+
     </LinearLayout>
 
     <ImageView
@@ -72,6 +73,6 @@
         android:layout_width="84dp"
         android:layout_height="27dp"
         android:layout_alignParentRight="true"
+        android:paddingTop="8dp"
         android:scaleType="fitXY"></ImageView>
-
 </merge>

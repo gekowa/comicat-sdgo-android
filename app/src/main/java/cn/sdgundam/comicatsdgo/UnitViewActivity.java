@@ -6,16 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.viewpagerindicator.TabPageIndicator;
+import android.widget.TabHost;
 
 import java.util.Date;
 
@@ -38,18 +35,23 @@ public class UnitViewActivity extends Activity implements
     private static final String LOG_TAG = UnitViewActivity.class.getSimpleName();
 
     private UnitBasicDataView basicDataView;
-    private ViewPager unitDetailViewPager;
-    private TabPageIndicator pageIndicator;
+//    private ViewPager unitDetailViewPager;
+//    private TabPageIndicator pageIndicator;
     private ViewGroup progressViewContainer;
 
-    private UnitViewDetailsPagerAdapter adapter;
+    private TabHost tabHost;
+
+//    private UnitViewDetailsPagerAdapter adapter;
 
     private GDApiService apiService;
     private PullToRefreshLayout ptrLayout;
     private NetworkErrorView nev;
 
     // details view cache
-    private static View unitWeaponView;
+//    private View unitWeaponView;
+//    private View unitSkillView;
+//    private View unitDetailView;
+//    private View relatedVideoView;
 
     private String unitId;
     private UnitInfo unitInfo;
@@ -71,13 +73,14 @@ public class UnitViewActivity extends Activity implements
         apiService = new GDApiService(this);
         apiService.setUnitInfoListener(this);
 
-        adapter = new UnitViewDetailsPagerAdapter(this);
         basicDataView = (UnitBasicDataView)findViewById(R.id.unit_basic_data_view);
-        unitDetailViewPager = (ViewPager)findViewById(R.id.unit_detail_vp);
-        unitDetailViewPager.setAdapter(adapter);
 
-        pageIndicator = (TabPageIndicator)findViewById(R.id.unit_view_vpi);
-        pageIndicator.setViewPager(unitDetailViewPager);
+//        adapter = new UnitViewDetailsPagerAdapter(this);
+//        unitDetailViewPager = (ViewPager)findViewById(R.id.unit_detail_vp);
+//        unitDetailViewPager.setAdapter(adapter);
+
+//        pageIndicator = (TabPageIndicator)findViewById(R.id.unit_view_vpi);
+//        pageIndicator.setViewPager(unitDetailViewPager);
 
         ptrLayout = (PullToRefreshLayout)findViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(this)
@@ -104,7 +107,17 @@ public class UnitViewActivity extends Activity implements
             }
         });
 
+        tabHost = (TabHost)findViewById(R.id.tabhost);
+        tabHost.setup();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(LOG_TAG, "onResume");
+        super.onResume();
+
         loadUnitInfo();
+        // adapter.notifyDataSetChanged();
     }
 
     void initialize(Bundle extra) {
@@ -112,8 +125,8 @@ public class UnitViewActivity extends Activity implements
             unitId = extra.getString("id");
         }
 
-        // unitId = "24713"; // 飞翼高达凤凰
-        unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
+        unitId = "24713"; // 飞翼高达凤凰
+        // unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
     }
 
     void loadUnitInfo() {
@@ -138,17 +151,19 @@ public class UnitViewActivity extends Activity implements
 
         this.unitInfo = unitInfo;
 
-        configureBasicDataView(unitInfo);
+        configureBasicDataView();
         basicDataView.playAnimations();
 
-        adapter.setUnitInfo(unitInfo);
-        adapter.notifyDataSetChanged();
+//        adapter.setUnitInfo(unitInfo);
+//        adapter.notifyDataSetChanged();
 
-        pageIndicator.invalidate();
-        pageIndicator.requestLayout();
+//        pageIndicator.invalidate();
+//        pageIndicator.requestLayout();
+
+        configureTabs();
     }
 
-    private void configureBasicDataView(UnitInfo unitInfo) {
+    private void configureBasicDataView() {
         basicDataView.setModelName(unitInfo.getModelName());
         basicDataView.setUnitId(unitInfo.getUnitId());
         basicDataView.setRank(unitInfo.getRank());
@@ -158,6 +173,87 @@ public class UnitViewActivity extends Activity implements
         basicDataView.setControlValue(unitInfo.getControlG());
         basicDataView.setSum3DValue(unitInfo.getSum3D());
         basicDataView.setSum4DValue(unitInfo.getSum4D());
+    }
+
+    private void configureTabs() {
+        tabHost.clearAllTabs();
+
+        // add 4 tabs
+        createUnitWeaponTab();
+        createUnitSkillTab();
+        createUnitDetailTab();
+        createUnitRelatedVideoTab();
+    }
+
+    private void createUnitWeaponTab() {
+        TabHost.TabSpec spec = tabHost.newTabSpec("weapons");
+        spec.setContent(new TabHost.TabContentFactory() {
+            @Override
+            public View createTabContent(String tag) {
+                UnitWeaponsView view = new UnitWeaponsView(UnitViewActivity.this, null);
+                view.setUnitInfo(unitInfo);
+                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                view.setLayoutParams(layoutParams);
+                return view;
+            }
+        });
+
+        spec.setIndicator(getResources().getString(R.string.unit_view_tab_title_weapons));
+        tabHost.addTab(spec);
+    }
+
+    private void createUnitSkillTab() {
+        TabHost.TabSpec spec = tabHost.newTabSpec("skills");
+        spec.setContent(new TabHost.TabContentFactory() {
+            @Override
+            public View createTabContent(String tag) {
+                UnitViewPlaceHolder emptyView = new UnitViewPlaceHolder(UnitViewActivity.this, null);
+                emptyView.setText("2");
+                emptyView.setLayoutParams(
+                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                return emptyView;
+            }
+        });
+
+        spec.setIndicator(getResources().getString(R.string.unit_view_tab_title_skills));
+        tabHost.addTab(spec);
+    }
+
+    private void createUnitDetailTab() {
+        TabHost.TabSpec spec = tabHost.newTabSpec("detail");
+        spec.setContent(new TabHost.TabContentFactory() {
+            @Override
+            public View createTabContent(String tag) {
+                UnitViewPlaceHolder emptyView = new UnitViewPlaceHolder(UnitViewActivity.this, null);
+                emptyView.setText("3");
+                emptyView.setLayoutParams(
+                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                return emptyView;
+            }
+        });
+
+        spec.setIndicator(getResources().getString(R.string.unit_view_tab_title_details));
+        tabHost.addTab(spec);
+    }
+
+    private void createUnitRelatedVideoTab() {
+        TabHost.TabSpec spec = tabHost.newTabSpec("video");
+        spec.setContent(new TabHost.TabContentFactory() {
+            @Override
+            public View createTabContent(String tag) {
+                UnitViewPlaceHolder emptyView = new UnitViewPlaceHolder(UnitViewActivity.this, null);
+                emptyView.setText("4");
+                emptyView.setLayoutParams(
+                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                return emptyView;
+            }
+        });
+
+        spec.setIndicator(getResources().getString(R.string.unit_related_video));
+        tabHost.addTab(spec);
     }
 
     @Override
@@ -182,102 +278,125 @@ public class UnitViewActivity extends Activity implements
         ptrLayout.setRefreshComplete();
     }
 
-    class UnitViewDetailsPagerAdapter extends PagerAdapter {
-        Context context;
-        UnitInfo unitInfo;
-
-        String[] unitViewTabTitles;
-
-
-
-        public UnitViewDetailsPagerAdapter(Context context) {
-            super();
-
-            this.context = context;
-            unitViewTabTitles = context.getResources().getStringArray(R.array.unit_view_tab_titles);
-        }
-
-        public void setUnitInfo(UnitInfo unitInfo) {
-            this.unitInfo = unitInfo;
-        }
-
-        @Override
-        public int getCount() {
-            return unitViewTabTitles.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object o) {
-            return view == o;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return unitViewTabTitles[position];
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Log.d(LOG_TAG, "instantiateItem: " + position);
-            View view;
-            if (unitInfo == null) {
-                view = getEmptyView(position);
-                container.addView(view);
-                return view;
-            }
-
-            if (position == 0) {
-                view = getUnitWeaponView();
-
-            } else {
-                view = getEmptyView(position);
-            }
-
-            view.setTag(position);
-            container.addView(view);
-            return view;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            Log.d(LOG_TAG, "destroyItem: " + position);
-            container.removeView((View)object);
-        }
-
-        View getEmptyView(int position) {
-            UnitViewPlaceHolder emptyView = new UnitViewPlaceHolder(context, null);
-            emptyView.setText(position + "");
-            emptyView.setLayoutParams(
-                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            return emptyView;
-        }
-
-        View getUnitWeaponView() {
-            if (unitWeaponView == null) {
-                Log.d(LOG_TAG, "getUnitWeaponView creating new");
-                unitWeaponView = new UnitWeaponsView(context, null);
-                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                unitWeaponView.setLayoutParams(layoutParams);
-                ((UnitWeaponsView) unitWeaponView).setUnitInfo(unitInfo);
-            }
-            return unitWeaponView;
-        }
-
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            super.setPrimaryItem(container, position, object);
-        }
-    }
+//    class UnitViewDetailsPagerAdapter extends PagerAdapter {
+//        Context context;
+//        UnitInfo unitInfo;
+//
+//        String[] unitViewTabTitles;
+//
+//        public UnitViewDetailsPagerAdapter(Context context) {
+//            super();
+//
+//            this.context = context;
+//            unitViewTabTitles = context.getResources().getStringArray(R.array.unit_view_tab_titles);
+//        }
+//
+//        public void setUnitInfo(UnitInfo unitInfo) {
+//            this.unitInfo = unitInfo;
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return unitViewTabTitles.length;
+//        }
+//
+//        @Override
+//        public boolean isViewFromObject(View view, Object o) {
+//            return view == o;
+//        }
+//
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            return unitViewTabTitles[position];
+//        }
+//
+//        @Override
+//        public Object instantiateItem(ViewGroup container, int position) {
+//            Log.d(LOG_TAG, "instantiateItem: " + position);
+//            View view;
+//            if (unitInfo == null) {
+//                view = getEmptyView(position);
+//                container.addView(view);
+//                return view;
+//            }
+//
+//            switch(position) {
+//                case 0:
+//                    view = getUnitWeaponView();
+//                    break;
+//                case 1:
+//                    view = getUnitSkillView();
+//                    break;
+//                case 2:
+//                    view = getUnitDetailView();
+//                    break;
+//                case 3:
+//                    view = getRelatedVideoView();
+//                    break;
+//                default:
+//                    view = getEmptyView(position);
+//            }
+//
+//            view.setTag(position);
+//            container.addView(view);
+//            return view;
+//        }
+//
+//        @Override
+//        public void destroyItem(ViewGroup container, int position, Object object) {
+//            Log.d(LOG_TAG, "destroyItem: " + position);
+//            container.removeView((View)object);
+//        }
+//
+//        View getEmptyView(int position) {
+//            UnitViewPlaceHolder emptyView = new UnitViewPlaceHolder(context, null);
+//            emptyView.setText(position + "");
+//            emptyView.setLayoutParams(
+//                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//            return emptyView;
+//        }
+//
+//        View getUnitWeaponView() {
+//            if (unitWeaponView == null) {
+//                Log.d(LOG_TAG, "getUnitWeaponView creating new");
+//                unitWeaponView = new UnitWeaponsView(context, null);
+//                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+//                        ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT
+//                );
+//                unitWeaponView.setLayoutParams(layoutParams);
+//                ((UnitWeaponsView) unitWeaponView).setUnitInfo(unitInfo);
+//            }
+//            return unitWeaponView;
+//        }
+//
+//        View getUnitSkillView() {
+//            if (unitSkillView == null) {
+//                Log.d(LOG_TAG, "getUnitSkillView creating new");
+//                unitSkillView = getEmptyView(1);
+//            }
+//            return unitSkillView;
+//        }
+//
+//        View getUnitDetailView() {
+//            if (unitDetailView == null) {
+//                Log.d(LOG_TAG, "getUnitDetailView creating new");
+//                unitDetailView = getEmptyView(2);
+//            }
+//            return unitDetailView;
+//        }
+//
+//        View getRelatedVideoView() {
+//            if (relatedVideoView == null) {
+//                Log.d(LOG_TAG, "getRelatedVideoView creating new");
+//                relatedVideoView = getEmptyView(3);
+//            }
+//            return relatedVideoView;
+//        }
+//    }
 
     class UnitViewPlaceHolder extends View {
         String text;
-
-        final int[] COLORS = new int[] {
-            Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW,
-        };
 
         UnitViewPlaceHolder(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -301,7 +420,7 @@ public class UnitViewActivity extends Activity implements
 
             TextPaint yellowText = new TextPaint();
             yellowText.setColor(Color.YELLOW);
-            yellowText.setTextSize(24);
+            yellowText.setTextSize(48);
             // solidRed.setColor(COLORS[(int)(COLORS.length * Math.random())]);
 
             canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), solidRed);

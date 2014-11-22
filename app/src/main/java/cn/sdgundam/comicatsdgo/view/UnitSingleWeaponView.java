@@ -109,12 +109,20 @@ public class UnitSingleWeaponView extends RelativeLayout {
     public void setWeaponExLine1(String weaponExLine1) {
         this.weaponExLine1 = weaponExLine1;
 
-        weaponExLine1TextView.setText(weaponExLine1);
+        if (weaponExLine1.length() == 0) {
+            weaponExLine1TextView.setVisibility(GONE);
+        } else {
+            weaponExLine1TextView.setText(weaponExLine1);
+        }
     }
 
     public void setWeaponExLine2(String weaponExLine2) {
         this.weaponExLine2 = weaponExLine2;
 
-        weaponExLine2TextView.setText(weaponExLine2);
+        if (weaponExLine2.length() == 0) {
+            weaponExLine2TextView.setVisibility(GONE);
+        } else {
+            weaponExLine2TextView.setText(weaponExLine2);
+        }
     }
 }

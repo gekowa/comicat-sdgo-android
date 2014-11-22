@@ -28,6 +28,7 @@ dependencies {
     compile 'org.lucasr.twowayview:twowayview:0.1.1'
     compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
     compile 'com.github.nicolasjafelle:paginglistview:1.1'
+    compile 'se.emilsjolander:StickyScrollViewItems:1.1.0'
     compile project(':vitamio')
     compile project(':android_pulltorefresh')
 }

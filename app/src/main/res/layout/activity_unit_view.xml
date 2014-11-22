@@ -14,10 +14,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true">
 
-        <ScrollView
+        <com.emilsjolander.components.StickyScrollViewItems.StickyScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="cn.sdgundam.comicatsdgo.top_view_fragment.HomeFragment">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -32,21 +31,47 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <com.viewpagerindicator.TabPageIndicator
-                    android:id="@+id/unit_view_vpi"
+                <TabHost
+                    android:id="@+id/tabhost"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    style="@style/CustomTabPageIndicator"
-                    />
+                    android:layout_height="wrap_content">
 
-                <cn.sdgundam.comicatsdgo.extension.HeightAdaptableViewPager
-                    android:id="@+id/unit_detail_vp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TabWidget
+                            android:id="@android:id/tabs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:tag="sticky"/>
+
+                        <FrameLayout
+                            android:id="@android:id/tabcontent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="16dp"/>
+                    </LinearLayout>
+                </TabHost>
+
+                <!--<com.viewpagerindicator.TabPageIndicator-->
+                    <!--android:id="@+id/unit_view_vpi"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--style="@style/CustomTabPageIndicator"-->
+                    <!--android:tag="sticky"-->
+                    <!--/>-->
+
+                <!--<cn.sdgundam.comicatsdgo.extension.HeightAdaptableViewPager-->
+                    <!--android:id="@+id/unit_detail_vp"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"/>-->
 
             </LinearLayout>
 
-        </ScrollView>
+        </com.emilsjolander.components.StickyScrollViewItems.StickyScrollView>
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 
     <cn.sdgundam.comicatsdgo.view.NetworkErrorView
