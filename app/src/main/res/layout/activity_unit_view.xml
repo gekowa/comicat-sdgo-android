@@ -11,8 +11,7 @@
     <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
         android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true">
+        android:layout_height="match_parent">
 
         <com.emilsjolander.components.StickyScrollViewItems.StickyScrollView
             android:layout_width="match_parent"

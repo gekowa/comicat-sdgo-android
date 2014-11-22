@@ -10,6 +10,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import java.util.Date;
 
@@ -207,7 +209,7 @@ public class UnitViewActivity extends Activity implements
             }
         });
 
-        spec.setIndicator(getResources().getString(R.string.unit_view_tab_title_weapons));
+        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_view_tab_title_weapons)));
         tabHost.addTab(spec);
     }
 
@@ -224,7 +226,7 @@ public class UnitViewActivity extends Activity implements
             }
         });
 
-        spec.setIndicator(getResources().getString(R.string.unit_view_tab_title_skills));
+        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_view_tab_title_skills)));
         tabHost.addTab(spec);
     }
 
@@ -241,7 +243,7 @@ public class UnitViewActivity extends Activity implements
             }
         });
 
-        spec.setIndicator(getResources().getString(R.string.unit_view_tab_title_details));
+        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_view_tab_title_details)));
         tabHost.addTab(spec);
     }
 
@@ -258,8 +260,15 @@ public class UnitViewActivity extends Activity implements
             }
         });
 
-        spec.setIndicator(getResources().getString(R.string.unit_related_video));
+        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_related_video)));
         tabHost.addTab(spec);
+    }
+
+    private View getTabIndicator(String caption) {
+        View view = LayoutInflater.from(this).inflate(R.layout.view_unit_tab_item, null);
+        TextView textView = (TextView) view.findViewById(R.id.text_view);
+        textView.setText(caption);
+        return view;
     }
 
     @Override
