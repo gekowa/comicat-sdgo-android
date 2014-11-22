@@ -27,6 +27,7 @@ import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitInfoListener;
 import cn.sdgundam.comicatsdgo.view.NetworkErrorView;
 import cn.sdgundam.comicatsdgo.view.UnitBasicDataView;
+import cn.sdgundam.comicatsdgo.view.UnitSkillsView;
 import cn.sdgundam.comicatsdgo.view.UnitWeaponsView;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
@@ -218,11 +219,14 @@ public class UnitViewActivity extends Activity implements
         spec.setContent(new TabHost.TabContentFactory() {
             @Override
             public View createTabContent(String tag) {
-                UnitViewPlaceHolder emptyView = new UnitViewPlaceHolder(UnitViewActivity.this, null);
-                emptyView.setText("2");
-                emptyView.setLayoutParams(
-                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                return emptyView;
+                UnitSkillsView view = new UnitSkillsView(UnitViewActivity.this, null);
+                view.setUnitInfo(unitInfo);
+                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                view.setLayoutParams(layoutParams);
+                return view;
             }
         });
 
