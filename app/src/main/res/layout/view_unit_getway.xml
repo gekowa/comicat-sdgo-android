@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/unit_detail_caption"
+        android:text="@string/unit_detail_getway"/>
+
+    <!-- 扭蛋机 -->
+    <LinearLayout
+        android:id="@+id/unit_getway_capsule_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/unit_getway_caption"
+            android:text="@string/unit_getway_capsule"
+        />
+
+        <TextView
+            android:id="@+id/unit_getway_capsule"
+            style="@style/unit_getway_content"
+            />
+
+    </LinearLayout>
+
+    <!-- 购买租赁 -->
+    <LinearLayout
+        android:id="@+id/unit_getway_buy_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/unit_getway_caption"
+            android:text="@string/unit_getway_shop_buy"
+            />
+
+        <TextView
+            android:id="@+id/unit_getway_buy"
+            style="@style/unit_getway_content"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/unit_getway_buy_mix"
+        style="@style/unit_getway_caption"
+        android:text="@string/unit_getway_shop_buy_mix"
+        />
+
+    <!-- quest -->
+    <LinearLayout
+        android:id="@+id/unit_getway_quest_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/unit_getway_caption"
+            android:text="@string/unit_getway_quest"
+            />
+
+        <TextView
+            android:id="@+id/unit_getway_quest"
+            style="@style/unit_getway_content"
+            />
+
+    </LinearLayout>
+
+    <!-- mission -->
+    <LinearLayout
+        android:id="@+id/unit_mission_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/unit_getway_caption"
+            android:text="@string/unit_getway_mission"
+            />
+
+        <TextView
+            android:id="@+id/unit_getway_mission"
+            style="@style/unit_getway_content"
+            />
+
+    </LinearLayout>
+
+    <!-- labs -->
+    <LinearLayout
+        android:id="@+id/unit_labs_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/unit_getway_caption"
+            android:text="@string/unit_getway_lab"
+            />
+
+        <TextView
+            android:id="@+id/unit_getway_lab"
+            style="@style/unit_getway_content"
+            />
+
+    </LinearLayout>
+
+    <!-- etc -->
+    <LinearLayout
+        android:id="@+id/unit_getway_etc_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/unit_getway_caption"
+            android:text="@string/unit_getway_etc"
+            />
+
+        <TextView
+            android:id="@+id/unit_getway_etc"
+            style="@style/unit_getway_content"
+            />
+
+    </LinearLayout>
+
+</merge>

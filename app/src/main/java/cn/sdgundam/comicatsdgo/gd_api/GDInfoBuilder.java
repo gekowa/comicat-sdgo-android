@@ -246,7 +246,7 @@ public class GDInfoBuilder {
                     String firstLetter = key.substring(0, 1).toUpperCase();
                     String keyForReflector = "set" + firstLetter + key.substring(1, key.length());
 
-                    for (Class _class : new Class[] {String.class, Integer.class, Float.class}) {
+                    for (Class _class : new Class[] {String.class, Integer.class, Float.class, Boolean.class}) {
                         if (getAllUnitInfoSetterNames().indexOf(keyForReflector + "_" + _class.toString()) >= 0) {
                             Method setter = UnitInfo.class.getDeclaredMethod(keyForReflector, _class);
                             if (setter != null) {
@@ -256,6 +256,8 @@ public class GDInfoBuilder {
                                     setter.invoke(unitInfo, unitJSONOBject.getInt(key));
                                 } else if (_class.toString().equals(Float.class.toString())) {
                                     setter.invoke(unitInfo, (float)unitJSONOBject.getDouble(key));
+                                } else if (_class.toString().equals(Boolean.class.toString())) {
+                                    setter.invoke(unitInfo, (boolean)unitJSONOBject.getBoolean(key));
                                 }
                             }
                             break;
@@ -269,6 +271,7 @@ public class GDInfoBuilder {
                     e.printStackTrace();
                 }
             }
+
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, "JSON parse error: " + e.getMessage());

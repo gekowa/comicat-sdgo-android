@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/unit_detail_caption"
+        android:text="介绍"/>
+
+    <TextView
+        android:id="@+id/story_text_view"
+        style="@style/unit_misc_info_value"
+        />
+
+</merge>

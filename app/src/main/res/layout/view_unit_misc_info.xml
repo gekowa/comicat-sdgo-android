@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView android:id="@+id/unit_misc_caption_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/unit_detail_caption"
+        android:text="基本信息"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- captions -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".21"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/unit_misc_info_caption"
+                android:text="地形"/>
+
+            <TextView
+                style="@style/unit_misc_info_caption"
+                android:text="战斗类型"/>
+
+            <TextView
+                android:id="@+id/_4p_caption_text_view"
+                style="@style/unit_misc_info_caption"
+                android:text="  "/>
+
+            <TextView
+                android:id="@+id/group_caption_text_view"
+                style="@style/unit_misc_info_caption"
+                android:text="@string/unit_group_caption"/>
+
+            <TextView
+                style="@style/unit_misc_info_caption"
+                android:text="特色"/>
+
+            <TextView
+                style="@style/unit_misc_info_caption"
+                android:text="出自作品"/>
+
+            <TextView
+                style="@style/unit_misc_info_caption"
+                android:text="驾驶员"/>
+
+            <TextView
+                style="@style/unit_misc_info_caption"
+                android:text="登场时间"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".79"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/landform_text_view"
+                style="@style/unit_misc_info_value"
+                />
+
+            <TextView
+                android:id="@+id/wartype_text_view"
+                style="@style/unit_misc_info_value"
+                />
+
+            <TextView
+                android:id="@+id/_4p_text_view"
+                style="@style/unit_misc_info_value"
+                />
+
+            <TextView
+                android:id="@+id/group_text_view"
+                style="@style/unit_misc_info_value"
+                />
+
+            <TextView
+                android:id="@+id/feature_text_view"
+                style="@style/unit_misc_info_value"
+                />
+
+            <TextView
+                android:id="@+id/origin_text_view"
+                style="@style/unit_misc_info_value"
+                />
+
+            <TextView
+                android:id="@+id/driver_text_view"
+                style="@style/unit_misc_info_value"
+                />
+
+            <TextView
+                android:id="@+id/regdate_text_view"
+                style="@style/unit_misc_info_value"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</merge>

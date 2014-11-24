@@ -25,10 +25,10 @@ public class UnitInfo implements Serializable {
     String howToGet;
 
     // 4p
-    Boolean sniping;
-    Boolean modification;
-    Boolean oversize;
-    Boolean repair;
+    Boolean sniping = false;
+    Boolean modification = false;
+    Boolean oversize = false;
+    Boolean repair = false;
 
     // stats
     Float attackG;
@@ -245,35 +245,35 @@ public class UnitInfo implements Serializable {
         this.howToGet = howToGet;
     }
 
-    public boolean isSniping() {
+    public Boolean isSniping() {
         return sniping;
     }
 
-    public void setSniping(boolean sniping) {
+    public void setSniping(Boolean sniping) {
         this.sniping = sniping;
     }
 
-    public boolean isModification() {
+    public Boolean isModification() {
         return modification;
     }
 
-    public void setModification(boolean modification) {
+    public void setModification(Boolean modification) {
         this.modification = modification;
     }
 
-    public boolean isOversize() {
+    public Boolean isOversize() {
         return oversize;
     }
 
-    public void setOversize(boolean oversize) {
+    public void setOversize(Boolean oversize) {
         this.oversize = oversize;
     }
 
-    public boolean isRepair() {
+    public Boolean isRepair() {
         return repair;
     }
 
-    public void setRepair(boolean repair) {
+    public void setRepair(Boolean repair) {
         this.repair = repair;
     }
 

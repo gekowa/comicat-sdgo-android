@@ -27,6 +27,7 @@ import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitInfoListener;
 import cn.sdgundam.comicatsdgo.view.NetworkErrorView;
 import cn.sdgundam.comicatsdgo.view.UnitBasicDataView;
+import cn.sdgundam.comicatsdgo.view.UnitDetailView;
 import cn.sdgundam.comicatsdgo.view.UnitSkillsView;
 import cn.sdgundam.comicatsdgo.view.UnitWeaponsView;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
@@ -132,8 +133,9 @@ public class UnitViewActivity extends Activity implements
             unitId = extra.getString("id");
         }
 
-        unitId = "24713"; // 飞翼高达凤凰
+        // unitId = "24713"; // 飞翼高达凤凰
         // unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
+        unitId = "88888";
     }
 
     void loadUnitInfo() {
@@ -206,6 +208,8 @@ public class UnitViewActivity extends Activity implements
                         ViewGroup.LayoutParams.WRAP_CONTENT
                 );
                 view.setLayoutParams(layoutParams);
+                view.setPadding(getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding),
+                        0, getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding), 0);
                 return view;
             }
         });
@@ -226,6 +230,8 @@ public class UnitViewActivity extends Activity implements
                         ViewGroup.LayoutParams.WRAP_CONTENT
                 );
                 view.setLayoutParams(layoutParams);
+                view.setPadding(getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding),
+                        0, getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding), 0);
                 return view;
             }
         });
@@ -239,11 +245,16 @@ public class UnitViewActivity extends Activity implements
         spec.setContent(new TabHost.TabContentFactory() {
             @Override
             public View createTabContent(String tag) {
-                UnitViewPlaceHolder emptyView = new UnitViewPlaceHolder(UnitViewActivity.this, null);
-                emptyView.setText("3");
-                emptyView.setLayoutParams(
-                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                return emptyView;
+                UnitDetailView view = new UnitDetailView(UnitViewActivity.this, null);
+                view.setUnitInfo(unitInfo);
+                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                view.setLayoutParams(layoutParams);
+                view.setPadding(getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding),
+                        0, getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding), 0);
+                return view;
             }
         });
 
