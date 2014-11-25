@@ -95,5 +95,28 @@
             />
 
     </LinearLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button android:id="@+id/button_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SHOW"
+            android:layout_alignParentBottom="true"
+            />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lorem ipsum Nostrud sed deserunt Ut veniam anim nisi officia aliquip nulla cupidatat et eu aliquip minim culpa proident enim anim magna in sit incididunt."
+            android:textSize="24sp"
+            android:background="#F00"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            />
+    </RelativeLayout>
 
 </FrameLayout>
