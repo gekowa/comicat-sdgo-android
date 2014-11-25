@@ -68,7 +68,9 @@ public class UnitGetwayView extends LinearLayout {
             for (int i = 0; i < 4; i++) {
                 String capsule = (String) UnitInfo.class.getMethod("getCapsule" + (i + 1), null).invoke(unitInfo);
                 showCapsules |= capsule.length() > 0;
-                capsules.add(capsule);
+                if(capsule.length() > 0) {
+                    capsules.add(capsule);
+                }
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -124,7 +126,9 @@ public class UnitGetwayView extends LinearLayout {
             for (int i = 0; i < 2; i++) {
                 String quest = (String) UnitInfo.class.getMethod("getQuest" + (i + 1), null).invoke(unitInfo);
                 showQuest |= quest.length() > 0;
-                quests.add(quest);
+                if (quest.length() > 0) {
+                    quests.add(quest);
+                }
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -151,7 +155,9 @@ public class UnitGetwayView extends LinearLayout {
             for (int i = 0; i < 5; i++) {
                 String mission = (String) UnitInfo.class.getMethod("getMission" + (i + 1), null).invoke(unitInfo);
                 showMission |= mission.length() > 0;
-                missions.add(mission);
+                if (mission.length() > 0) {
+                    missions.add(mission);
+                }
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -178,7 +184,9 @@ public class UnitGetwayView extends LinearLayout {
             for (int i = 0; i < 2; i++) {
                 String lab = (String) UnitInfo.class.getMethod("getLab" + (i + 1), null).invoke(unitInfo);
                 showLab |= lab.length() > 0;
-                labs.add(lab);
+                if (lab.length() > 0) {
+                    labs.add(lab);
+                }
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
