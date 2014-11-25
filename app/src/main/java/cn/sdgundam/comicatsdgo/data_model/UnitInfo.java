@@ -106,7 +106,7 @@ public class UnitInfo implements Serializable {
     String shopBuyPrice;
     String shopRissCash;
 // String shopRissCashPrice;
-    String shopRissPoInteger;
+    String shopRissPoint;
 // String shopRissPoIntegerPrice;
     String shopMixBuy;
     String etc;
@@ -817,12 +817,12 @@ public class UnitInfo implements Serializable {
         this.shopRissCash = shopRissCash;
     }
 
-    public String getShopRissPoInteger() {
-        return shopRissPoInteger;
+    public String getShopRissPoint() {
+        return shopRissPoint;
     }
 
-    public void setShopRissPoInteger(String shopRissPoInteger) {
-        this.shopRissPoInteger = shopRissPoInteger;
+    public void setShopRissPoint(String shopRissPoint) {
+        this.shopRissPoint = shopRissPoint;
     }
 
     public String getShopMixBuy() {

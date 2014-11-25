@@ -16,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -117,6 +119,24 @@ public class UnitViewActivity extends Activity implements
 
         tabHost = (TabHost)findViewById(R.id.tabhost);
         tabHost.setup();
+
+        Button testButton = (Button)findViewById(R.id.button_test);
+        final TextView textView = (TextView)findViewById(R.id.text);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                textView.startAnimation(AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_show));
+                textView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                textView.startAnimation(AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_hide));
+                textView.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     @Override
@@ -133,9 +153,14 @@ public class UnitViewActivity extends Activity implements
             unitId = extra.getString("id");
         }
 
-        // unitId = "24713"; // 飞翼高达凤凰
-        // unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
-        unitId = "88888";
+        //unitId = "24713"; // 飞翼高达凤凰
+        //unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
+        //unitId = "10021";    // 石斛兰
+        unitId= "11046";    // 扎古II (指挥官专用) Mission多
+        unitId = "15006";   // 105短剑 扭蛋多, Quest多
+        unitId = "15002";   // 红异端
+        // unitId = "88888";
+
     }
 
     void loadUnitInfo() {

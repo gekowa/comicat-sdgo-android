@@ -29,6 +29,7 @@ public class UnitDetailView extends LinearLayout {
         // add views
         addMiscInfoView();
         addStoryView();
+        addGetwayView();
 
         requestLayout();
         invalidate();
@@ -47,6 +48,14 @@ public class UnitDetailView extends LinearLayout {
         UnitStoryView view = new UnitStoryView(getContext(), null);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         view.setStory(unitInfo.getStory());
+        addView(view);
+        addView(createSeparatorTextView());
+    }
+
+    private void addGetwayView() {
+        UnitGetwayView view = new UnitGetwayView(getContext(), null);
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.setUnitInfo(unitInfo);
         addView(view);
         addView(createSeparatorTextView());
     }
