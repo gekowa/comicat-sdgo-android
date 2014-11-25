@@ -133,9 +133,14 @@ public class UnitViewActivity extends Activity implements
             unitId = extra.getString("id");
         }
 
-        // unitId = "24713"; // 飞翼高达凤凰
-        // unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
-        unitId = "88888";
+        //unitId = "24713"; // 飞翼高达凤凰
+        //unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
+        //unitId = "10021";    // 石斛兰
+        unitId= "11046";    // 扎古II (指挥官专用) Mission多
+        unitId = "15006";   // 105短剑 扭蛋多, Quest多
+        unitId = "15002";   // 红异端
+        // unitId = "88888";
+
     }
 
     void loadUnitInfo() {
