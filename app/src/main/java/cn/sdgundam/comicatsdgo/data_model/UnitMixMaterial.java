@@ -11,11 +11,15 @@ public class UnitMixMaterial implements Serializable {
     String modelName;
     String level;
 
+    public UnitMixMaterial() { }
+
     public UnitMixMaterial(String unitId, String modelName, String level) {
         this.unitId = unitId;
         this.modelName = modelName;
         this.level = level;
     }
+
+
 
     public String getUnitId() {
         return unitId;

@@ -98,25 +98,52 @@
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
-        <Button android:id="@+id/button_test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SHOW"
-            android:layout_alignParentBottom="true"
-            />
+        <FrameLayout
+            android:id="@+id/popup_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#9333"
+            android:clickable="true"
+            android:visibility="invisible">
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/text"
+        <LinearLayout
+            android:id="@+id/unit_mix_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Lorem ipsum Nostrud sed deserunt Ut veniam anim nisi officia aliquip nulla cupidatat et eu aliquip minim culpa proident enim anim magna in sit incididunt."
-            android:textSize="24sp"
+            android:layout_gravity="center"
             android:background="#F00"
             android:visibility="gone"
             android:layout_alignParentBottom="true"
-            />
-    </RelativeLayout>
+            android:clickable="true">
 
+            <cn.sdgundam.comicatsdgo.view.UnitMixPopupView
+                android:id="@+id/unit_mix_popup_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/unit_mix_container_cn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#F00"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:clickable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="Lorem ipsum Nostrud sed deserunt Ut veniam anim nisi officia aliquip nulla cupidatat et eu aliquip minim culpa proident enim anim magna in sit incididunt."
+                />
+
+        </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>

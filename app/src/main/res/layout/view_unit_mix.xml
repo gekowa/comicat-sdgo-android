@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/unit_detail_caption"
+        android:text="合成"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button android:id="@+id/mix_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_unit_mix_info"
+            android:visibility="gone"
+            />
+
+        <Button android:id="@+id/mix_button_cn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_unit_mix_info_cn"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+</merge>

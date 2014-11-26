@@ -21,6 +21,7 @@ import cn.sdgundam.comicatsdgo.data_model.PostInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostList;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
+import cn.sdgundam.comicatsdgo.data_model.UnitMixMaterial;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 
 /**
@@ -272,11 +273,86 @@ public class GDInfoBuilder {
                 }
             }
 
+            // video
+            JSONArray videoListFromJSON = rootObject.getJSONArray("videoList");
+            List<VideoListItem> vliList = new ArrayList<VideoListItem>();
+            for (int i = 0; i < videoListFromJSON.length(); i++) {
+                JSONObject d = videoListFromJSON.getJSONObject(i);
+                Date created = Utility.parseDateSafe(d.getString("created"));
+                VideoListItem vli = new VideoListItem(
+                        d.getInt("postId"),
+                        d.getString("title"),
+                        d.getString("title2"),
+                        d.getString("imageURL"),
+                        d.getInt("gdPostCategory"),
+                        created
+                );
+
+                vli.setVideoHost(d.getString("videoHost"));
+                vli.setVideoId(d.getString("videoId"));
+                vli.setVideoId2(d.getString("videoId2"));
+
+                vliList.add(vli);
+            }
+
+            unitInfo.setVideoList(vliList.toArray(new VideoListItem[0]));
+
+            // mix
+            JSONObject mixingFromJSON = rootObject.getJSONObject("mixing");
+            if (mixingFromJSON.has("_G")) {
+                JSONObject mixingG = mixingFromJSON.getJSONObject("_G");
+                if (mixingG != null) {
+                    unitInfo.setMixingKeyUnit(extractSingleUMM(mixingG.getJSONObject("keyUnit")));
+                    unitInfo.setMixingMaterialUnits(extractManyUMMs(mixingG.getJSONArray("materialUnits")).toArray(new UnitMixMaterial[0]));
+                }
+            }
+
+            if (mixingFromJSON.has("CN")) {
+                JSONObject mixingCN = mixingFromJSON.getJSONObject("CN");
+                if (mixingCN != null) {
+                    unitInfo.setMixingKeyUnitCN(extractSingleUMM(mixingCN.getJSONObject("keyUnit")));
+                    unitInfo.setMixingMaterialUnitsCN(extractManyUMMs(mixingCN.getJSONArray("materialUnits")).toArray(new UnitMixMaterial[0]));
+                }
+            }
+
+            unitInfo.setCanMixAsKey(extractManyUMMs(mixingFromJSON.getJSONArray("canMixAsKey")).toArray(new UnitMixMaterial[0]));
+            unitInfo.setCanMixAsMaterial(extractManyUMMs(mixingFromJSON.getJSONArray("canMixAsMaterial")).toArray(new UnitMixMaterial[0]));
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, "JSON parse error: " + e.getMessage());
         }
 
         return unitInfo;
+    }
+
+    private static UnitMixMaterial extractSingleUMM(JSONObject jsonObject)
+            throws JSONException {
+
+        if (jsonObject == null) {
+            return null;
+        }
+
+        UnitMixMaterial umm = new UnitMixMaterial();
+        umm.setUnitId(jsonObject.getString("unitId"));
+        umm.setModelName(jsonObject.getString("modelName"));
+        umm.setLevel(jsonObject.getString("level"));
+
+        return umm;
+    }
+
+    private static ArrayList<UnitMixMaterial> extractManyUMMs(JSONArray jsonArray)
+            throws JSONException {
+
+        if (jsonArray == null || jsonArray.length() == 0) {
+            return new ArrayList<UnitMixMaterial>();
+        }
+
+        ArrayList<UnitMixMaterial> otherUMMS = new ArrayList<UnitMixMaterial>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject obj = jsonArray.getJSONObject(i);
+            otherUMMS.add(extractSingleUMM(obj));
+        }
+
+        return otherUMMS;
     }
 }

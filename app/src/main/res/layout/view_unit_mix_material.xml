@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView android:id="@+id/unit_mix_key_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="核心机"
+        android:textSize="12sp"
+        android:background="#5A79A1"
+        android:textColor="#FFF"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:layout_gravity="left"
+        />
+
+    <ImageView
+        android:id="@+id/unit_mix_image_view"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/bg_unit_mix_material"
+        />
+
+    <TextView android:id="@+id/unit_mix_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:background="#5A79A1"
+        android:textColor="#FFF"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="LV.7"
+        />
+
+</LinearLayout>

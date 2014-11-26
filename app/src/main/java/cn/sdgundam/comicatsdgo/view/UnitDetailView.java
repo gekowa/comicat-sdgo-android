@@ -17,6 +17,8 @@ import cn.sdgundam.comicatsdgo.video.UnitMiscInfoView;
 public class UnitDetailView extends LinearLayout {
     UnitInfo unitInfo;
 
+    UnitMixView.UnitMixEventListener unitMixEventListener;
+
     public UnitDetailView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -28,12 +30,28 @@ public class UnitDetailView extends LinearLayout {
 
         // add views
         addMiscInfoView();
+        addMixView();
         addStoryView();
         addGetwayView();
 
         requestLayout();
         invalidate();
 
+    }
+
+    public void setUnitMixEventListener(UnitMixView.UnitMixEventListener unitMixEventListener) {
+        this.unitMixEventListener = unitMixEventListener;
+    }
+
+    private void addMixView() {
+        if (unitInfo.getMixingKeyUnit() != null || unitInfo.getMixingKeyUnitCN() != null) {
+            UnitMixView view = new UnitMixView(getContext(), null);
+            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            view.setListener(unitMixEventListener);
+            view.setUnitInfo(unitInfo);
+            addView(view);
+            addView(createSeparatorTextView());
+        }
     }
 
     private void addMiscInfoView() {

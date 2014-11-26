@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -30,6 +31,8 @@ import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitInfoListener;
 import cn.sdgundam.comicatsdgo.view.NetworkErrorView;
 import cn.sdgundam.comicatsdgo.view.UnitBasicDataView;
 import cn.sdgundam.comicatsdgo.view.UnitDetailView;
+import cn.sdgundam.comicatsdgo.view.UnitMixPopupView;
+import cn.sdgundam.comicatsdgo.view.UnitMixView;
 import cn.sdgundam.comicatsdgo.view.UnitSkillsView;
 import cn.sdgundam.comicatsdgo.view.UnitWeaponsView;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
@@ -40,7 +43,8 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class UnitViewActivity extends Activity implements
         FetchUnitInfoListener,
-        OnRefreshListener {
+        OnRefreshListener,
+        UnitMixView.UnitMixEventListener{
 
     private static final String LOG_TAG = UnitViewActivity.class.getSimpleName();
 
@@ -50,6 +54,11 @@ public class UnitViewActivity extends Activity implements
     private ViewGroup progressViewContainer;
 
     private TabHost tabHost;
+
+    private ViewGroup unitMixContainer, unitMixContainerCN;
+    private View popupMask;
+    private Animation popupShowAnimation, popupHideAnimation;
+    private UnitMixPopupView mixPopupView;
 
 //    private UnitViewDetailsPagerAdapter adapter;
 
@@ -120,23 +129,32 @@ public class UnitViewActivity extends Activity implements
         tabHost = (TabHost)findViewById(R.id.tabhost);
         tabHost.setup();
 
-        Button testButton = (Button)findViewById(R.id.button_test);
-        final TextView textView = (TextView)findViewById(R.id.text);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                textView.startAnimation(AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_show));
-                textView.setVisibility(View.VISIBLE);
-            }
-        });
+//        Button testButton = (Button)findViewById(R.id.button_test);
+//        final TextView textView = (TextView)findViewById(R.id.text);
+//        testButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                textView.startAnimation(AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_show));
+//                textView.setVisibility(View.VISIBLE);
+//            }
+//        });
+//
+//        textView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                textView.startAnimation(AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_hide));
+//                textView.setVisibility(View.INVISIBLE);
+//            }
+//        });
 
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                textView.startAnimation(AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_hide));
-                textView.setVisibility(View.INVISIBLE);
-            }
-        });
+        unitMixContainer = (ViewGroup)findViewById(R.id.unit_mix_container);
+        unitMixContainerCN = (ViewGroup)findViewById(R.id.unit_mix_container_cn);
+        popupMask = findViewById(R.id.popup_mask);
+
+        popupShowAnimation = AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_show);
+        popupHideAnimation = AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_hide);
+
+        mixPopupView = (UnitMixPopupView)findViewById(R.id.unit_mix_popup_view);
     }
 
     @Override
@@ -156,8 +174,8 @@ public class UnitViewActivity extends Activity implements
         //unitId = "24713"; // 飞翼高达凤凰
         //unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
         //unitId = "10021";    // 石斛兰
-        unitId= "11046";    // 扎古II (指挥官专用) Mission多
-        unitId = "15006";   // 105短剑 扭蛋多, Quest多
+//        unitId= "11046";    // 扎古II (指挥官专用) Mission多
+//        unitId = "15006";   // 105短剑 扭蛋多, Quest多
         unitId = "15002";   // 红异端
         // unitId = "88888";
 
@@ -195,6 +213,16 @@ public class UnitViewActivity extends Activity implements
 //        pageIndicator.requestLayout();
 
         configureTabs();
+    }
+
+    @Override
+    public void OnShowUnitMixInfo() {
+        showUnitMixPopup();
+    }
+
+    @Override
+    public void OnShowUnitMixInfoCN() {
+        showUnitMixPopupCN();
     }
 
     private void configureBasicDataView() {
@@ -249,7 +277,6 @@ public class UnitViewActivity extends Activity implements
             @Override
             public View createTabContent(String tag) {
                 UnitSkillsView view = new UnitSkillsView(UnitViewActivity.this, null);
-                view.setUnitInfo(unitInfo);
                 ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
@@ -257,6 +284,7 @@ public class UnitViewActivity extends Activity implements
                 view.setLayoutParams(layoutParams);
                 view.setPadding(getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding),
                         0, getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding), 0);
+                view.setUnitInfo(unitInfo);
                 return view;
             }
         });
@@ -271,7 +299,7 @@ public class UnitViewActivity extends Activity implements
             @Override
             public View createTabContent(String tag) {
                 UnitDetailView view = new UnitDetailView(UnitViewActivity.this, null);
-                view.setUnitInfo(unitInfo);
+                view.setUnitMixEventListener(UnitViewActivity.this);
                 ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
@@ -279,6 +307,9 @@ public class UnitViewActivity extends Activity implements
                 view.setLayoutParams(layoutParams);
                 view.setPadding(getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding),
                         0, getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding), 0);
+
+                view.setUnitInfo(unitInfo);
+
                 return view;
             }
         });
@@ -333,8 +364,40 @@ public class UnitViewActivity extends Activity implements
         ptrLayout.setRefreshComplete();
     }
 
-    public class AnimatedTabHostListener implements TabHost.OnTabChangeListener
-    {
+    void showUnitMixPopup() {
+        popupMask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideUnitMixPopup();
+            }
+        });
+        popupMask.setVisibility(View.VISIBLE);
+
+        mixPopupView.setUnitMixInfo(unitInfo.getMixingKeyUnit(), unitInfo.getMixingMaterialUnits());
+
+        unitMixContainer.removeAllViews();
+        unitMixContainer.addView(mixPopupView);
+        unitMixContainer.startAnimation(popupShowAnimation);
+        unitMixContainer.setVisibility(View.VISIBLE);
+    }
+
+    void hideUnitMixPopup() {
+        unitMixContainer.startAnimation(popupHideAnimation);
+        unitMixContainer.setVisibility(View.INVISIBLE);
+
+        popupMask.setVisibility(View.INVISIBLE);
+        popupMask.setOnClickListener(null);
+    }
+
+    void showUnitMixPopupCN() {
+        // unitMixContainer.removeAllViews();
+        popupMask.setVisibility(View.VISIBLE);
+
+        unitMixContainerCN.startAnimation(popupShowAnimation);
+        unitMixContainerCN.setVisibility(View.VISIBLE);
+    }
+
+    public class AnimatedTabHostListener implements TabHost.OnTabChangeListener {
 
         private static final int ANIMATION_TIME = 240;
         private TabHost tabHost;

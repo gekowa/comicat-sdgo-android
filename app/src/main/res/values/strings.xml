@@ -79,6 +79,9 @@
     <string name="unit_getway_mission">Mission</string>
     <string name="unit_getway_lab">研究所</string>
     <string name="unit_getway_etc">特别</string>
+    <string name="unit_detail_story">介绍</string>
+    <string name="view_unit_mix_info">查看</string>
+    <string name="view_unit_mix_info_cn">查看国服</string>
 
 
 </resources>

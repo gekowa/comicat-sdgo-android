@@ -4,7 +4,7 @@
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/unit_detail_caption"
-        android:text="介绍"/>
+        android:text="@string/unit_detail_story"/>
 
     <TextView
         android:id="@+id/story_text_view"
