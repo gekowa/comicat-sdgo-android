@@ -1,6 +1,7 @@
 package cn.sdgundam.comicatsdgo.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -53,8 +54,11 @@ public class UnitListForHomeView extends HListView {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 UnitInfoShort unit = (UnitInfoShort) adapterView.getAdapter().getItem(i);
 
-                Toast.makeText(getContext(),
-                        String.format("UnitId: %s (index: %s) clicked", unit.getUnitId(), i), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),
+//                        String.format("UnitId: %s (index: %s) clicked", unit.getUnitId(), i), Toast.LENGTH_SHORT).show();
+
+                Intent intent = Utility.makeUnitViewActivityIntent(getContext(), unit.getUnitId());
+                getContext().startActivity(intent);
             }
         });
     }

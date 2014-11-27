@@ -3,6 +3,7 @@ package cn.sdgundam.comicatsdgo;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.hardware.SensorManager;
@@ -697,9 +698,12 @@ public class VideoViewActivity extends Activity implements
 
     @Override
     public void clickedOnUnit(String unitId) {
-        Toast.makeText(VideoViewActivity.this, "Unit: " + unitId, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(VideoViewActivity.this, "Unit: " + unitId, Toast.LENGTH_SHORT).show();
 
         // this.videoView.stopPlayback();
+
+        Intent intent = Utility.makeUnitViewActivityIntent(this, unitId);
+        this.startActivity(intent);
     }
 
     @Override

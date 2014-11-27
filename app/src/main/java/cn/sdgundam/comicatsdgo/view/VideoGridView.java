@@ -70,7 +70,9 @@ public class VideoGridView extends GridView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (videos != null) {
             int width = MeasureSpec.getSize(widthMeasureSpec);
-            int height = (int)((float)width / VIEW_ASPECT / 2) * videos.length / 2;
+            int videoLengthAdjusted = videos.length + videos.length % 2;
+            int height = (int) ((float) width / VIEW_ASPECT / 2) * videoLengthAdjusted  / 2;
+
             setMeasuredDimension(width, height);
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec /*MeasureSpec.UNSPECIFIED*/ );

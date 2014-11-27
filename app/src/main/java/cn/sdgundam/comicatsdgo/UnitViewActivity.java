@@ -347,7 +347,8 @@ public class UnitViewActivity extends Activity implements
             public View createTabContent(String tag) {
                 final VideoGridView grid = new VideoGridView(UnitViewActivity.this, null);
                 grid.setLayoutParams(
-                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 600));
+                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                grid.setScrollContainer(false);
 
                 grid.post(new Runnable() {
                     @Override
