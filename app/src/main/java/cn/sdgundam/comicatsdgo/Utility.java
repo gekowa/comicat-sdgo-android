@@ -139,4 +139,16 @@ public class Utility {
 
         return intent;
     }
+
+    public static Intent makeUnitViewActivityIntent(Context context, String unitId) {
+        Intent intent = new Intent(context, UnitViewActivity.class);
+
+        Bundle b = new Bundle();
+        b.putString("id", unitId);
+
+        intent.putExtras(b);
+
+        return intent;
+    }
+
 }

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -28,6 +29,8 @@ import cn.sdgundam.comicatsdgo.data_model.UnitMixMaterial;
 public class UnitMixPopupView extends FrameLayout {
     UnitMixMaterial keyUnit;
     UnitMixMaterial[] materialUnits;
+
+    UMMEventListener ummEventListener;
 
     boolean isConfigured = false;
 
@@ -64,24 +67,19 @@ public class UnitMixPopupView extends FrameLayout {
             return;
         }
 
-//        addUnitMixMaterial(keyUnit, true, false);
-//        for(int i = 0; i < materialUnits.length; i++) {
-//            boolean newLine = false;
-//
-//            if (materialUnits.length == 4 && i == 1) {
-//                newLine = true;
-//            }
-//
-//            addUnitMixMaterial(materialUnits[i], false, newLine);
-//        }
-//
         isConfigured = true;
+
+
 
         requestLayout();
         invalidate();
     }
 
-    private void setupUnitMixMaterial(UnitMixMaterial umm, View ummv, boolean isKeyUnit) {
+    public void setUMMEventListener(UMMEventListener ummEventListener) {
+        this.ummEventListener = ummEventListener;
+    }
+
+    private void setupUnitMixMaterial(final UnitMixMaterial umm, View ummv, boolean isKeyUnit) {
         if (ummv == null) {
             return;
         }
@@ -98,13 +96,23 @@ public class UnitMixPopupView extends FrameLayout {
         Picasso.with(getContext()).load(Uri.parse(Utility.getUnitImageURLByUnitId(umm.getUnitId()))).into(unitIV);
 
         lvTV.setText(umm.getLevel());
+
+        ummv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Toast.makeText(getContext(), umm.getUnitId(), Toast.LENGTH_SHORT).show();
+                if (UnitMixPopupView.this.ummEventListener != null) {
+                    UnitMixPopupView.this.ummEventListener.onUMMSelected(umm.getUnitId());
+                }
+            }
+        });
     }
 
     public boolean isConfigured() {
         return isConfigured;
     }
 
-    public void setConfigured(boolean isConfigured) {
-        this.isConfigured = isConfigured;
+    public interface UMMEventListener {
+        public void onUMMSelected(String unitId);
     }
 }

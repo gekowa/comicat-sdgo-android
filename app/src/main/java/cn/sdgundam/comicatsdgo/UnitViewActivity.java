@@ -2,6 +2,7 @@ package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -19,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -35,6 +37,7 @@ import cn.sdgundam.comicatsdgo.view.UnitMixPopupView;
 import cn.sdgundam.comicatsdgo.view.UnitMixView;
 import cn.sdgundam.comicatsdgo.view.UnitSkillsView;
 import cn.sdgundam.comicatsdgo.view.UnitWeaponsView;
+import cn.sdgundam.comicatsdgo.view.VideoGridView;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
@@ -44,7 +47,8 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 public class UnitViewActivity extends Activity implements
         FetchUnitInfoListener,
         OnRefreshListener,
-        UnitMixView.UnitMixEventListener{
+        UnitMixView.UnitMixEventListener,
+        UnitMixPopupView.UMMEventListener {
 
     private static final String LOG_TAG = UnitViewActivity.class.getSimpleName();
 
@@ -130,6 +134,9 @@ public class UnitViewActivity extends Activity implements
 
         mixPopupView = (UnitMixPopupView)findViewById(R.id.unit_mix_popup_view);
         mixPopupViewCN = (UnitMixPopupView)findViewById(R.id.unit_mix_popup_view_cn);
+
+        mixPopupView.setUMMEventListener(this);
+        mixPopupViewCN.setUMMEventListener(this);
     }
 
     @Override
@@ -188,15 +195,17 @@ public class UnitViewActivity extends Activity implements
             unitId = extra.getString("id");
         }
 
-        //unitId = "24713"; // 飞翼高达凤凰
-        // unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
-        //unitId = "10021";    // 石斛兰
+        if (unitId == null || unitId.length() == 0) {
+            //unitId = "24713"; // 飞翼高达凤凰
+            // unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
+            //unitId = "10021";    // 石斛兰
 //        unitId= "11046";    // 扎古II (指挥官专用) Mission多
 //        unitId = "15006";   // 105短剑 扭蛋多, Quest多
-        // unitId = "15002";   // 红异端
-        // unitId = "10042";   // 高达试作2号机
-        unitId = "10002";   // 全装甲高达
-        // unitId = "88888";
+            // unitId = "15002";   // 红异端
+            // unitId = "10042";   // 高达试作2号机
+            unitId = "10002";   // 全装甲高达
+            // unitId = "88888";
+        }
 
     }
 
@@ -336,11 +345,18 @@ public class UnitViewActivity extends Activity implements
         spec.setContent(new TabHost.TabContentFactory() {
             @Override
             public View createTabContent(String tag) {
-                UnitViewPlaceHolder emptyView = new UnitViewPlaceHolder(UnitViewActivity.this, null);
-                emptyView.setText("4");
-                emptyView.setLayoutParams(
-                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                return emptyView;
+                final VideoGridView grid = new VideoGridView(UnitViewActivity.this, null);
+                grid.setLayoutParams(
+                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 600));
+
+                grid.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        grid.setVideos(unitInfo.getVideoList());
+                    }
+                });
+
+                return grid;
             }
         });
 
@@ -433,6 +449,13 @@ public class UnitViewActivity extends Activity implements
         popupMask.setOnClickListener(null);
 
         isShowingUnitMixCN = false;
+    }
+
+    @Override
+    public void onUMMSelected(String unitId) {
+        // fire intent
+        Intent intent = Utility.makeUnitViewActivityIntent(this, unitId);
+        startActivity(intent);
     }
 
     public class AnimatedTabHostListener implements TabHost.OnTabChangeListener {
