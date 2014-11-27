@@ -48,6 +48,12 @@ public class UnitViewActivity extends Activity implements
 
     private static final String LOG_TAG = UnitViewActivity.class.getSimpleName();
 
+    private static final String TAB_INDEX_KEY = "TabIndex";
+    private static final String SHOWING_UNIT_MIX = "ShowingUnitMix";
+    private static final String SHOWING_UNIT_MIX_CN = "ShowingUnitMixCN";
+
+    private Bundle myState;
+
     private UnitBasicDataView basicDataView;
 //    private ViewPager unitDetailViewPager;
 //    private TabPageIndicator pageIndicator;
@@ -58,48 +64,34 @@ public class UnitViewActivity extends Activity implements
     private ViewGroup unitMixContainer, unitMixContainerCN;
     private View popupMask;
     private Animation popupShowAnimation, popupHideAnimation;
-    private UnitMixPopupView mixPopupView;
-
-//    private UnitViewDetailsPagerAdapter adapter;
+    private UnitMixPopupView mixPopupView, mixPopupViewCN;
 
     private GDApiService apiService;
     private PullToRefreshLayout ptrLayout;
     private NetworkErrorView nev;
 
-    // details view cache
-//    private View unitWeaponView;
-//    private View unitSkillView;
-//    private View unitDetailView;
-//    private View relatedVideoView;
-
     private String unitId;
     private UnitInfo unitInfo;
+
+    private boolean isShowingUnitMix = false, isShowingUnitMixCN = false;
 
     private Date lastSwipeRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_unit_view);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         initialize(getIntent().getExtras());
 
         apiService = new GDApiService(this);
         apiService.setUnitInfoListener(this);
 
+        setContentView(R.layout.activity_unit_view);
+        initializeView();
+    }
+
+    private void initializeView() {
         basicDataView = (UnitBasicDataView)findViewById(R.id.unit_basic_data_view);
-
-//        adapter = new UnitViewDetailsPagerAdapter(this);
-//        unitDetailViewPager = (ViewPager)findViewById(R.id.unit_detail_vp);
-//        unitDetailViewPager.setAdapter(adapter);
-
-//        pageIndicator = (TabPageIndicator)findViewById(R.id.unit_view_vpi);
-//        pageIndicator.setViewPager(unitDetailViewPager);
 
         ptrLayout = (PullToRefreshLayout)findViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(this)
@@ -129,24 +121,6 @@ public class UnitViewActivity extends Activity implements
         tabHost = (TabHost)findViewById(R.id.tabhost);
         tabHost.setup();
 
-//        Button testButton = (Button)findViewById(R.id.button_test);
-//        final TextView textView = (TextView)findViewById(R.id.text);
-//        testButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                textView.startAnimation(AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_show));
-//                textView.setVisibility(View.VISIBLE);
-//            }
-//        });
-//
-//        textView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                textView.startAnimation(AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_hide));
-//                textView.setVisibility(View.INVISIBLE);
-//            }
-//        });
-
         unitMixContainer = (ViewGroup)findViewById(R.id.unit_mix_container);
         unitMixContainerCN = (ViewGroup)findViewById(R.id.unit_mix_container_cn);
         popupMask = findViewById(R.id.popup_mask);
@@ -155,6 +129,16 @@ public class UnitViewActivity extends Activity implements
         popupHideAnimation = AnimationUtils.loadAnimation(UnitViewActivity.this, R.anim.popup_hide);
 
         mixPopupView = (UnitMixPopupView)findViewById(R.id.unit_mix_popup_view);
+        mixPopupViewCN = (UnitMixPopupView)findViewById(R.id.unit_mix_popup_view_cn);
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d(LOG_TAG, "onStart");
+
+        super.onStart();
+
+        loadUnitInfo();
     }
 
     @Override
@@ -162,8 +146,41 @@ public class UnitViewActivity extends Activity implements
         Log.d(LOG_TAG, "onResume");
         super.onResume();
 
-        loadUnitInfo();
-        // adapter.notifyDataSetChanged();
+        if (myState != null) {
+            tabHost.setCurrentTab(myState.getInt(TAB_INDEX_KEY));
+
+            if (myState.getBoolean(SHOWING_UNIT_MIX)) {
+                showUnitMixPopup();
+            } else if (myState.getBoolean(SHOWING_UNIT_MIX_CN)) {
+                showUnitMixPopupCN();
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        myState = new Bundle();
+        myState.putInt(TAB_INDEX_KEY, tabHost.getCurrentTab());
+        myState.putBoolean(SHOWING_UNIT_MIX, isShowingUnitMix);
+        myState.putBoolean(SHOWING_UNIT_MIX_CN, isShowingUnitMixCN);
+    }
+
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//
+//        Log.d(LOG_TAG, "onStop");
+//    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(LOG_TAG, "onSaveInstanceState");
+
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(TAB_INDEX_KEY, tabHost.getCurrentTab());
     }
 
     void initialize(Bundle extra) {
@@ -172,11 +189,13 @@ public class UnitViewActivity extends Activity implements
         }
 
         //unitId = "24713"; // 飞翼高达凤凰
-        //unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
+        // unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
         //unitId = "10021";    // 石斛兰
 //        unitId= "11046";    // 扎古II (指挥官专用) Mission多
 //        unitId = "15006";   // 105短剑 扭蛋多, Quest多
-        unitId = "15002";   // 红异端
+        // unitId = "15002";   // 红异端
+        // unitId = "10042";   // 高达试作2号机
+        unitId = "10002";   // 全装甲高达
         // unitId = "88888";
 
     }
@@ -205,12 +224,6 @@ public class UnitViewActivity extends Activity implements
 
         configureBasicDataView();
         basicDataView.playAnimations();
-
-//        adapter.setUnitInfo(unitInfo);
-//        adapter.notifyDataSetChanged();
-
-//        pageIndicator.invalidate();
-//        pageIndicator.requestLayout();
 
         configureTabs();
     }
@@ -373,12 +386,14 @@ public class UnitViewActivity extends Activity implements
         });
         popupMask.setVisibility(View.VISIBLE);
 
-        mixPopupView.setUnitMixInfo(unitInfo.getMixingKeyUnit(), unitInfo.getMixingMaterialUnits());
+        if (!mixPopupView.isConfigured()) {
+            mixPopupView.setUnitMixInfo(unitInfo.getMixingKeyUnit(), unitInfo.getMixingMaterialUnits());
+        }
 
-        unitMixContainer.removeAllViews();
-        unitMixContainer.addView(mixPopupView);
         unitMixContainer.startAnimation(popupShowAnimation);
         unitMixContainer.setVisibility(View.VISIBLE);
+
+        isShowingUnitMix = true;
     }
 
     void hideUnitMixPopup() {
@@ -387,14 +402,37 @@ public class UnitViewActivity extends Activity implements
 
         popupMask.setVisibility(View.INVISIBLE);
         popupMask.setOnClickListener(null);
+
+        isShowingUnitMix = false;
     }
 
     void showUnitMixPopupCN() {
-        // unitMixContainer.removeAllViews();
+        popupMask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideUnitMixPopupCN();
+            }
+        });
         popupMask.setVisibility(View.VISIBLE);
+
+        if (!mixPopupViewCN.isConfigured()) {
+            mixPopupViewCN.setUnitMixInfo(unitInfo.getMixingKeyUnitCN(), unitInfo.getMixingMaterialUnitsCN());
+        }
 
         unitMixContainerCN.startAnimation(popupShowAnimation);
         unitMixContainerCN.setVisibility(View.VISIBLE);
+
+        isShowingUnitMixCN = true;
+    }
+
+    void hideUnitMixPopupCN() {
+        unitMixContainerCN.startAnimation(popupHideAnimation);
+        unitMixContainerCN.setVisibility(View.INVISIBLE);
+
+        popupMask.setVisibility(View.INVISIBLE);
+        popupMask.setOnClickListener(null);
+
+        isShowingUnitMixCN = false;
     }
 
     public class AnimatedTabHostListener implements TabHost.OnTabChangeListener {

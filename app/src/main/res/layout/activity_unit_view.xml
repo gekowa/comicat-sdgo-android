@@ -14,10 +14,12 @@
         android:layout_height="match_parent">
 
         <com.emilsjolander.components.StickyScrollViewItems.StickyScrollView
+            android:id="@+id/root_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/root_linear_layout"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,6 +38,7 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
+                        android:id="@+id/tab_container"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -97,6 +100,7 @@
     </LinearLayout>
     
     <RelativeLayout
+        android:id="@+id/popup_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -115,10 +119,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#F00"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:background="#FEFEFE"
             android:visibility="gone"
             android:layout_alignParentBottom="true"
             android:clickable="true">
+
+            <TextView android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:padding="4dp"
+                android:gravity="center_horizontal"
+                android:background="@drawable/bg_unit_mix_popup_caption"
+                android:text="合成需求"/>
 
             <cn.sdgundam.comicatsdgo.view.UnitMixPopupView
                 android:id="@+id/unit_mix_popup_view"
@@ -132,17 +147,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#F00"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:background="#FEFEFE"
             android:visibility="gone"
             android:layout_alignParentBottom="true"
             android:clickable="true">
 
-            <TextView
+            <TextView android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:padding="4dp"
+                android:gravity="center_horizontal"
+                android:background="@drawable/bg_unit_mix_popup_caption"
+                android:text="国服特殊合成需求"/>
+
+            <cn.sdgundam.comicatsdgo.view.UnitMixPopupView
+                android:id="@+id/unit_mix_popup_view_cn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:text="Lorem ipsum Nostrud sed deserunt Ut veniam anim nisi officia aliquip nulla cupidatat et eu aliquip minim culpa proident enim anim magna in sit incididunt."
-                />
+                android:layout_gravity="center"/>
 
         </LinearLayout>
     </RelativeLayout>
