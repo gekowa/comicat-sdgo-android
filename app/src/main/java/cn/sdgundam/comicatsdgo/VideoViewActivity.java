@@ -46,6 +46,7 @@ public class VideoViewActivity extends Activity implements
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnErrorListener,
         MediaPlayer.OnInfoListener,
+        MediaPlayer.OnBufferingUpdateListener,
         View.OnSystemUiVisibilityChangeListener,
         VideoInfoListener {
 
@@ -58,6 +59,8 @@ public class VideoViewActivity extends Activity implements
             View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
     static final int VIDEO_PREPARE_TIMEOUT = 10000;  // ms
     static final String[] SUPPORTED_VIDEO_HOSTS = new String[] {"2", "4"};
+
+    static final String VIDEO_POSITION_KEY = "VideoPosition";
 
     // state variables
     private int postId;
@@ -73,6 +76,8 @@ public class VideoViewActivity extends Activity implements
     private boolean isVideoPrepared;
     private boolean isOrientationLocked;
     private boolean isRestarted = false;
+
+    private Bundle myState;
 
     // Views
     private View decorView;
@@ -98,13 +103,6 @@ public class VideoViewActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_video_view);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         initialize(getIntent().getExtras());
 
         // check supported video hosts
@@ -121,7 +119,7 @@ public class VideoViewActivity extends Activity implements
                     .show();
         }
 
-        Log.d(LOG_TAG, "onStart: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
+        setContentView(R.layout.activity_video_view);
 
         initializeViews();
 
@@ -154,8 +152,6 @@ public class VideoViewActivity extends Activity implements
         if (BuildConfig.DEBUG) {
             getActionBar().setTitle(postId + "");
         }
-
-        Log.d(LOG_TAG, "onStart End " + postId);
     }
 
     private void initialize(Bundle extra) {
@@ -174,6 +170,8 @@ public class VideoViewActivity extends Activity implements
             videoHost = "4";
             videoId = "XODAzNzY5MzE2";
         }
+
+        Log.d(LOG_TAG, "initialize: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
     }
 
     private void initializeViews() {
@@ -230,12 +228,11 @@ public class VideoViewActivity extends Activity implements
             orientationEventListener.enable();
         }
 
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                uiBlocker.setVisibility(View.INVISIBLE);
-//            }
-//        }, 1800);
+        if (isVideoPrepared && isRestarted) {
+            // showVideoLoading();
+            // blockUI();
+            mediaController.show();
+        }
 
         Log.d(LOG_TAG, "onResume end " + postId);
     }
@@ -247,6 +244,16 @@ public class VideoViewActivity extends Activity implements
 
         orientationEventListener.disable();
         disableVideoTimeout();
+
+        if (videoView.isPlaying()) {
+            videoView.pause();
+        }
+
+        myState = new Bundle();
+        // save the playback progress
+        myState.putLong(VIDEO_POSITION_KEY, videoView.getCurrentPosition());
+        // save if is playing
+
 
         Log.d(LOG_TAG, "onPause end " + postId);
     }
@@ -528,6 +535,7 @@ public class VideoViewActivity extends Activity implements
                     videoView.setOnPreparedListener(VideoViewActivity.this);
                     videoView.setOnErrorListener(VideoViewActivity.this);
                     videoView.setOnInfoListener(VideoViewActivity.this);
+                    videoView.setOnBufferingUpdateListener(VideoViewActivity.this);
 
                     videoView.setVideoPath(videoURL);
 
@@ -590,7 +598,12 @@ public class VideoViewActivity extends Activity implements
 
         // ((LinearLayout.LayoutParams)videoContainer.getLayoutParams()).weight = 0;
 
+        if (isRestarted) {
+            long position = myState.getLong(VIDEO_POSITION_KEY);
+            videoView.seekTo(position);
+        }
         videoView.start();
+
 
         // not to let rotation effect right now, avoid VideoView layout error
         rootView.postDelayed(new Runnable() {
@@ -661,6 +674,11 @@ public class VideoViewActivity extends Activity implements
     @Override
     public boolean onInfo(MediaPlayer mp, int what, int extra) {
         return false;
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+        // Log.d(LOG_TAG, "Buffering..." + percent);
     }
 
     String getVideoURL17173(String videoId) {
