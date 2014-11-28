@@ -285,6 +285,7 @@ public class UnitViewActivity extends Activity implements
                 view.setLayoutParams(layoutParams);
                 view.setPadding(getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding),
                         0, getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding), 0);
+                view.setFocusable(false);
                 return view;
             }
         });
@@ -307,6 +308,7 @@ public class UnitViewActivity extends Activity implements
                 view.setPadding(getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding),
                         0, getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding), 0);
                 view.setUnitInfo(unitInfo);
+                view.setFocusable(false);
                 return view;
             }
         });
@@ -331,7 +333,7 @@ public class UnitViewActivity extends Activity implements
                         0, getResources().getDimensionPixelSize(R.dimen.unit_view_detail_padding), 0);
 
                 view.setUnitInfo(unitInfo);
-
+                view.setFocusable(false);
                 return view;
             }
         });
@@ -349,7 +351,8 @@ public class UnitViewActivity extends Activity implements
                 grid.setLayoutParams(
                         new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 grid.setScrollContainer(false);
-
+                grid.setVerticalScrollBarEnabled(false);
+                grid.setFocusable(false);
                 grid.post(new Runnable() {
                     @Override
                     public void run() {
