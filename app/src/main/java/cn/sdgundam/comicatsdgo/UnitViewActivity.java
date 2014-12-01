@@ -290,7 +290,7 @@ public class UnitViewActivity extends Activity implements
             }
         });
 
-        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_view_tab_title_weapons)));
+        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_view_tab_title_weapons), null));
         tabHost.addTab(spec);
     }
 
@@ -313,7 +313,7 @@ public class UnitViewActivity extends Activity implements
             }
         });
 
-        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_view_tab_title_skills)));
+        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_view_tab_title_skills), null));
         tabHost.addTab(spec);
     }
 
@@ -338,7 +338,7 @@ public class UnitViewActivity extends Activity implements
             }
         });
 
-        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_view_tab_title_details)));
+        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_view_tab_title_details), null));
         tabHost.addTab(spec);
     }
 
@@ -364,16 +364,37 @@ public class UnitViewActivity extends Activity implements
             }
         });
 
-        spec.setIndicator(getTabIndicator(getResources().getString(R.string.unit_related_video)));
+        String videoCaption = getResources().getString(R.string.unit_related_video);
+        int videoCount = unitInfo.getVideoList().length;
+        String videoCountBadge = null;
+        if (videoCount > 0) {
+            if (videoCount <= 9) {
+                videoCountBadge =  " " + videoCount + " ";
+            } else if (videoCount <= 99) {
+                videoCountBadge = videoCount + "";
+            } else {
+                videoCountBadge = " N ";
+            }
+        }
+        spec.setIndicator(getTabIndicator(videoCaption, videoCountBadge));
         tabHost.addTab(spec);
     }
 
-    private View getTabIndicator(String caption) {
+    private View getTabIndicator(String caption, String badgeText) {
         View view = LayoutInflater.from(this).inflate(R.layout.view_unit_tab_item, null);
         TextView textView = (TextView) view.findViewById(R.id.text_view);
         textView.setText(caption);
+
+        if (badgeText != null && badgeText.length() > 0) {
+            TextView badge = (TextView)view.findViewById(R.id.badge_text_view);
+            badge.setText(badgeText);
+            badge.setVisibility(View.VISIBLE);
+        }
+
         return view;
     }
+
+
 
     @Override
     public void onFetchingUnitInfoWithError(Exception e) {
