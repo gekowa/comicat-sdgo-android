@@ -30,12 +30,14 @@
                 <cn.sdgundam.comicatsdgo.view.UnitBasicDataView
                     android:id="@+id/unit_basic_data_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    />
 
                 <TabHost
                     android:id="@+id/tabhost"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    >
 
                     <LinearLayout
                         android:id="@+id/tab_container"
@@ -48,14 +50,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="#FFF"
-                            android:tag="sticky"/>
+                            android:tag="sticky"
+                            />
 
                         <FrameLayout
                             android:id="@android:id/tabcontent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
-                            android:layout_marginBottom="16dp"/>
+                            android:layout_marginBottom="16dp"
+                            />
                     </LinearLayout>
                 </TabHost>
 

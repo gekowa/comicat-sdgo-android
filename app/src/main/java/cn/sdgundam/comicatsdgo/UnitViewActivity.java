@@ -22,6 +22,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -58,6 +59,9 @@ public class UnitViewActivity extends Activity implements
 
     private Bundle myState;
 
+    private boolean isRestarted;
+
+    private ScrollView rootScrollView;
     private UnitBasicDataView basicDataView;
 //    private ViewPager unitDetailViewPager;
 //    private TabPageIndicator pageIndicator;
@@ -92,9 +96,13 @@ public class UnitViewActivity extends Activity implements
 
         setContentView(R.layout.activity_unit_view);
         initializeView();
+
+        loadUnitInfo();
     }
 
     private void initializeView() {
+        rootScrollView = (ScrollView)findViewById(R.id.root_scroll_view);
+
         basicDataView = (UnitBasicDataView)findViewById(R.id.unit_basic_data_view);
 
         ptrLayout = (PullToRefreshLayout)findViewById(R.id.ptr_layout);
@@ -139,13 +147,18 @@ public class UnitViewActivity extends Activity implements
         mixPopupViewCN.setUMMEventListener(this);
     }
 
+//    @Override
+//    protected void onStart() {
+//        Log.d(LOG_TAG, "onStart");
+//
+//        super.onStart();
+//    }
+
     @Override
-    protected void onStart() {
-        Log.d(LOG_TAG, "onStart");
+    protected void onRestart() {
+        super.onRestart();
 
-        super.onStart();
-
-        loadUnitInfo();
+        isRestarted = true;
     }
 
     @Override
@@ -187,7 +200,7 @@ public class UnitViewActivity extends Activity implements
 
         super.onSaveInstanceState(outState);
 
-        outState.putInt(TAB_INDEX_KEY, tabHost.getCurrentTab());
+//         outState.putInt(TAB_INDEX_KEY, tabHost.getCurrentTab());
     }
 
     void initialize(Bundle extra) {
@@ -235,6 +248,20 @@ public class UnitViewActivity extends Activity implements
         basicDataView.playAnimations();
 
         configureTabs();
+
+        if (!isRestarted) {
+            rootScrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    rootScrollView.fullScroll(View.FOCUSABLES_TOUCH_MODE);
+                }
+            });
+        }
+
+//        if (myState != null) {
+//            // rootScrollView.post();
+//
+//        }
     }
 
     @Override
@@ -267,6 +294,15 @@ public class UnitViewActivity extends Activity implements
         createUnitSkillTab();
         createUnitDetailTab();
         createUnitRelatedVideoTab();
+
+//        tabHost.setFocusableInTouchMode(false);
+
+//        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+//            @Override
+//            public void onTabChanged(String tabId) {
+//                tabHost.clearFocus();
+//            }
+//        });
 
         // tabHost.setOnTabChangedListener(new AnimatedTabHostListener(this, tabHost));
     }
