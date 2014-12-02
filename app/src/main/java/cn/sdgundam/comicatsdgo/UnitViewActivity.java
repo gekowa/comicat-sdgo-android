@@ -347,20 +347,27 @@ public class UnitViewActivity extends Activity implements
         spec.setContent(new TabHost.TabContentFactory() {
             @Override
             public View createTabContent(String tag) {
-                final VideoGridView grid = new VideoGridView(UnitViewActivity.this, null);
-                grid.setLayoutParams(
-                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                grid.setScrollContainer(false);
-                grid.setVerticalScrollBarEnabled(false);
-                grid.setFocusable(false);
-                grid.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        grid.setVideos(unitInfo.getVideoList());
-                    }
-                });
+                if (unitInfo.getVideoList() != null && unitInfo.getVideoList().length > 0) {
+                    final VideoGridView grid = new VideoGridView(UnitViewActivity.this, null);
+                    grid.setLayoutParams(
+                            new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    grid.setScrollContainer(false);
+                    grid.setVerticalScrollBarEnabled(false);
+                    grid.setFocusable(false);
+                    grid.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            grid.setVideos(unitInfo.getVideoList());
+                        }
+                    });
+                    return grid;
+                } else {
+                    View noVideoNotice = LayoutInflater.from(UnitViewActivity.this).inflate(R.layout.view_no_related_video, null, false);
+                    noVideoNotice.setLayoutParams(
+                            new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    return noVideoNotice;
+                }
 
-                return grid;
             }
         });
 
