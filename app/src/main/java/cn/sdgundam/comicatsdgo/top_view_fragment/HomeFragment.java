@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -288,6 +290,10 @@ public class HomeFragment extends Fragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.home, menu);
+
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search_unit);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+
     }
 
     @Override

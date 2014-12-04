@@ -14,6 +14,8 @@ public class UnitInfoShort implements Serializable {
     String originTitleShort;
     float rating;
 
+    public UnitInfoShort() { }
+
     public UnitInfoShort(String unitId) {
         this.unitId = unitId;
     }

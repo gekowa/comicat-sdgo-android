@@ -9,7 +9,7 @@
         <!--android:orderInCategory="100"-->
         <!--android:showAsAction="never" />-->
 
-    <item android:id="@+id/refresh"
-        android:title="@string/menu_item_refresh"
-        android:showAsAction="withText|ifRoom" />
+    <!--<item android:id="@+id/refresh"-->
+        <!--android:title="@string/menu_item_refresh"-->
+        <!--android:showAsAction="withText|ifRoom" />-->
 </menu>

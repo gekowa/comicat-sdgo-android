@@ -30,13 +30,10 @@
     <string name="reload">重新加载</string>
     <string name="data_loading_failure">数据加载失败</string>
     <string name="network_disconnected">网络似乎已经断开.</string>
-
     <string name="title_activity_video_view">视频</string>
     <string name="title_activity_post_view">情报</string>
-
     <string name="show_all">显示全部</string>
     <string name="no_more_data">没有更多了…</string>
-
     <string name="video_host_2">17173游戏视频</string>
     <string name="video_host_4">优酷视频</string>
     <string name="loading_video_text">视频加载中...</string>
@@ -47,7 +44,6 @@
     <string name="watch_this_video_on_pc">请用电脑访问漫猫网站来观看此视频.</string>
     <string name="title_activity_unit_view">机体</string>
     <string name="hello_world">Hello world!</string>
-
     <string name="unit_stat_attack">攻击</string>
     <string name="unit_stat_defense">防守</string>
     <string name="unit_stat_mobility">机动</string>
@@ -82,6 +78,7 @@
     <string name="unit_detail_story">介绍</string>
     <string name="view_unit_mix_info">查看</string>
     <string name="view_unit_mix_info_cn">查看国服</string>
-
+    <string name="action_search_unit">搜索机体</string>
+    <string name="title_activity_search_unit">搜索机体</string>
 
 </resources>

@@ -21,6 +21,7 @@ import cn.sdgundam.comicatsdgo.data_model.PostInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostList;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
+import cn.sdgundam.comicatsdgo.data_model.UnitList;
 import cn.sdgundam.comicatsdgo.data_model.UnitMixMaterial;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 
@@ -354,5 +355,48 @@ public class GDInfoBuilder {
         }
 
         return otherUMMS;
+    }
+
+    public static UnitList buildUnitList(String json) {
+        if (json == "") {
+            return null;
+        }
+
+        UnitList list = new UnitList();
+        try {
+            JSONObject rootObject = new JSONObject(json);
+
+            String generatedString = rootObject.getString("generated");
+            Date generated = Utility.parseDateSafe(generatedString);
+
+            list.setGenerated(generated);
+
+            list.setOrigin(rootObject.getString("origin"));
+            list.setSearchKeyword(rootObject.getString("keyword"));
+
+            List<UnitInfoShort> uisList = new ArrayList<UnitInfoShort>();
+            JSONArray unitsFromJSON = rootObject.getJSONArray("units");
+
+            for (int i = 0; i < unitsFromJSON.length(); i++) {
+                JSONObject u = unitsFromJSON.getJSONObject(i);
+                UnitInfoShort uis = new UnitInfoShort();
+                uis.setUnitId(u.getString("unitId"));
+                uis.setModelName(u.getString("modelName"));
+                uis.setRank(u.getString("rank"));
+                uis.setWarType(u.getString("warType"));
+                uis.setOriginTitleShort(u.getString("originTitleShort"));
+                uis.setOrigin(u.getInt("origin"));
+                uis.setRating((float)u.getDouble("rating"));
+
+                uisList.add(uis);
+            }
+
+            list.setUnits(uisList);
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "JSON parse error: " + e.getMessage());
+        }
+
+        return list;
     }
 }

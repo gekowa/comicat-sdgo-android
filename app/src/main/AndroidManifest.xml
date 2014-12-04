@@ -2,9 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.sdgundam.comicatsdgo" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <!-- android:name=".GDApplication" -->
-
-
     <!-- android:configChanges="orientation" -->
     <!-- android:screenOrientation="portrait" -->
     <application
@@ -14,21 +17,22 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="cn.sdgundam.comicatsdgo.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <!-- android:screenOrientation="portrait" -->
         <activity
-            android:name=".VideoViewActivity"
+            android:name="cn.sdgundam.comicatsdgo.VideoViewActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden"
             android:label="@string/title_activity_video_view"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="cn.sdgundam.comicatsdgo.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -39,28 +43,30 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".PostViewActivity"
+            android:name="cn.sdgundam.comicatsdgo.PostViewActivity"
             android:label="@string/title_activity_post_view"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="cn.sdgundam.comicatsdgo.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cn.sdgundam.comicatsdgo.MainActivity" />
         </activity>
         <activity
-            android:name=".UnitViewActivity"
+            android:name="cn.sdgundam.comicatsdgo.UnitViewActivity"
             android:label="@string/title_activity_unit_view"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity">
-
+            android:parentActivityName="cn.sdgundam.comicatsdgo.MainActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cn.sdgundam.comicatsdgo.MainActivity" />
+        </activity>
+        <activity
+            android:name="cn.sdgundam.comicatsdgo.SearchUnitActivity"
+            android:label="@string/title_activity_search_unit"
+            android:parentActivityName="cn.sdgundam.comicatsdgo.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cn.sdgundam.comicatsdgo.MainActivity" />
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
 </manifest>
