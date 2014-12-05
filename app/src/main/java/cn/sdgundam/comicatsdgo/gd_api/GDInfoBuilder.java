@@ -371,8 +371,13 @@ public class GDInfoBuilder {
 
             list.setGenerated(generated);
 
-            list.setOrigin(rootObject.getString("origin"));
-            list.setSearchKeyword(rootObject.getString("keyword"));
+            if (rootObject.has("origin")) {
+                list.setOrigin(rootObject.getString("origin"));
+            }
+
+            if (rootObject.has("keyword")) {
+                list.setSearchKeyword(rootObject.getString("keyword"));
+            }
 
             List<UnitInfoShort> uisList = new ArrayList<UnitInfoShort>();
             JSONArray unitsFromJSON = rootObject.getJSONArray("units");

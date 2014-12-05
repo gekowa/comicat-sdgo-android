@@ -11,10 +11,12 @@ import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostList;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
+import cn.sdgundam.comicatsdgo.data_model.UnitList;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchGeneralListListener;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchHomeInfoListener;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitInfoListener;
+import cn.sdgundam.comicatsdgo.gd_api.listener.SearchUnitListener;
 
 /**
  * Created by xhguo on 10/14/2014.
@@ -193,5 +195,34 @@ public class GDApiService {
 
     public final void checkForOriginUpdate(boolean force) {
 
+    }
+
+    SearchUnitListener searchUnitListener;
+    public void setSearchUnitListener(SearchUnitListener searchUnitListener) {
+        this.searchUnitListener = searchUnitListener;
+    }
+
+    public void searchUnit(String keyword, String rank) {
+        SearchUnitAsyncTask task = new SearchUnitAsyncTask() {
+            @Override
+            protected void onPostExecute(ApiResultWrapper<UnitList> result) {
+                super.onPostExecute(result);
+
+                if (searchUnitListener != null) {
+                    if (result.getE() != null) {
+                        searchUnitListener.onSearchUnitFail(result.getE());
+                    } else {
+                        UnitList unitList = result.getPayload();
+                        if (unitList == null) {
+                            searchUnitListener.onSearchUnitFail(new Exception("未知错误"));
+                        } else {
+                            searchUnitListener.onReceiveUnitSearchResult(unitList);
+                        }
+                    }
+                }
+            }
+        };
+
+        task.execute(keyword, rank);
     }
 }

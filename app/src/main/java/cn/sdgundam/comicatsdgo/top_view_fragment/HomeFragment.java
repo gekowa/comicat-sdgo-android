@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import java.util.Date;
 
+import cn.sdgundam.comicatsdgo.SearchUnitActivity;
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.extension.SwipeRefreshLayout;
 import cn.sdgundam.comicatsdgo.R;
@@ -268,20 +269,21 @@ public class HomeFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         // TODO: load again here.
         switch (item.getItemId()) {
-            case R.id.menu_item_video_5862: {
-                Intent intent = Utility.makeVideoViewActivityIntent(getActivity(), 5862, "2", "1024609", "");
-                this.getActivity().startActivity(intent);
-            }
-                return true;
-            case R.id.menu_item_video_5002: {
-                Intent intent = Utility.makeVideoViewActivityIntent(getActivity(), 5002, "2", "983675", "");
-                this.getActivity().startActivity(intent);
-            }
-            case R.id.menu_item_video_sample: {
-                Intent intent = Utility.makeVideoViewActivityIntent(getActivity(), 5002, "2", "18720707", "");
-                this.getActivity().startActivity(intent);
-            }
-                return true;
+//            case R.id.menu_item_video_5862: {
+//                Intent intent = Utility.makeVideoViewActivityIntent(getActivity(), 5862, "2", "1024609", "");
+//                this.getActivity().startActivity(intent);
+//                return true;
+//            }
+//            case R.id.menu_item_video_5002: {
+//                Intent intent = Utility.makeVideoViewActivityIntent(getActivity(), 5002, "2", "983675", "");
+//                this.getActivity().startActivity(intent);
+//                return true;
+//            }
+//            case R.id.menu_item_video_sample: {
+//                Intent intent = Utility.makeVideoViewActivityIntent(getActivity(), 5002, "2", "18720707", "");
+//                this.getActivity().startActivity(intent);
+//                return true;
+//            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -292,7 +294,14 @@ public class HomeFragment extends Fragment implements
         inflater.inflate(R.menu.home, menu);
 
         MenuItem searchMenuItem = menu.findItem(R.id.action_search_unit);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+        View searchUnitButton = MenuItemCompat.getActionView(searchMenuItem);
+        searchUnitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeFragment.this.getActivity(), SearchUnitActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

@@ -2,16 +2,17 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/action_search_unit"
-        android:title="@string/action_search_unit"
-        android:showAsAction="always|collapseActionView"
-        android:actionViewClass="android.widget.SearchView" />
-    <item android:id="@+id/menu_item_video_5862"
-        android:title="Video 5862"
-        android:showAsAction="never"></item>
-    <item android:id="@+id/menu_item_video_5002"
-        android:title="Video 5002"
-        android:showAsAction="never"></item>
-    <item android:id="@+id/menu_item_video_sample"
-        android:title="Sample Video"
-        android:showAsAction="never"></item>
+        android:title=""
+        android:showAsAction="always"
+        android:actionLayout="@layout/menu_item_search_unit"
+        />
+    <!--<item android:id="@+id/menu_item_video_5862"-->
+        <!--android:title="Video 5862"-->
+        <!--android:showAsAction="never"></item>-->
+    <!--<item android:id="@+id/menu_item_video_5002"-->
+        <!--android:title="Video 5002"-->
+        <!--android:showAsAction="never"></item>-->
+    <!--<item android:id="@+id/menu_item_video_sample"-->
+        <!--android:title="Sample Video"-->
+        <!--android:showAsAction="never"></item>-->
 </menu>
