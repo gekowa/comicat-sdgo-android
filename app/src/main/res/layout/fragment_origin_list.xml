@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_honeycomb_repeat"
-    tools:context="cn.sdgundam.comicatsdgo.OriginListActivity">
+    tools:context="cn.sdgundam.comicatsdgo.top_view_fragment.OriginFragment">
 
     <ListView android:id="@+id/origin_list_view"
         android:layout_width="match_parent"
