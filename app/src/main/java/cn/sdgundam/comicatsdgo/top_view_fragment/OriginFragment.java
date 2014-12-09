@@ -2,6 +2,7 @@ package cn.sdgundam.comicatsdgo.top_view_fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import cn.sdgundam.comicatsdgo.R;
+import cn.sdgundam.comicatsdgo.UnitsByOriginActivity;
 import cn.sdgundam.comicatsdgo.data_model.OriginInfo;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 
@@ -60,7 +62,12 @@ public class OriginFragment extends Fragment {
         originListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                OriginInfo oi = (OriginInfo)adapter.getItem(position);
 
+                Intent intent = new Intent(OriginFragment.this.getActivity(), UnitsByOriginActivity.class);
+                intent.putExtra("origin", oi.getOriginIndex());
+
+                OriginFragment.this.startActivity(intent);
             }
         });
 

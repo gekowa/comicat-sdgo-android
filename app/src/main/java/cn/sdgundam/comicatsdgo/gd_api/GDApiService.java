@@ -19,12 +19,14 @@ import cn.sdgundam.comicatsdgo.gd_api.async_task.CheckOriginUpdateAsyncTask;
 import cn.sdgundam.comicatsdgo.gd_api.async_task.FetchHomeInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.gd_api.async_task.FetchNewsListAsyncTask;
 import cn.sdgundam.comicatsdgo.gd_api.async_task.FetchUnitInfoAsyncTask;
+import cn.sdgundam.comicatsdgo.gd_api.async_task.FetchUnitsByOriginAsyncTask;
 import cn.sdgundam.comicatsdgo.gd_api.async_task.FetchVideoListAsyncTask;
 import cn.sdgundam.comicatsdgo.gd_api.async_task.SearchUnitAsyncTask;
 import cn.sdgundam.comicatsdgo.gd_api.listener.CheckOriginUpdateListener;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchGeneralListListener;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchHomeInfoListener;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitInfoListener;
+import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitsByOriginListener;
 import cn.sdgundam.comicatsdgo.gd_api.listener.SearchUnitListener;
 
 /**
@@ -286,6 +288,59 @@ public class GDApiService {
         } else {
             return OriginInfo.builtInOrigins;
         }
+    }
+
+    // endregion
+
+    // region UnitsByOrigin
+
+    static final String UNITS_BY_ORIGIN_CACHE_FILE = "units-by-origin-%@.cache";
+
+    FetchUnitsByOriginListener fetchUnitsByOriginListener;
+
+    public void setFetchUnitsByOriginListener(FetchUnitsByOriginListener fetchUnitsByOriginListener) {
+        this.fetchUnitsByOriginListener = fetchUnitsByOriginListener;
+    }
+
+    public void fetchUnitsByOrigin(final String originIndex, boolean force) {
+        if (force) {
+            createFetchUnitsByOriginTaskAndExecute(originIndex);
+        } else {
+            UnitList cached = ObjectCache.loadObjectFromFile(context, String.format(UNITS_BY_ORIGIN_CACHE_FILE, originIndex));
+            if (cached != null) {
+                fetchUnitsByOriginListener.onReceiveUnitListResult(cached, originIndex);
+
+                if (Math.abs(Utility.getDateDiff(cached.getGenerated(), new Date(), TimeUnit.SECONDS)) > UNIT_INFO_LIFETIME) {
+                    createFetchUnitInfoTaskAndExecute(originIndex);
+                }
+            } else {
+                createFetchUnitInfoTaskAndExecute(originIndex);
+            }
+        }
+    }
+
+    void createFetchUnitsByOriginTaskAndExecute(final String originIndex) {
+        FetchUnitsByOriginAsyncTask task = new FetchUnitsByOriginAsyncTask() {
+            @Override
+            protected void onPostExecute(ApiResultWrapper<UnitList> result) {
+                super.onPostExecute(result);
+
+                if (fetchUnitsByOriginListener != null) {
+                    if (result.getE() != null) {
+                        fetchUnitsByOriginListener.onFetchingUnitsFail(result.getE());
+                    } else {
+                        UnitList unitList = result.getPayload();
+                        if (unitList == null) {
+                            fetchUnitsByOriginListener.onFetchingUnitsFail(new Exception("未知错误"));
+                        } else {
+                            fetchUnitsByOriginListener.onReceiveUnitListResult(unitList, originIndex);
+                        }
+                    }
+                }
+            }
+        };
+
+        task.execute(originIndex);
     }
 
     // endregion
