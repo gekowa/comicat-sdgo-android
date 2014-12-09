@@ -134,7 +134,6 @@ public class CarouselView extends RelativeLayout {
             int realPosition= (carousel.length + position) % carousel.length;
             CarouselInfo ci = carousel[realPosition];
 
-            Picasso.with(getContext()).setIndicatorsEnabled(true);
             Picasso.with(getContext()).load(ci.getImageURL()).into(imageView);
 
             container.addView(imageView);

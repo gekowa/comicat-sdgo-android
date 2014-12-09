@@ -1,11 +1,8 @@
 package cn.sdgundam.comicatsdgo.top_view_fragment;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
@@ -17,19 +14,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.widget.LinearLayout;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import java.util.Date;
 
 import cn.sdgundam.comicatsdgo.SearchUnitActivity;
 import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.extension.SwipeRefreshLayout;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
-import cn.sdgundam.comicatsdgo.gd_api.FetchHomeInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchHomeInfoListener;
 import cn.sdgundam.comicatsdgo.view.CarouselView;
@@ -198,7 +189,7 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
-    public void onFetchingHomeInfoWithError(Exception e) {
+    public void onFetchingHomeInfoFail(Exception e) {
         hideAllLoadings();
 
         // Display "Network Unavailable" view

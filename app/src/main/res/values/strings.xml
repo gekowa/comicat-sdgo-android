@@ -81,5 +81,6 @@
     <string name="action_search_unit">搜索机体</string>
     <string name="title_activity_search_unit">搜索机体</string>
     <string name="search_unit_hint">昵称或机体名</string>
+    <string name="title_activity_origin_list">作品列表</string>
 
 </resources>

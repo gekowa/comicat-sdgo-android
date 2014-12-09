@@ -7,5 +7,5 @@ import cn.sdgundam.comicatsdgo.data_model.PostList;
  */
 public interface FetchGeneralListListener<T> {
     void onReceivePostList(PostList<T> list);
-    void onFetchingPostListWithError(Exception e);
+    void onFetchingPostListFail(Exception e);
 }

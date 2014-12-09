@@ -140,7 +140,7 @@ public abstract class PostListDataSource<T> implements FetchGeneralListListener<
     }
 
     @Override
-    public void onFetchingPostListWithError(Exception e) {
+    public void onFetchingPostListFail(Exception e) {
         loading = false;
 
         pldsListener.dataError(this.gdCategory, e);

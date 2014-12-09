@@ -440,7 +440,7 @@ public class UnitViewActivity extends Activity implements
 
 
     @Override
-    public void onFetchingUnitInfoWithError(Exception e) {
+    public void onFetchingUnitInfoFail(Exception e) {
         hideAllLoadings();
 
         // Display "Network Unavailable" view

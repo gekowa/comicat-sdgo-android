@@ -1,4 +1,4 @@
-package cn.sdgundam.comicatsdgo.gd_api;
+package cn.sdgundam.comicatsdgo.gd_api.async_task;
 
 import android.os.AsyncTask;
 
@@ -8,6 +8,8 @@ import java.util.Map;
 import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
+import cn.sdgundam.comicatsdgo.gd_api.Communicator;
+import cn.sdgundam.comicatsdgo.gd_api.GDInfoBuilder;
 
 /**
  * Created by xhguo on 11/17/2014.

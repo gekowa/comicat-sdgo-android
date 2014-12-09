@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -16,7 +15,9 @@ import java.util.List;
 
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
+import cn.sdgundam.comicatsdgo.data_model.CheckOriginUpdateResult;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
+import cn.sdgundam.comicatsdgo.data_model.OriginInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostList;
 import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
@@ -403,5 +404,42 @@ public class GDInfoBuilder {
         }
 
         return list;
+    }
+
+    public static CheckOriginUpdateResult buildOriginInfoList(String json) {
+        if (json == "") {
+            return null;
+        }
+
+        CheckOriginUpdateResult result = new CheckOriginUpdateResult();
+        try {
+            JSONObject rootObject = new JSONObject(json);
+
+            result.setHasUpdate(rootObject.getBoolean("result"));
+
+            if (rootObject.has("origins")) {
+                List<OriginInfo> origins = new ArrayList<OriginInfo>();
+
+                JSONArray originJSONArray = rootObject.getJSONArray("origins");
+                for (int i = 0; i < originJSONArray.length(); i++) {
+                    JSONObject o = originJSONArray.getJSONObject(i);
+
+                    OriginInfo oi = new OriginInfo();
+                    oi.setOriginIndex(o.getString("origin"));
+                    oi.setTitle(o.getString("title"));
+                    oi.setShortTitle(o.getString("shortTitle"));
+                    oi.setNumberOfUnits(o.getInt("units"));
+                    oi.setDisplayOrder(o.getInt("displayOrder"));
+
+                    origins.add(oi);
+                }
+
+                result.setOrigins(origins.toArray(new OriginInfo[0]));
+            }
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "JSON parse error: " + e.getMessage());
+        }
+
+        return result;
     }
 }

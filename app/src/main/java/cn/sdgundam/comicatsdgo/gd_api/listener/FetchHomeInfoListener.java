@@ -8,5 +8,5 @@ import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 
 public interface FetchHomeInfoListener {
     void onReceiveHomeInfo(HomeInfo homeInfo);
-    void onFetchingHomeInfoWithError(Exception e);
+    void onFetchingHomeInfoFail(Exception e);
 }

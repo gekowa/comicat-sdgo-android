@@ -24,6 +24,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     debugCompile 'com.android.support:support-v4:20.0.0'
     debugCompile 'com.android.support:support-v13:20.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.1.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
     compile 'com.squareup.picasso:picasso:2.3.4'
     compile 'org.lucasr.twowayview:twowayview:0.1.1'
     compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'

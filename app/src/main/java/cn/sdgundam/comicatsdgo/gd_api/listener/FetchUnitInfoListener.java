@@ -8,5 +8,5 @@ import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
  */
 public interface FetchUnitInfoListener {
     void onReceiveUnitInfo(UnitInfo unitInfo);
-    void onFetchingUnitInfoWithError(Exception e);
+    void onFetchingUnitInfoFail(Exception e);
 }

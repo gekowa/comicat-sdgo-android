@@ -1,4 +1,4 @@
-package cn.sdgundam.comicatsdgo.gd_api;
+package cn.sdgundam.comicatsdgo.gd_api.async_task;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
 import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.data_model.PostList;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
+import cn.sdgundam.comicatsdgo.gd_api.Communicator;
+import cn.sdgundam.comicatsdgo.gd_api.GDInfoBuilder;
 
 /**
  * Created by xhguo on 10/20/2014.
