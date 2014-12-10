@@ -12,7 +12,13 @@
         <GridView
             android:id="@+id/units_grid_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/units_by_origin_grid_h_margin"
+            android:paddingRight="@dimen/units_by_origin_grid_h_margin"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:scrollbarStyle="outsideOverlay"
+            />
 
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 

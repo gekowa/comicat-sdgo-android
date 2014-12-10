@@ -44,7 +44,9 @@
 
     <dimen name="unit_view_detail_padding">10dp</dimen>
 
-    <dimen name="units_by_origin_item_size">76dp</dimen>
+    <dimen name="units_by_origin_item_image_size">74dp</dimen>
+    <dimen name="units_by_origin_item_width">80dp</dimen>
+    <dimen name="units_by_origin_item_height">130dp</dimen>
     <dimen name="units_by_origin_grid_h_gap_min">6dp</dimen>
     <dimen name="units_by_origin_grid_h_gap_max">16dp</dimen>
     <dimen name="units_by_origin_grid_h_margin">12dp</dimen>

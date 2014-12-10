@@ -66,6 +66,7 @@ public class OriginFragment extends Fragment {
 
                 Intent intent = new Intent(OriginFragment.this.getActivity(), UnitsByOriginActivity.class);
                 intent.putExtra("origin", oi.getOriginIndex());
+                intent.putExtra("shortTitle", oi.getShortTitle());
 
                 OriginFragment.this.startActivity(intent);
             }

@@ -294,7 +294,7 @@ public class GDApiService {
 
     // region UnitsByOrigin
 
-    static final String UNITS_BY_ORIGIN_CACHE_FILE = "units-by-origin-%@.cache";
+    static final String UNITS_BY_ORIGIN_CACHE_FILE = "units-by-origin-%s.cache";
 
     FetchUnitsByOriginListener fetchUnitsByOriginListener;
 
@@ -311,10 +311,10 @@ public class GDApiService {
                 fetchUnitsByOriginListener.onReceiveUnitListResult(cached, originIndex);
 
                 if (Math.abs(Utility.getDateDiff(cached.getGenerated(), new Date(), TimeUnit.SECONDS)) > UNIT_INFO_LIFETIME) {
-                    createFetchUnitInfoTaskAndExecute(originIndex);
+                    createFetchUnitsByOriginTaskAndExecute(originIndex);
                 }
             } else {
-                createFetchUnitInfoTaskAndExecute(originIndex);
+                createFetchUnitsByOriginTaskAndExecute(originIndex);
             }
         }
     }

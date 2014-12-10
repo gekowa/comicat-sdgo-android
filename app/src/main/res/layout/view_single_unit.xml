@@ -5,11 +5,21 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="@dimen/unit_image_size"
-        android:layout_height="@dimen/unit_image_size"
-        android:layout_gravity="center_horizontal"/>
+        android:id="@+id/unit_image_view"
+        android:layout_width="@dimen/units_by_origin_item_image_size"
+        android:layout_height="@dimen/units_by_origin_item_image_size"
+        android:layout_gravity="center_horizontal"
+        android:padding="2dp"
+        android:background="@drawable/bg_gray_border"
+        />
 
     <TextView
+        android:id="@+id/model_name_text_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="3dp"
+        android:textSize="12dp"
+        />
 </LinearLayout>

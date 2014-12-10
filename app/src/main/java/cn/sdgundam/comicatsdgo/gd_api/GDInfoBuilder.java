@@ -389,9 +389,6 @@ public class GDInfoBuilder {
                 uis.setUnitId(u.getString("unitId"));
                 uis.setModelName(u.getString("modelName"));
                 uis.setRank(u.getString("rank"));
-                uis.setWarType(u.getString("warType"));
-                uis.setOriginTitleShort(u.getString("originTitleShort"));
-                uis.setOrigin(u.getInt("origin"));
                 uis.setRating((float)u.getDouble("rating"));
 
                 uisList.add(uis);

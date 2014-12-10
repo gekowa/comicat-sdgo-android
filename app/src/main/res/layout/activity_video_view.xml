@@ -104,7 +104,7 @@
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:background="@drawable/round_corner_bg"
+            android:background="@drawable/bg_round_corner_border"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
