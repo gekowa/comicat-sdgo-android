@@ -69,11 +69,13 @@ public class VideoGridView extends GridView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (videos != null) {
-            int width = MeasureSpec.getSize(widthMeasureSpec);
+            float width = (float)MeasureSpec.getSize(widthMeasureSpec);
             int videoLengthAdjusted = videos.length + videos.length % 2;
-            int height = (int) ((float) width / VIEW_ASPECT / 2) * videoLengthAdjusted  / 2;
+            int verticalSpacing = getResources().getDimensionPixelSize(R.dimen.video_grid_vertical_spacing);
+            int horizontalSpacing = getResources().getDimensionPixelSize(R.dimen.video_grid_horizontal_spacing);
+            int height = (int) ((((width - horizontalSpacing * (this.getNumColumns() - 1)) / VIEW_ASPECT / 2 + verticalSpacing)) * videoLengthAdjusted  / 2);
 
-            setMeasuredDimension(width, height);
+            setMeasuredDimension((int)width, height);
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec /*MeasureSpec.UNSPECIFIED*/ );
         }
