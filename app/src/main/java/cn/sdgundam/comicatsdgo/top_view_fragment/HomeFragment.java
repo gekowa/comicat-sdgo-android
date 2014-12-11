@@ -1,8 +1,8 @@
 package cn.sdgundam.comicatsdgo.top_view_fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import java.util.Date;
 
@@ -47,9 +46,6 @@ public class HomeFragment extends Fragment implements
     }
 
     HomeInfo homeInfo;
-    public void setHomeInfo(HomeInfo homeInfo) {
-        this.homeInfo = homeInfo;
-    }
 
     private GDApiService apiService;
 
@@ -82,42 +78,22 @@ public class HomeFragment extends Fragment implements
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        ViewTreeObserver vto = getView().getViewTreeObserver();
-        if (vto.isAlive()) {
-            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    ViewTreeObserver vtoInner = getView().getViewTreeObserver();
+        initializeViews();
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        vtoInner.removeOnGlobalLayoutListener(this);
-                    } else {
-                        vtoInner.removeGlobalOnLayoutListener(this);
-                    }
+        loadHomeInfo();
+    }
 
-                    if (HomeFragment.this.homeInfo == null) {
-                        refreshHomeInfo();
-                    } else {
-                        if (!allViewSetup) {
-                            setupViews();
-                        }
-                    }
-                }
-            });
-        }
-
+    private void initializeViews() {
         ptrLayout = (PullToRefreshLayout)getView().findViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(this.getActivity())
                 .allChildrenArePullable()
                 .listener(this)
                 .setup(ptrLayout);
         ((DefaultHeaderTransformer)ptrLayout.getHeaderTransformer()).setProgressBarColor(getResources().getColor(R.color.gd_tint_color));
-
 
         progressViewContainer = (ViewGroup)getView().findViewById(R.id.progress_bar_container);
         progressViewContainer.setOnTouchListener(new View.OnTouchListener() {
@@ -131,13 +107,12 @@ public class HomeFragment extends Fragment implements
         nev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HomeFragment.this.refreshHomeInfo();
+                HomeFragment.this.loadHomeInfo();
                 nev.setVisibility(View.INVISIBLE);
             }
         });
-
-        Log.v(LOG_TAG, "onResume");
     }
+
 
     @Override
     public void onPause() {
@@ -147,17 +122,10 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-
-        Log.v(LOG_TAG, "onDetach");
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
 
-        this.allViewSetup = false;
+        allViewSetup = false;
 
         Log.v(LOG_TAG, "onDestroyView");
     }
@@ -184,8 +152,14 @@ public class HomeFragment extends Fragment implements
     public void onReceiveHomeInfo(HomeInfo homeInfo) {
         hideAllLoadings();
 
-        setHomeInfo(homeInfo);
-        setupViews();
+        this.homeInfo = homeInfo;
+
+        this.getView().post(new Runnable() {
+            @Override
+            public void run() {
+                setupViews();
+            }
+        });
     }
 
     @Override
@@ -200,8 +174,7 @@ public class HomeFragment extends Fragment implements
         Utility.showNetworkErrorAlertDialog(HomeFragment.this.getActivity(), e);
     }
 
-    private void refreshHomeInfo() {
-        // TODO: show loading
+    private void loadHomeInfo() {
         showLoading();
 
         apiService.fetchHomeInfo(false);
@@ -225,7 +198,7 @@ public class HomeFragment extends Fragment implements
         int carouselWidth = getResources().getDimensionPixelSize(R.dimen.carousel_width);
         int aspectCarouselHeight = (int) (fragmentWidth  * (float)carouselHeight  / carouselWidth);
 
-        CarouselView carouselView = (CarouselView) this.getView().findViewById(R.id.carousel);
+        CarouselView carouselView = (CarouselView) containerView.findViewById(R.id.carousel);
         carouselView.getLayoutParams().height = aspectCarouselHeight;
 
         carouselView.setCarousel(homeInfo.getCarousel());
