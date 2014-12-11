@@ -229,6 +229,13 @@ public class HomeFragment extends Fragment implements
 
     void setupVideoList(View containerView) {
         VideoGridView videoList = (VideoGridView)containerView.findViewById(R.id.video_list);
+        videoList.setOnVideoClickListener(new VideoGridView.OnVideoClickListener() {
+            @Override
+            public void onItemClick(int postId, String videoHost, String videoId, String videoId2) {
+                Intent intent = Utility.makeVideoViewActivityIntent(HomeFragment.this.getActivity(), postId, videoHost, videoId, videoId2);
+                startActivity(intent);
+            }
+        });
         videoList.setVideos(homeInfo.getVideoList());
     }
 

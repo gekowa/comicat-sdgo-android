@@ -19,9 +19,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -51,7 +48,8 @@ public class UnitViewActivity extends Activity implements
         FetchUnitInfoListener,
         OnRefreshListener,
         UnitMixView.UnitMixEventListener,
-        UnitMixPopupView.UMMEventListener {
+        UnitMixPopupView.UMMEventListener,
+        VideoGridView.OnVideoClickListener {
 
     private static final String LOG_TAG = UnitViewActivity.class.getSimpleName();
 
@@ -404,6 +402,7 @@ public class UnitViewActivity extends Activity implements
                             grid.setVideos(unitInfo.getVideoList());
                         }
                     });
+                    grid.setOnVideoClickListener(UnitViewActivity.this);
                     return grid;
                 } else {
                     View noVideoNotice = LayoutInflater.from(UnitViewActivity.this).inflate(R.layout.view_no_related_video, null, false);
@@ -431,6 +430,13 @@ public class UnitViewActivity extends Activity implements
         tabHost.addTab(spec);
     }
 
+    @Override
+    public void onItemClick(int postId, String videoHost, String videoId, String videoId2) {
+        Intent intent = Utility.makeVideoViewActivityIntent(this, postId, videoHost, videoId, videoId2);
+        intent.putExtra("fromUnitId", unitId);
+        startActivity(intent);
+    }
+
     private View getTabIndicator(String caption, String badgeText) {
         View view = LayoutInflater.from(this).inflate(R.layout.view_unit_tab_item, null);
         TextView textView = (TextView) view.findViewById(R.id.text_view);
@@ -444,7 +450,6 @@ public class UnitViewActivity extends Activity implements
 
         return view;
     }
-
 
 
     @Override

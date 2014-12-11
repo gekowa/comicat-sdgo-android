@@ -69,6 +69,7 @@ public class VideoViewActivity extends Activity implements
     private String videoHost;
     private String videoId;
     private String videoId2;
+    private String fromUnitId;
 
     private String videoURL;
 
@@ -105,7 +106,7 @@ public class VideoViewActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initialize(getIntent().getExtras());
+        initialize(getIntent());
 
         // check supported video hosts
         if (Arrays.binarySearch(SUPPORTED_VIDEO_HOSTS, videoHost) < 0) {
@@ -156,26 +157,6 @@ public class VideoViewActivity extends Activity implements
         }
     }
 
-    private void initialize(Bundle extra) {
-        if (extra != null) {
-            postId = extra.getInt("id");
-            videoHost = extra.getString("videoHost");
-            videoId = extra.getString("videoId");
-            videoId2 = extra.getString("videoId2");
-        } else {
-
-            // 17173
-//            videoHost = "2";
-//            videoId = "18408422";
-
-            // youku
-            videoHost = "4";
-            videoId = "XODAzNzY5MzE2";
-        }
-
-        Log.d(LOG_TAG, "initialize: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
-    }
-
     private void initializeViews() {
         Resources resources = getResources();
 
@@ -219,6 +200,29 @@ public class VideoViewActivity extends Activity implements
         videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE_VERTICALLY, 0);
 
         uiBlocker = findViewById(R.id.ui_blocker);
+    }
+
+    private void initialize(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras  != null) {
+            postId = extras .getInt("id");
+            videoHost = extras .getString("videoHost");
+            videoId = extras .getString("videoId");
+            videoId2 = extras .getString("videoId2");
+        } else {
+
+            // 17173
+//            videoHost = "2";
+//            videoId = "18408422";
+
+            // youku
+            videoHost = "4";
+            videoId = "XODAzNzY5MzE2";
+        }
+
+        fromUnitId = intent.getStringExtra("fromUnitId");
+
+        Log.d(LOG_TAG, "initialize: " + postId + "-" + videoHost + "-" + videoId + "-" + videoId2);
     }
 
     @Override
@@ -724,12 +728,12 @@ public class VideoViewActivity extends Activity implements
 
     @Override
     public void clickedOnUnit(String unitId) {
-        // Toast.makeText(VideoViewActivity.this, "Unit: " + unitId, Toast.LENGTH_SHORT).show();
-
-        // this.videoView.stopPlayback();
-
-        Intent intent = Utility.makeUnitViewActivityIntent(this, unitId);
-        this.startActivity(intent);
+        if (unitId.equals(fromUnitId)) {
+            finish();
+        } else {
+            Intent intent = Utility.makeUnitViewActivityIntent(this, unitId);
+            this.startActivity(intent);
+        }
     }
 
     @Override

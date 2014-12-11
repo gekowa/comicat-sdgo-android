@@ -25,6 +25,12 @@ public class VideoGridView extends GridView {
 
     VideoListItem[] videos;
 
+    OnVideoClickListener videoClickListener;
+
+    public void setOnVideoClickListener(OnVideoClickListener videoClickListener) {
+        this.videoClickListener = videoClickListener;
+    }
+
     public VideoGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -46,19 +52,14 @@ public class VideoGridView extends GridView {
         this.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                VideoListItem vli = (VideoListItem) adapterView.getAdapter().getItem(i);
+                if (videoClickListener != null) {
+                    VideoListItem vli = (VideoListItem) adapterView.getAdapter().getItem(i);
 
-//                Toast.makeText(getContext(),
-//                        String.format("Video: %s (index: %s) clicked", vli.getPostId(), i), Toast.LENGTH_SHORT).show();
-
-                Intent intent = Utility.makeVideoViewActivityIntent(
-                        getContext(),
-                        vli.getPostId(),
-                        vli.getVideoHost(),
-                        vli.getVideoId(),
-                        vli.getVideoId2());
-
-                getContext().startActivity(intent);
+                    videoClickListener.onItemClick(vli.getPostId(),
+                            vli.getVideoHost(),
+                            vli.getVideoId(),
+                            vli.getVideoId2());
+                }
             }
         });
 
@@ -115,5 +116,9 @@ public class VideoGridView extends GridView {
 
             return view;
         }
+    }
+
+    public interface OnVideoClickListener {
+        void onItemClick(int postId, String videoHost, String videoId, String videoId2);
     }
 }
