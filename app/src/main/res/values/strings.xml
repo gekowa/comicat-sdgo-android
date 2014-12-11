@@ -83,5 +83,6 @@
     <string name="search_unit_hint">昵称或机体名</string>
     <string name="title_activity_origin_list">全部作品</string>
     <string name="title_activity_units_by_origin">UnitsByOriginActivity</string>
+    <string name="press_back_again_to_exit">再按一次返回键退出...</string>
 
 </resources>
