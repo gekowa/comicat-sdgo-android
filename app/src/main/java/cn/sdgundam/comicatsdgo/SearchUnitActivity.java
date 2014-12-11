@@ -23,6 +23,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +98,21 @@ public class SearchUnitActivity extends Activity implements
         });
 
         progressViewContainer = (ViewGroup)findViewById(R.id.progress_bar_container);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart("搜索机体");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("搜索机体");
+        MobclickAgent.onPause(this);
     }
 
     private void performSearch() {

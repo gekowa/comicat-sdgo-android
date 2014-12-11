@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,6 +20,8 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -102,13 +105,30 @@ public class VideoFragment extends Fragment implements
                              Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_video, container, false);
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
+        MobclickAgent.onPageStart("视频列表");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("视频列表");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        initalizeViews();
+    }
+
+    private void initalizeViews() {
         gdcsv = (GDCategorySelectionView)getView().findViewById(R.id.gd_category_sel_view);
         gdcsv.setGDCategories(GD_CATEGORIES);
         gdcsv.setGDCategorySelectionListener(this);

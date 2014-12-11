@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.Date;
 
 import cn.sdgundam.comicatsdgo.SearchUnitActivity;
@@ -113,12 +115,20 @@ public class HomeFragment extends Fragment implements
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart("首页");
+    }
 
     @Override
     public void onPause() {
         super.onPause();
 
         Log.v(LOG_TAG, "onPause");
+
+        MobclickAgent.onPageEnd("首页");
     }
 
     @Override
@@ -154,12 +164,15 @@ public class HomeFragment extends Fragment implements
 
         this.homeInfo = homeInfo;
 
-        this.getView().post(new Runnable() {
-            @Override
-            public void run() {
-                setupViews();
-            }
-        });
+        View rootView = getView();
+        if (rootView != null) {
+            getView().post(new Runnable() {
+                @Override
+                public void run() {
+                    setupViews();
+                }
+            });
+        }
     }
 
     @Override

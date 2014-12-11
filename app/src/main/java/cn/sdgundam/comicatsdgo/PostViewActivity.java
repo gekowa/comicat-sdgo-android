@@ -2,12 +2,15 @@ package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.umeng.analytics.MobclickAgent;
 
 
 public class PostViewActivity extends Activity {
@@ -37,6 +40,20 @@ public class PostViewActivity extends Activity {
             }
         });
         webView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view.aspx?id=%d&page=0", postId));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("新闻详细");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("新闻详细");
+        MobclickAgent.onPause(this);
     }
 
 

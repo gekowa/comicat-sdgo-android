@@ -39,19 +39,19 @@ public class ObjectCache {
             return result;
         }
         catch (FileNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return null;
         }
         catch (StreamCorruptedException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return null;
         }
         catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return null;
         }
         catch (ClassNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return null;
         }
     }

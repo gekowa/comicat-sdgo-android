@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.umeng.analytics.MobclickAgent;
 
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.UnitsByOriginActivity;
@@ -73,6 +74,20 @@ public class OriginFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart("作品列表");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("作品列表");
     }
 
     class OriginListAdapter extends BaseAdapter {

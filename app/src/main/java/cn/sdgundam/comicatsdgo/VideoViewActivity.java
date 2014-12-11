@@ -29,6 +29,8 @@ import android.widget.Toast;
 //import android.widget.VideoView;
 //import android.widget.MediaController;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.Arrays;
 
 import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
@@ -224,6 +226,9 @@ public class VideoViewActivity extends Activity implements
         Log.d(LOG_TAG, "onResume begin " + postId);
         super.onResume();
 
+        MobclickAgent.onPageStart("视频观看");
+        MobclickAgent.onResume(this);
+
         if (orientationEventListener.canDetectOrientation() && isVideoPrepared) {
             orientationEventListener.enable();
         }
@@ -241,6 +246,9 @@ public class VideoViewActivity extends Activity implements
     protected void onPause() {
         Log.d(LOG_TAG, "onPause begin " + postId);
         super.onPause();
+
+        MobclickAgent.onPageEnd("视频观看");
+        MobclickAgent.onPause(this);
 
         orientationEventListener.disable();
         disableVideoTimeout();

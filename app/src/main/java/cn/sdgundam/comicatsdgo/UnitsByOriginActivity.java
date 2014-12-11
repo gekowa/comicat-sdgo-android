@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,6 +71,20 @@ public class UnitsByOriginActivity extends Activity implements
         apiService.setFetchUnitsByOriginListener(this);
 
         loadUnits(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("机体按作品");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("机体按作品");
+        MobclickAgent.onPause(this);
     }
 
     private void initialize(Intent intent) {

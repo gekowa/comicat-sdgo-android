@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 import android.view.animation.AlphaAnimation;
 
+import com.umeng.analytics.MobclickAgent;
+
 import cn.sdgundam.comicatsdgo.top_view_fragment.HomeFragment;
 import cn.sdgundam.comicatsdgo.top_view_fragment.NewsFragment;
 import cn.sdgundam.comicatsdgo.top_view_fragment.OriginFragment;
@@ -44,7 +46,20 @@ public class MainActivity extends FragmentActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPause(this);
     }
 
     @Override

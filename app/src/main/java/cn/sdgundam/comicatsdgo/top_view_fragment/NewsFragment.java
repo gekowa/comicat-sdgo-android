@@ -20,6 +20,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -114,6 +116,24 @@ public class NewsFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
+        MobclickAgent.onPageStart("新闻列表");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("新闻列表");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        initializeViews();
+    }
+
+    private void initializeViews() {
         gdcsv = (GDCategorySelectionView)getView().findViewById(R.id.gd_category_sel_view);
         gdcsv.setGDCategories(GD_CATEGORIES);
         gdcsv.setGDCategorySelectionListener(this);
@@ -148,16 +168,6 @@ public class NewsFragment extends Fragment implements
         });
 
         switchToGDCategory(0);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Override

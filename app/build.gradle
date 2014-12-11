@@ -11,10 +11,13 @@ android {
         versionName "1.0"
     }
     buildTypes {
-//        release {
-//            runProguard true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            // signingConfig signingConfigs.release
+        }
     }
     productFlavors {
     }
@@ -31,6 +34,7 @@ dependencies {
     compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
     compile 'com.github.nicolasjafelle:paginglistview:1.1'
     compile 'se.emilsjolander:StickyScrollViewItems:1.1.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
     compile project(':vitamio')
     compile project(':android_pulltorefresh')
 }

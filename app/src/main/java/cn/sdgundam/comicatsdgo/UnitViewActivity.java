@@ -26,6 +26,8 @@ import android.widget.ScrollView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.Date;
 
 import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
@@ -166,6 +168,9 @@ public class UnitViewActivity extends Activity implements
         Log.d(LOG_TAG, "onResume");
         super.onResume();
 
+        MobclickAgent.onPageStart("机体详细");
+        MobclickAgent.onResume(this);
+
         if (myState != null) {
             tabHost.setCurrentTab(myState.getInt(TAB_INDEX_KEY));
 
@@ -180,6 +185,9 @@ public class UnitViewActivity extends Activity implements
     @Override
     protected void onPause() {
         super.onPause();
+
+        MobclickAgent.onPageEnd("机体详细");
+        MobclickAgent.onPause(this);
 
         myState = new Bundle();
         myState.putInt(TAB_INDEX_KEY, tabHost.getCurrentTab());
