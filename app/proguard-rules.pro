@@ -16,10 +16,18 @@
 #   public *;
 #}
 
+-keep public class cn.sdgundam.comicatsdgo.data_model.UnitInfo { *; }
+-keep class cn.sdgundam.comicatsdgo.VideoViewActivity$YoukuJSInterface { *; }
+-keep class cn.sdgundam.comicatsdgo.VideoViewActivity$VideoInfoInterface { *; }
 
+-keep public class io.vov.vitamio.** { *; }
 -keep class com.qq.e.** {
     public protected *;
 }
 -keep class com.tencent.gdt.**{
     public protected *;
 }
+# Ignore warnings: https://github.com/square/okhttp/wiki/FAQs
+-dontwarn com.squareup.okhttp.internal.huc.**
+# Ignore warnings: https://github.com/square/okio/issues/60
+-dontwarn okio.**
