@@ -14,6 +14,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
+    <!-- for 广点通 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES"/>
+
     <!-- android:name=".GDApplication" -->
     <!-- android:configChanges="orientation" -->
     <!-- android:screenOrientation="portrait" -->
@@ -86,6 +90,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cn.sdgundam.comicatsdgo.MainActivity" />
+        </activity>
+
+        <!-- for 广点通 -->
+        <service android:name="com.qq.e.comm.DownloadService" android:exported="false"></service>
+        <activity android:name="com.qq.e.ads.AdActivity" android:theme="@android:style/Theme.Translucent">
         </activity>
     </application>
 

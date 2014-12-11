@@ -15,3 +15,11 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+
+-keep class com.qq.e.** {
+    public protected *;
+}
+-keep class com.tencent.gdt.**{
+    public protected *;
+}

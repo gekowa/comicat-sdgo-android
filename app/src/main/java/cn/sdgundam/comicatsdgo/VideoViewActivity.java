@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,10 @@ import android.widget.Toast;
 //import android.widget.VideoView;
 //import android.widget.MediaController;
 
+import com.qq.e.ads.AdListener;
+import com.qq.e.ads.AdRequest;
+import com.qq.e.ads.AdSize;
+import com.qq.e.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Arrays;
@@ -96,6 +101,7 @@ public class VideoViewActivity extends Activity implements
     private ViewGroup playButtonContainer;
     private ViewGroup loadingView;
     private ViewGroup videoOverlay;
+    private RelativeLayout bannerContainer;
 
     private OrientationEventListener orientationEventListener;
 
@@ -125,6 +131,8 @@ public class VideoViewActivity extends Activity implements
         setContentView(R.layout.activity_video_view);
 
         initializeViews();
+
+        loadAds();
 
         prepareInfoWebView();
 
@@ -200,6 +208,45 @@ public class VideoViewActivity extends Activity implements
         videoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE_VERTICALLY, 0);
 
         uiBlocker = findViewById(R.id.ui_blocker);
+
+        bannerContainer = (RelativeLayout)findViewById(R.id.banner_container);
+    }
+
+    private void loadAds() {
+        AdView adv = new AdView(this, AdSize.BANNER, "1103592761", "4060806038218290");
+        bannerContainer.addView(adv);
+
+        AdRequest adr = new AdRequest();
+        adr.setRefresh(30);
+
+        adv.setAdListener(new AdListener() {
+            @Override
+            public void onNoAd() {
+                Log.d("GDT","onNoAd");
+            }
+
+            @Override
+            public void onAdReceiv() {
+                Log.d("GDT","onAdReceiv");
+            }
+
+            @Override
+            public void onAdExposure() {
+                Log.d("GDT","onAdExposure");
+            }
+
+            @Override
+            public void onBannerClosed() {
+                Log.d("GDT","onBannerClosed");
+            }
+
+            @Override
+            public void onAdClicked() {
+                Log.d("GDT","onAdClicked");
+            }
+        });
+
+        adv.fetchAd(adr);
     }
 
     private void initialize(Intent intent) {
