@@ -8,3 +8,5 @@ vitamio/build/
 android_pulltorefresh/build/
 vitamio/build/
 vitamio/build/intermediates
+app/release/
+vitamio/build/
