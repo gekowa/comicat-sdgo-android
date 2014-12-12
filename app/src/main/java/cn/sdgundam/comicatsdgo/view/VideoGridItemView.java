@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import cn.sdgundam.comicatsdgo.BuildConfig;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
@@ -183,10 +184,12 @@ public class VideoGridItemView extends View {
                 titleTop + Utility.convertDpToPixel(6, getContext()) + datePaint.getTextSize() + textPaddingBottom / 4 /* Magic number */,
                 datePaint);
 
-        TextPaint debugPaint = new TextPaint();
-        debugPaint.setColor(Color.RED);
-        debugPaint.setTextSize(100);
-        canvas.drawText(vli.getPostId() + "", 10f, 100f, debugPaint);
+        if (BuildConfig.DEBUG) {
+            TextPaint debugPaint = new TextPaint();
+            debugPaint.setColor(Color.RED);
+            debugPaint.setTextSize(100);
+            canvas.drawText(vli.getPostId() + "", 10f, 100f, debugPaint);
+        }
     }
 
     @Override
