@@ -50,4 +50,6 @@
     <dimen name="units_by_origin_grid_h_gap_min">6dp</dimen>
     <dimen name="units_by_origin_grid_h_gap_max">16dp</dimen>
     <dimen name="units_by_origin_grid_h_margin">12dp</dimen>
+
+    <!--<dimen name="scroll_view_default_content_offset">18dp</dimen>-->
 </resources>

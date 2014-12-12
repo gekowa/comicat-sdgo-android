@@ -31,6 +31,7 @@ import cn.sdgundam.comicatsdgo.extension.SwipeRefreshLayout;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitsByOriginListener;
 import cn.sdgundam.comicatsdgo.view.NetworkErrorView;
+import in.srain.cube.views.GridViewWithHeaderAndFooter;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
@@ -148,6 +149,16 @@ public class UnitsByOriginActivity extends Activity implements
             }
         });
 
+//        View emptyPlaceholder1 = new View(this);
+//        emptyPlaceholder1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                getResources().getDimensionPixelSize(R.dimen.scroll_view_default_content_offset)));
+//        unitsGV.addHeaderView(emptyPlaceholder1);
+//
+//        View emptyPlaceholder2 = new View(this);
+//        emptyPlaceholder2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                getResources().getDimensionPixelSize(R.dimen.scroll_view_default_content_offset)));
+//        unitsGV.addHeaderView(emptyPlaceholder2);
+
         unitsGV.setAdapter(adapter);
         unitsGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -157,6 +168,7 @@ public class UnitsByOriginActivity extends Activity implements
                 startActivity(intent);
             }
         });
+
 
         ptrLayout = (PullToRefreshLayout)findViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(this)

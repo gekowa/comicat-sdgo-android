@@ -21,6 +21,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.UnitsByOriginActivity;
+import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.data_model.OriginInfo;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 
@@ -46,19 +47,34 @@ public class OriginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        apiService = new GDApiService(this.getActivity());
+        origins = apiService.getOrigins();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_origin_list, null, false);
+        return inflater.inflate(R.layout.fragment_origin_list, null, false);
+    }
 
-        apiService = new GDApiService(this.getActivity());
-        origins = apiService.getOrigins();
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         adapter = new OriginListAdapter(this.getActivity());
-        originListView = (ListView)view.findViewById(R.id.origin_list_view);
+        originListView = (ListView)getView().findViewById(R.id.origin_list_view);
         originListView.setAdapter(adapter);
+
+//        View emptyPlaceholder = new View(getActivity());
+//        emptyPlaceholder.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                getResources().getDimensionPixelSize(R.dimen.scroll_view_default_content_offset)));
+//
+//        originListView.addHeaderView(emptyPlaceholder);
+//        originListView.addFooterView(emptyPlaceholder);
+//
+//        originListView.setHeaderDividersEnabled(false);
+//        originListView.setFooterDividersEnabled(false);
 
         originListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -72,8 +88,6 @@ public class OriginFragment extends Fragment {
                 OriginFragment.this.startActivity(intent);
             }
         });
-
-        return view;
     }
 
     @Override

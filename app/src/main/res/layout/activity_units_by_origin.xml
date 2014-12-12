@@ -2,12 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_honeycomb_repeat"
     tools:context="cn.sdgundam.comicatsdgo.UnitsByOriginActivity">
 
     <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
         android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <GridView
             android:id="@+id/units_grid_view"
@@ -15,9 +17,10 @@
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/units_by_origin_grid_h_margin"
             android:paddingRight="@dimen/units_by_origin_grid_h_margin"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             android:scrollbarStyle="outsideOverlay"
+            android:clipToPadding="false"
             />
 
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
