@@ -8,6 +8,8 @@ import android.util.Log;
 import com.squareup.picasso.Picasso;
 import com.umeng.analytics.MobclickAgent;
 
+import net.youmi.android.AdManager;
+
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 
 /**
@@ -30,6 +32,8 @@ public class GDApplication extends Application {
 
         MobclickAgent.setDebugMode(true);
         MobclickAgent.openActivityDurationTrack(false);
+
+
 
     }
 

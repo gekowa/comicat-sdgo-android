@@ -30,11 +30,12 @@ import android.widget.Toast;
 //import android.widget.VideoView;
 //import android.widget.MediaController;
 
-import com.qq.e.ads.AdListener;
-import com.qq.e.ads.AdRequest;
-import com.qq.e.ads.AdSize;
-import com.qq.e.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
+
+import net.youmi.android.AdManager;
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+import net.youmi.android.banner.AdViewListener;
 
 import java.util.Arrays;
 
@@ -111,6 +112,8 @@ public class VideoViewActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AdManager.getInstance(this).init("dd9220c0bf404ef0", "0edc8891c11d2f1a", true);
 
         initialize(getIntent());
 
@@ -212,41 +215,66 @@ public class VideoViewActivity extends Activity implements
         bannerContainer = (RelativeLayout)findViewById(R.id.banner_container);
     }
 
-    private void loadAds() {
-        AdView adv = new AdView(this, AdSize.BANNER, "1103592761", "4060806038218290");
-        bannerContainer.addView(adv);
+//    private void loadAds() {
+//        AdView adv = new AdView(this, AdSize.BANNER, "1103592761", "4060806038218290");
+//        bannerContainer.addView(adv);
+//
+//        AdRequest adr = new AdRequest();
+//        adr.setRefresh(30);
+//
+//        adv.setAdListener(new AdListener() {
+//            @Override
+//            public void onNoAd() {
+//                Log.d("GDT","onNoAd");
+//            }
+//
+//            @Override
+//            public void onAdReceiv() {
+//                Log.d("GDT","onAdReceiv");
+//            }
+//
+//            @Override
+//            public void onAdExposure() {
+//                Log.d("GDT","onAdExposure");
+//            }
+//
+//            @Override
+//            public void onBannerClosed() {
+//                Log.d("GDT","onBannerClosed");
+//            }
+//
+//            @Override
+//            public void onAdClicked() {
+//                Log.d("GDT","onAdClicked");
+//            }
+//        });
+//
+//        adv.fetchAd(adr);
+//    }
 
-        AdRequest adr = new AdRequest();
-        adr.setRefresh(30);
+    void loadAds() {
 
-        adv.setAdListener(new AdListener() {
+        AdView adView = new AdView(this, AdSize.FIT_SCREEN);
+        adView.setHorizontalGravity(RelativeLayout.CENTER_IN_PARENT);
+        bannerContainer.addView(adView);
+
+        adView.setAdListener(new AdViewListener() {
+
             @Override
-            public void onNoAd() {
-                Log.d("GDT","onNoAd");
+            public void onSwitchedAd(AdView arg0) {
+                Log.i("YoumiAdDemo", "广告条切换");
             }
 
             @Override
-            public void onAdReceiv() {
-                Log.d("GDT","onAdReceiv");
+            public void onReceivedAd(AdView arg0) {
+                Log.i("YoumiAdDemo", "请求广告成功");
             }
 
             @Override
-            public void onAdExposure() {
-                Log.d("GDT","onAdExposure");
-            }
-
-            @Override
-            public void onBannerClosed() {
-                Log.d("GDT","onBannerClosed");
-            }
-
-            @Override
-            public void onAdClicked() {
-                Log.d("GDT","onAdClicked");
+            public void onFailedToReceivedAd(AdView arg0) {
+                Log.i("YoumiAdDemo", "请求广告失败");
             }
         });
-
-        adv.fetchAd(adr);
     }
 
     private void initialize(Intent intent) {

@@ -95,9 +95,30 @@
         </activity>
 
         <!-- for 广点通 -->
-        <service android:name="com.qq.e.comm.DownloadService" android:exported="false"></service>
-        <activity android:name="com.qq.e.ads.AdActivity" android:theme="@android:style/Theme.Translucent">
+        <!--<service android:name="com.qq.e.comm.DownloadService" android:exported="false"></service>-->
+        <!--<activity android:name="com.qq.e.ads.AdActivity" android:theme="@android:style/Theme.Translucent">-->
+        <!--</activity>-->
+
+        <!-- for 有米 -->
+        <activity
+            android:name="net.youmi.android.AdBrowser"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
+        <service
+            android:name="net.youmi.android.AdService"
+            android:exported="false" >
+        </service>
+        <receiver
+            android:name="net.youmi.android.AdReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <provider
+            android:name="net.youmi.android.spot.SpotAdContentProvider"
+            android:authorities="cn.sdgundam.comicatsdgo"/>
     </application>
 
 </manifest>

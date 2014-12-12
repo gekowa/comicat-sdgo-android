@@ -21,6 +21,8 @@
 -keep class cn.sdgundam.comicatsdgo.VideoViewActivity$VideoInfoInterface { *; }
 
 -keep public class io.vov.vitamio.** { *; }
+
+# 广点通
 -keep class com.qq.e.** {
     public protected *;
 }
@@ -31,3 +33,9 @@
 -dontwarn com.squareup.okhttp.internal.huc.**
 # Ignore warnings: https://github.com/square/okio/issues/60
 -dontwarn okio.**
+
+# 有米
+-dontwarn net.youmi.android.**
+-keep class net.youmi.android.** {
+    *;
+}

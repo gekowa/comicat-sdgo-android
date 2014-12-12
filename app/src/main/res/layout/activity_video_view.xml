@@ -13,11 +13,7 @@
         android:layout_height="match_parent"
         >
 
-        <RelativeLayout
-            android:id="@+id/banner_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </RelativeLayout>
+
 
         <FrameLayout
             android:background="#000"
@@ -25,6 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+
+
 
             <io.vov.vitamio.widget.VideoView
                 android:id="@+id/video_view"
@@ -90,6 +88,12 @@
                         ></ImageView>
                 </FrameLayout>
             </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/banner_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </RelativeLayout>
         </FrameLayout>
 
         <WebView
