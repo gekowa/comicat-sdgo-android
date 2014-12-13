@@ -297,62 +297,63 @@ public class NavigationDrawerFragment extends Fragment {
         void onNavigationDrawerClosedForItemSelected(int position);
     }
 
-}
+    class NavigationDrawerListViewAdapter extends BaseAdapter {
+        ArrayList<Pair<String, Integer>> mTopViewCaptions;
+        Context mContext;
 
-class NavigationDrawerListViewAdapter extends BaseAdapter {
-    ArrayList<Pair<String, Integer>> mTopViewCaptions;
-    Context mContext;
+        public NavigationDrawerListViewAdapter(Context context) {
+            super();
 
-    public NavigationDrawerListViewAdapter(Context context) {
-        super();
+            mContext = context;
 
-        mContext = context;
+            String[] topViewTitles = context.getResources().getStringArray(R.array.top_view_titles);
+            TypedArray topViewIcons = context.getResources().obtainTypedArray(R.array.top_view_icons);
 
-        String[] topViewTitles = context.getResources().getStringArray(R.array.top_view_titles);
-        TypedArray topViewIcons = context.getResources().obtainTypedArray(R.array.top_view_icons);
+            if (topViewTitles.length != topViewIcons.length())
+                throw new AssertionError("Number of titles and views should equal.");
 
-        if (topViewTitles.length != topViewIcons.length())
-            throw new AssertionError("Number of titles and views should equal.");
-
-        mTopViewCaptions = new ArrayList<Pair<String, Integer>>(topViewTitles.length);
-        for (int i = 0; i < topViewTitles.length; i++) {
-            Pair<String, Integer> p = new Pair<String, Integer>(topViewTitles[i], topViewIcons.getResourceId(i, -1));
-            mTopViewCaptions.add(p);
-        }
-    }
-
-    @Override
-    public int getCount() {
-        return mTopViewCaptions.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return mTopViewCaptions.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View convertView, ViewGroup parent) {
-        View v = convertView;
-
-        if (v == null) {
-            v = LayoutInflater.from(mContext).inflate(R.layout.nav_drawer_list_item, parent, false);
+            mTopViewCaptions = new ArrayList<Pair<String, Integer>>(topViewTitles.length);
+            for (int i = 0; i < topViewTitles.length; i++) {
+                Pair<String, Integer> p = new Pair<String, Integer>(topViewTitles[i], topViewIcons.getResourceId(i, -1));
+                mTopViewCaptions.add(p);
+            }
         }
 
-        Pair<String, Integer> item = (Pair<String, Integer>)getItem(i);
+        @Override
+        public int getCount() {
+            return mTopViewCaptions.size();
+        }
 
-        ImageView icon = (ImageView)v.findViewById(R.id.icon);
-        TextView text = (TextView)v.findViewById(R.id.title);
+        @Override
+        public Object getItem(int i) {
+            return mTopViewCaptions.get(i);
+        }
 
-        icon.setImageResource(item.second);
-        text.setText(item.first);
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
 
-        return v;
+        @Override
+        public View getView(int i, View convertView, ViewGroup parent) {
+            View v = convertView;
+
+            if (v == null) {
+                v = LayoutInflater.from(mContext).inflate(R.layout.nav_drawer_list_item, parent, false);
+            }
+
+            Pair<String, Integer> item = (Pair<String, Integer>)getItem(i);
+
+            ImageView icon = (ImageView)v.findViewById(R.id.icon);
+            TextView text = (TextView)v.findViewById(R.id.title);
+
+            icon.setImageResource(item.second);
+            text.setText(item.first);
+
+            return v;
+        }
     }
 }
+
+
 

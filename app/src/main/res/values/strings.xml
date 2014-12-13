@@ -8,16 +8,16 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="top_view_titles">
-        <item>首页</item>
+        <item>精选</item>
         <item>视频</item>
         <item>新闻</item>
         <item>机体</item>
     </string-array>
     <string-array name="top_view_icons">
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_featuring</item>
+        <item>@drawable/ic_video</item>
+        <item>@drawable/ic_news</item>
+        <item>@drawable/ic_units</item>
     </string-array>
 
     <string name="latest_units_caption">最新机体</string>

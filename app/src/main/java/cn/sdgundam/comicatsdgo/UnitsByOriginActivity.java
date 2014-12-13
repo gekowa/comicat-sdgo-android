@@ -31,7 +31,6 @@ import cn.sdgundam.comicatsdgo.extension.SwipeRefreshLayout;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitsByOriginListener;
 import cn.sdgundam.comicatsdgo.view.NetworkErrorView;
-import in.srain.cube.views.GridViewWithHeaderAndFooter;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
