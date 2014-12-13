@@ -1,6 +1,6 @@
 package cn.sdgundam.comicatsdgo.gd_api.listener;
 
-import cn.sdgundam.comicatsdgo.data_model.CheckOriginUpdateResult;
+import cn.sdgundam.comicatsdgo.api_model.CheckOriginUpdateResult;
 
 /**
  * Created by xhguo on 12/9/2014.

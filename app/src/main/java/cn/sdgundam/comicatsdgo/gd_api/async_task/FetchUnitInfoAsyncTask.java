@@ -5,9 +5,8 @@ import android.os.AsyncTask;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
-import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
-import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
+import cn.sdgundam.comicatsdgo.api_model.ApiResultWrapper;
+import cn.sdgundam.comicatsdgo.api_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.gd_api.Communicator;
 import cn.sdgundam.comicatsdgo.gd_api.GDInfoBuilder;
 

@@ -8,17 +8,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -26,7 +20,7 @@ import com.squareup.picasso.Target;
 import cn.sdgundam.comicatsdgo.BuildConfig;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
+import cn.sdgundam.comicatsdgo.api_model.VideoListItem;
 
 /**
  * Created by xhguo on 10/8/2014.

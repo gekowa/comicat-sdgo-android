@@ -2,14 +2,11 @@ package cn.sdgundam.comicatsdgo.gd_api.async_task;
 
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
-import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
-import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
-import cn.sdgundam.comicatsdgo.data_model.UnitList;
+import cn.sdgundam.comicatsdgo.api_model.ApiResultWrapper;
+import cn.sdgundam.comicatsdgo.api_model.UnitList;
 import cn.sdgundam.comicatsdgo.gd_api.Communicator;
 import cn.sdgundam.comicatsdgo.gd_api.GDInfoBuilder;
 

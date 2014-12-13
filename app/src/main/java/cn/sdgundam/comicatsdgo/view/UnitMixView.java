@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import cn.sdgundam.comicatsdgo.R;
-import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
+import cn.sdgundam.comicatsdgo.api_model.UnitInfo;
 
 /**
  * Created by xhguo on 11/26/2014.

@@ -2,19 +2,11 @@ package cn.sdgundam.comicatsdgo.post_list;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.sdgundam.comicatsdgo.R;
-import cn.sdgundam.comicatsdgo.data_model.PostList;
-import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
+import cn.sdgundam.comicatsdgo.api_model.PostList;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchGeneralListListener;
 

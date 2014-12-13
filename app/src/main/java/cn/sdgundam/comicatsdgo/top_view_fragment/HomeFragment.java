@@ -21,7 +21,7 @@ import java.util.Date;
 import cn.sdgundam.comicatsdgo.SearchUnitActivity;
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.R;
-import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
+import cn.sdgundam.comicatsdgo.api_model.HomeInfo;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchHomeInfoListener;
 import cn.sdgundam.comicatsdgo.view.CarouselView;

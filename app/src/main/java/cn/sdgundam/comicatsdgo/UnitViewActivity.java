@@ -33,7 +33,7 @@ import net.youmi.android.banner.AdViewListener;
 
 import java.util.Date;
 
-import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
+import cn.sdgundam.comicatsdgo.api_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitInfoListener;
 import cn.sdgundam.comicatsdgo.view.NetworkErrorView;

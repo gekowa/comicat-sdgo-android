@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import cn.sdgundam.comicatsdgo.PostViewActivity;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
+import cn.sdgundam.comicatsdgo.api_model.CarouselInfo;
 
 /**
  * Created by xhguo on 10/5/2014.

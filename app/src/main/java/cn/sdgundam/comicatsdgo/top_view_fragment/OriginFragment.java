@@ -1,6 +1,5 @@
 package cn.sdgundam.comicatsdgo.top_view_fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,8 +20,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.UnitsByOriginActivity;
-import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.data_model.OriginInfo;
+import cn.sdgundam.comicatsdgo.api_model.OriginInfo;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 
 public class OriginFragment extends Fragment {

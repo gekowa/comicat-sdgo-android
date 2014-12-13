@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -30,8 +29,7 @@ import java.util.Map;
 
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.VideoViewActivity;
-import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
+import cn.sdgundam.comicatsdgo.api_model.VideoListItem;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.post_list.PostListDataSource;
 import cn.sdgundam.comicatsdgo.post_list.PostListDataSourceListener;

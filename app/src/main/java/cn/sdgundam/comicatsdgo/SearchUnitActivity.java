@@ -17,7 +17,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -28,8 +27,8 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
-import cn.sdgundam.comicatsdgo.data_model.UnitList;
+import cn.sdgundam.comicatsdgo.api_model.UnitInfoShort;
+import cn.sdgundam.comicatsdgo.api_model.UnitList;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.SearchUnitListener;
 

@@ -4,24 +4,17 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.apmem.tools.layouts.FlowLayout;
-
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.data_model.UnitMixMaterial;
+import cn.sdgundam.comicatsdgo.api_model.UnitMixMaterial;
 
 /**
  * Created by xhguo on 11/26/2014.

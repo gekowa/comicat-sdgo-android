@@ -3,14 +3,13 @@ package cn.sdgundam.comicatsdgo.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.ViewStub;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
+import cn.sdgundam.comicatsdgo.api_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.R;
 
 /**

@@ -1,4 +1,4 @@
-package cn.sdgundam.comicatsdgo.data_model;
+package cn.sdgundam.comicatsdgo.api_model;
 
 /**
  * Created by xhguo on 12/9/2014.

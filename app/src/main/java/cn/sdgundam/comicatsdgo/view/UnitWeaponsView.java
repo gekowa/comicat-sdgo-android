@@ -1,21 +1,16 @@
 package cn.sdgundam.comicatsdgo.view;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 import cn.sdgundam.comicatsdgo.R;
-import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
+import cn.sdgundam.comicatsdgo.api_model.UnitInfo;
 
 /**
  * Created by xhguo on 11/20/2014.

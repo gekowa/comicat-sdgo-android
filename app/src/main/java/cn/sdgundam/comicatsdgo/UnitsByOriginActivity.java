@@ -24,10 +24,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cn.sdgundam.comicatsdgo.data_model.OriginInfo;
-import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
-import cn.sdgundam.comicatsdgo.data_model.UnitList;
-import cn.sdgundam.comicatsdgo.extension.SwipeRefreshLayout;
+import cn.sdgundam.comicatsdgo.api_model.UnitInfoShort;
+import cn.sdgundam.comicatsdgo.api_model.UnitList;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitsByOriginListener;
 import cn.sdgundam.comicatsdgo.view.NetworkErrorView;

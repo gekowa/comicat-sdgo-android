@@ -14,17 +14,17 @@ import java.util.Iterator;
 import java.util.List;
 
 import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.data_model.CarouselInfo;
-import cn.sdgundam.comicatsdgo.data_model.CheckOriginUpdateResult;
-import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
-import cn.sdgundam.comicatsdgo.data_model.OriginInfo;
-import cn.sdgundam.comicatsdgo.data_model.PostInfo;
-import cn.sdgundam.comicatsdgo.data_model.PostList;
-import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
-import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
-import cn.sdgundam.comicatsdgo.data_model.UnitList;
-import cn.sdgundam.comicatsdgo.data_model.UnitMixMaterial;
-import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
+import cn.sdgundam.comicatsdgo.api_model.CarouselInfo;
+import cn.sdgundam.comicatsdgo.api_model.CheckOriginUpdateResult;
+import cn.sdgundam.comicatsdgo.api_model.HomeInfo;
+import cn.sdgundam.comicatsdgo.api_model.OriginInfo;
+import cn.sdgundam.comicatsdgo.api_model.PostInfo;
+import cn.sdgundam.comicatsdgo.api_model.PostList;
+import cn.sdgundam.comicatsdgo.api_model.UnitInfo;
+import cn.sdgundam.comicatsdgo.api_model.UnitInfoShort;
+import cn.sdgundam.comicatsdgo.api_model.UnitList;
+import cn.sdgundam.comicatsdgo.api_model.UnitMixMaterial;
+import cn.sdgundam.comicatsdgo.api_model.VideoListItem;
 
 /**
  * Created by xhguo on 9/25/2014.

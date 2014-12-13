@@ -1,4 +1,4 @@
-package cn.sdgundam.comicatsdgo.data_model;
+package cn.sdgundam.comicatsdgo.api_model;
 
 import java.util.Date;
 import java.util.List;

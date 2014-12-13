@@ -1,16 +1,13 @@
 package cn.sdgundam.comicatsdgo.gd_api.async_task;
 
 import android.os.AsyncTask;
-import android.os.Bundle;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import cn.sdgundam.comicatsdgo.data_model.ApiResultWrapper;
-import cn.sdgundam.comicatsdgo.data_model.HomeInfo;
-import cn.sdgundam.comicatsdgo.data_model.PostList;
-import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
+import cn.sdgundam.comicatsdgo.api_model.ApiResultWrapper;
+import cn.sdgundam.comicatsdgo.api_model.PostList;
+import cn.sdgundam.comicatsdgo.api_model.VideoListItem;
 import cn.sdgundam.comicatsdgo.gd_api.Communicator;
 import cn.sdgundam.comicatsdgo.gd_api.GDInfoBuilder;
 

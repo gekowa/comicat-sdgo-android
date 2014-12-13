@@ -30,7 +30,7 @@ import java.util.Map;
 import cn.sdgundam.comicatsdgo.PostViewActivity;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.data_model.PostInfo;
+import cn.sdgundam.comicatsdgo.api_model.PostInfo;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.post_list.PostListDataSource;
 import cn.sdgundam.comicatsdgo.post_list.PostListDataSourceListener;

@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.sdgundam.comicatsdgo.R;
-import cn.sdgundam.comicatsdgo.data_model.UnitInfo;
+import cn.sdgundam.comicatsdgo.api_model.UnitInfo;
 
 /**
  * Created by xhguo on 11/22/2014.

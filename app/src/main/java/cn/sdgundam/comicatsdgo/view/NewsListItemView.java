@@ -13,7 +13,7 @@ import android.view.View;
 
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.data_model.PostInfo;
+import cn.sdgundam.comicatsdgo.api_model.PostInfo;
 
 /**
  * Created by xhguo on 10/29/2014.

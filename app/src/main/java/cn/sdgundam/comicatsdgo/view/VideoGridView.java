@@ -1,21 +1,15 @@
 package cn.sdgundam.comicatsdgo.view;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import cn.sdgundam.comicatsdgo.R;
-import cn.sdgundam.comicatsdgo.Utility;
-import cn.sdgundam.comicatsdgo.VideoViewActivity;
-import cn.sdgundam.comicatsdgo.data_model.UnitInfoShort;
-import cn.sdgundam.comicatsdgo.data_model.VideoListItem;
+import cn.sdgundam.comicatsdgo.api_model.VideoListItem;
 
 /**
  * Created by xhguo on 10/8/2014.
