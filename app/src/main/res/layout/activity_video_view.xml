@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cn.sdgundam.comicatsdgo.VideoViewActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cn.sdgundam.comicatsdgo.VideoViewActivity"
     >
 
     <LinearLayout
@@ -13,16 +13,13 @@
         android:layout_height="match_parent"
         >
 
-
-
         <FrameLayout
             android:background="#000"
             android:id="@+id/video_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             >
-
-
 
             <io.vov.vitamio.widget.VideoView
                 android:id="@+id/video_view"

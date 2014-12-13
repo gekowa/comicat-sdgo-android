@@ -113,8 +113,6 @@ public class VideoViewActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AdManager.getInstance(this).init("dd9220c0bf404ef0", "0edc8891c11d2f1a", true);
-
         initialize(getIntent());
 
         // check supported video hosts
@@ -253,10 +251,14 @@ public class VideoViewActivity extends Activity implements
 //    }
 
     void loadAds() {
+        AdManager.getInstance(this).init("dd9220c0bf404ef0", "0edc8891c11d2f1a", false);
+
+        int actionBarContainerId = getResources().getIdentifier("action_bar_container", "id", "android");
+        ViewGroup actionBarContainerView = (ViewGroup)decorView.findViewById(actionBarContainerId);
 
         AdView adView = new AdView(this, AdSize.FIT_SCREEN);
         adView.setHorizontalGravity(RelativeLayout.CENTER_IN_PARENT);
-        bannerContainer.addView(adView);
+        actionBarContainerView.addView(adView);
 
         adView.setAdListener(new AdViewListener() {
 

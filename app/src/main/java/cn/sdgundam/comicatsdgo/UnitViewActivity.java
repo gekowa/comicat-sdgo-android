@@ -19,11 +19,17 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
+
+import net.youmi.android.AdManager;
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+import net.youmi.android.banner.AdViewListener;
 
 import java.util.Date;
 
@@ -78,6 +84,8 @@ public class UnitViewActivity extends Activity implements
     private PullToRefreshLayout ptrLayout;
     private NetworkErrorView nev;
 
+    private ViewGroup bannerContainer;
+
     private String unitId;
     private UnitInfo unitInfo;
 
@@ -89,6 +97,8 @@ public class UnitViewActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        AdManager.getInstance(this).init("dd9220c0bf404ef0", "0edc8891c11d2f1a", false);
+
         initialize(getIntent().getExtras());
 
         apiService = new GDApiService(this);
@@ -96,6 +106,8 @@ public class UnitViewActivity extends Activity implements
 
         setContentView(R.layout.activity_unit_view);
         initializeView();
+
+        loadAds();
 
         loadUnitInfo();
     }
@@ -145,6 +157,35 @@ public class UnitViewActivity extends Activity implements
 
         mixPopupView.setUMMEventListener(this);
         mixPopupViewCN.setUMMEventListener(this);
+
+        bannerContainer = (RelativeLayout)findViewById(R.id.banner_container);
+    }
+
+    void loadAds() {
+        AdManager.getInstance(this).init("dd9220c0bf404ef0", "0edc8891c11d2f1a", false);
+
+        AdView adView = new AdView(this, AdSize.FIT_SCREEN);
+
+        adView.setHorizontalGravity(RelativeLayout.CENTER_IN_PARENT);
+        bannerContainer.addView(adView);
+
+        adView.setAdListener(new AdViewListener() {
+
+            @Override
+            public void onSwitchedAd(AdView arg0) {
+                Log.i("YoumiAdDemo", "广告条切换");
+            }
+
+            @Override
+            public void onReceivedAd(AdView arg0) {
+                Log.i("YoumiAdDemo", "请求广告成功");
+            }
+
+            @Override
+            public void onFailedToReceivedAd(AdView arg0) {
+                Log.i("YoumiAdDemo", "请求广告失败");
+            }
+        });
     }
 
 //    @Override

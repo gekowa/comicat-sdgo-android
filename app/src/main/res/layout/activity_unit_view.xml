@@ -45,13 +45,30 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <TabWidget
-                            android:id="@android:id/tabs"
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#FFF"
-                            android:tag="sticky"
-                            />
+                            android:tag="sticky">
+
+                            <TabWidget
+                                android:id="@android:id/tabs"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#FFF"
+                                />
+
+                            <RelativeLayout
+                                android:id="@+id/banner_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#FFF"
+                                android:paddingTop="1dp"
+                                android:paddingBottom="1dp"/>
+
+                        </LinearLayout>
+
+
 
                         <FrameLayout
                             android:id="@android:id/tabcontent"
