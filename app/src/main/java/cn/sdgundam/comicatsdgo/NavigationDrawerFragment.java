@@ -102,13 +102,15 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
+                selectItem(position);
             }
         });
 
         mDrawerListView.setAdapter(new NavigationDrawerListViewAdapter(getActivity()));
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
+        ((TextView)rootView.findViewById(R.id.version_text_view)).setText("v" + getResources().getString(R.string.app_versionName));
         return rootView;
     }
 

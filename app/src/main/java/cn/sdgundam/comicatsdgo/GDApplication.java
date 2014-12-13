@@ -23,18 +23,14 @@ public class GDApplication extends Application {
         GDApiService apiService = new GDApiService(this);
         apiService.checkOriginUpdate(true);
 
-        // for debugging
-        // Picasso.with(this).setIndicatorsEnabled(true);
+        if (BuildConfig.DEBUG) {
+            Picasso.with(this).setIndicatorsEnabled(true);
+        }
 
         // Log.d("Device Info: ", getDeviceInfo(this));
 
-
-
         MobclickAgent.setDebugMode(true);
         MobclickAgent.openActivityDurationTrack(false);
-
-
-
     }
 
     public static String getDeviceInfo(Context context) {
