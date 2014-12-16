@@ -39,6 +39,7 @@ import net.youmi.android.banner.AdViewListener;
 
 import java.util.Arrays;
 
+import cn.sdgundam.comicatsdgo.service.TrackingService;
 import cn.sdgundam.comicatsdgo.video.GetYoukuVideoInfoAsyncTask;
 import cn.sdgundam.comicatsdgo.video.OnReceivedYoukuVideoSrc;
 
@@ -115,6 +116,10 @@ public class VideoViewActivity extends Activity implements
 
         initialize(getIntent());
 
+        Log.v(LOG_TAG, String.valueOf(postId + " viewed: " + new TrackingService(this).isVideoViewed(String.valueOf(postId))));
+        new TrackingService(this).markVideoLastViewed(String.valueOf(postId));
+        Log.v(LOG_TAG, String.valueOf(postId+ " viewed: " + new TrackingService(this).isVideoViewed(String.valueOf(postId))));
+
         // check supported video hosts
         if (Arrays.binarySearch(SUPPORTED_VIDEO_HOSTS, videoHost) < 0) {
             new AlertDialog.Builder(this)
@@ -162,7 +167,7 @@ public class VideoViewActivity extends Activity implements
 
         // Debug
         if (BuildConfig.DEBUG) {
-            getActionBar().setTitle(postId + "");
+            getActionBar().setTitle(String.valueOf(postId));
         }
     }
 

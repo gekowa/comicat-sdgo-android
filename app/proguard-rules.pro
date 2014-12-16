@@ -16,7 +16,7 @@
 #   public *;
 #}
 
--keep public class cn.sdgundam.comicatsdgo.data_model.UnitInfo { *; }
+-keep class cn.sdgundam.comicatsdgo.api_model.UnitInfo { *; }
 -keep class cn.sdgundam.comicatsdgo.VideoViewActivity$YoukuJSInterface { *; }
 -keep class cn.sdgundam.comicatsdgo.VideoViewActivity$VideoInfoInterface { *; }
 
@@ -29,6 +29,7 @@
 -keep class com.tencent.gdt.**{
     public protected *;
 }
+
 # Ignore warnings: https://github.com/square/okhttp/wiki/FAQs
 -dontwarn com.squareup.okhttp.internal.huc.**
 # Ignore warnings: https://github.com/square/okio/issues/60
@@ -36,6 +37,11 @@
 
 # 有米
 -dontwarn net.youmi.android.**
--keep class net.youmi.android.** {
-    *;
-}
+-keep class net.youmi.android.** { *; }
+
+# SnappyDB
+-keep class com.snappydb.** { *; }
+-dontwarn com.esotericsoftware.kryo.**
+-keep class com.esotericsoftware.kryo.** { *; }
+-dontwarn org.objenesis.instantiator.**
+

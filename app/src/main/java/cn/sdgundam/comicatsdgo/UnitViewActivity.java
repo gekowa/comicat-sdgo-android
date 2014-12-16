@@ -36,6 +36,7 @@ import java.util.Date;
 import cn.sdgundam.comicatsdgo.api_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 import cn.sdgundam.comicatsdgo.gd_api.listener.FetchUnitInfoListener;
+import cn.sdgundam.comicatsdgo.service.TrackingService;
 import cn.sdgundam.comicatsdgo.view.NetworkErrorView;
 import cn.sdgundam.comicatsdgo.view.UnitBasicDataView;
 import cn.sdgundam.comicatsdgo.view.UnitDetailView;
@@ -97,9 +98,9 @@ public class UnitViewActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        AdManager.getInstance(this).init("dd9220c0bf404ef0", "0edc8891c11d2f1a", false);
-
         initialize(getIntent().getExtras());
+
+        new TrackingService(this).markUnitViewed(unitId);
 
         apiService = new GDApiService(this);
         apiService.setUnitInfoListener(this);

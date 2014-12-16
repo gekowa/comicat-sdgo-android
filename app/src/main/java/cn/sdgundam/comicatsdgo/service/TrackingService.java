@@ -10,9 +10,6 @@ import com.snappydb.SnappydbException;
 
 import java.util.Date;
 
-import cn.sdgundam.comicatsdgo.db.TrackingContract;
-import cn.sdgundam.comicatsdgo.db.TrackingDbHelper;
-
 /**
  * Created by xhguo on 12/15/2014.
  */
@@ -24,11 +21,11 @@ public class TrackingService {
 
     Context context;
 
-    public TrackingService(Context context) throws SnappydbException {
+    public TrackingService(Context context) {
         this.context = context;
     }
 
-    void markVideoLastViewed(String videoPostId) {
+    public void markVideoLastViewed(String videoPostId) {
         try {
             DB trackingDB = DBFactory.open(context, TRACKING_TABLE_NAME);
             trackingDB.put(String.format(VIDEO_VIEWED_KEY, videoPostId), new Date());
@@ -36,7 +33,7 @@ public class TrackingService {
         } catch (SnappydbException ex) { }
     }
 
-    boolean isVideoViewed(String videoPostId) {
+    public boolean isVideoViewed(String videoPostId) {
         try {
             DB trackingDB = DBFactory.open(context, TRACKING_TABLE_NAME);
             Date d = trackingDB.getObject(String.format(VIDEO_VIEWED_KEY, videoPostId), Date.class);
@@ -48,7 +45,7 @@ public class TrackingService {
         }
     }
 
-    void markUnitViewed(String unitId) {
+    public void markUnitViewed(String unitId) {
         try {
             DB trackingDB = DBFactory.open(context, TRACKING_TABLE_NAME);
             trackingDB.put(String.format(UNIT_VIEWED_KEY, unitId), new Date());
@@ -56,7 +53,7 @@ public class TrackingService {
         } catch (SnappydbException ex) { }
     }
 
-    boolean isUnitViewed(String unitId) {
+    public boolean isUnitViewed(String unitId) {
         try {
             DB trackingDB = DBFactory.open(context, TRACKING_TABLE_NAME);
             Date d = trackingDB.getObject(String.format(UNIT_VIEWED_KEY, unitId), Date.class);

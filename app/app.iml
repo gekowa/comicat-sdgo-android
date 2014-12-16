@@ -83,25 +83,26 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="kryo-2.24.0" level="project" />
-    <orderEntry type="library" exported="" name="paginglistview-1.1" level="project" />
-    <orderEntry type="library" exported="" name="StickyScrollViewItems-1.1.0" level="project" />
-    <orderEntry type="library" exported="" name="picasso-2.3.4" level="project" />
-    <orderEntry type="library" exported="" name="twowayview-0.1.1" level="project" />
-    <orderEntry type="library" exported="" name="hlistview-1.2.2" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
-    <orderEntry type="library" exported="" name="snappydb-lib-0.5.0" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-v13-20.0.0" level="project" />
+    <orderEntry type="library" exported="" name="picasso-2.3.4" level="project" />
+    <orderEntry type="library" exported="" name="paginglistview-1.1" level="project" />
     <orderEntry type="library" exported="" name="YoumiSdk_v4.10_2014-11-24" level="project" />
-    <orderEntry type="library" exported="" name="okhttp-2.1.0" level="project" />
+    <orderEntry type="library" exported="" name="kryo-2.24.0" level="project" />
     <orderEntry type="library" exported="" name="okio-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="minlog-1.2" level="project" />
-    <orderEntry type="library" exported="" name="analytics-5.2.4" level="project" />
-    <orderEntry type="library" exported="" name="okhttp-urlconnection-2.1.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
+    <orderEntry type="library" exported="" name="umeng-analytics-v5.2.4" level="project" />
+    <orderEntry type="library" exported="" name="twowayview-0.1.1" level="project" />
     <orderEntry type="library" exported="" name="objenesis-2.1" level="project" />
-    <orderEntry type="module" module-name="android_pulltorefresh" exported="" />
+    <orderEntry type="library" exported="" name="okhttp-urlconnection-2.1.0" level="project" />
+    <orderEntry type="library" exported="" name="hlistview-1.2.2" level="project" />
+    <orderEntry type="library" exported="" name="snappydb-lib-0.5.0" level="project" />
+    <orderEntry type="library" exported="" name="StickyScrollViewItems-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
+    <orderEntry type="library" exported="" name="minlog-1.2" level="project" />
+    <orderEntry type="library" exported="" name="gdt_mob_release_v4.3.467" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-2.1.0" level="project" />
     <orderEntry type="module" module-name="vitamio" exported="" />
+    <orderEntry type="module" module-name="android_pulltorefresh" exported="" />
   </component>
 </module>
 
