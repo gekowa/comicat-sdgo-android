@@ -21,10 +21,12 @@
         android:background="@drawable/badge"
         android:layout_alignTop="@+id/text_view"
         android:layout_alignLeft="@+id/text_view"
-        android:textSize="13dp"
+        android:textSize="13sp"
         android:textColor="#FFF"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
+        android:minWidth="19dp"
+        android:gravity="center"
         android:visibility="gone"
         />
 

@@ -461,11 +461,11 @@ public class UnitViewActivity extends Activity implements
         String videoCountBadge = null;
         if (videoCount > 0) {
             if (videoCount <= 9) {
-                videoCountBadge =  " " + videoCount + " ";
+                videoCountBadge = String.valueOf(videoCount);
             } else if (videoCount <= 99) {
-                videoCountBadge = videoCount + "";
+                videoCountBadge = String.valueOf(videoCount);
             } else {
-                videoCountBadge = " N ";
+                videoCountBadge = "N";
             }
         }
         spec.setIndicator(getTabIndicator(videoCaption, videoCountBadge));
