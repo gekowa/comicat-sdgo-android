@@ -41,6 +41,8 @@ public class HomeFragment extends Fragment implements
         OnRefreshListener, FetchHomeInfoListener {
     static final String LOG_TAG = HomeFragment.class.getSimpleName();
 
+    static int fakeNumOfOffers = Math.max((int)(Math.random() * 10), 1);
+
     static HomeFragment instance = null;
     public static HomeFragment getInstance() {
         if (instance == null) {
@@ -298,7 +300,7 @@ public class HomeFragment extends Fragment implements
             }
         });
         ((TextView)offerButtonView.findViewById(R.id.badge_text_view))
-                .setText(String.valueOf((int)(Math.random() * 10)));
+                .setText(String.valueOf(fakeNumOfOffers));
     }
 
     @Override
