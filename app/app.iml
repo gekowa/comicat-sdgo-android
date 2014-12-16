@@ -85,6 +85,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="support-v13-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.3.4" level="project" />
+    <orderEntry type="library" exported="" name="domob_android_sdk" level="project" />
     <orderEntry type="library" exported="" name="paginglistview-1.1" level="project" />
     <orderEntry type="library" exported="" name="YoumiSdk_v4.10_2014-11-24" level="project" />
     <orderEntry type="library" exported="" name="kryo-2.24.0" level="project" />
@@ -101,6 +102,7 @@
     <orderEntry type="library" exported="" name="minlog-1.2" level="project" />
     <orderEntry type="library" exported="" name="gdt_mob_release_v4.3.467" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.1.0" level="project" />
+    <orderEntry type="library" exported="" name="dm_offerwall_2.2.3" level="project" />
     <orderEntry type="module" module-name="vitamio" exported="" />
     <orderEntry type="module" module-name="android_pulltorefresh" exported="" />
   </component>

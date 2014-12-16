@@ -58,7 +58,7 @@
                 android:gravity="center_vertical"
                 android:textSize="20dp"
                 android:paddingLeft="24dp"
-                android:text="奖励"
+                android:text="福利"
                 />
 
         </LinearLayout>

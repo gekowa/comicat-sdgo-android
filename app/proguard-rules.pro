@@ -45,3 +45,8 @@
 -keep class com.esotericsoftware.kryo.** { *; }
 -dontwarn org.objenesis.instantiator.**
 
+# 多盟积分墙
+-dontwarn cn.dm.**
+-keep class cn.dm.** { *; }
+-keep class cn.dm.android.ui.interaction.** {*;}
+-keepattributes *Annotation*

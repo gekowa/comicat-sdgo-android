@@ -85,5 +85,8 @@
     <string name="title_activity_origin_list">全部作品</string>
     <string name="title_activity_units_by_origin">UnitsByOriginActivity</string>
     <string name="press_back_again_to_exit">再按一次返回键退出…</string>
+    <string name="action_benefit">福利</string>
 
+
+    <string name="domob_publisher_id">96ZJ3KZgzeYqLwTCqk</string>
 </resources>

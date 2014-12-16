@@ -25,7 +25,12 @@ android {
 
 dependencies {
 //    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile files('libs/YoumiSdk_v4.10_2014-11-24.jar', 'libs/umeng-analytics-v5.2.4.jar', 'libs/gdt_mob_release_v4.3.467.jar')
+    compile files('libs/YoumiSdk_v4.10_2014-11-24.jar', // 有米
+            'libs/umeng-analytics-v5.2.4.jar',  // 友盟
+            'libs/gdt_mob_release_v4.3.467.jar', // 广点通
+            'libs/dm_offerwall_2.2.3.jar',      // 多盟积分墙
+            'libs/domob_android_sdk.jar'        // 多盟广告位
+    )
     compile 'com.android.support:support-annotations:20.0.0'
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.android.support:support-v13:20.0.0'

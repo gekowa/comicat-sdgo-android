@@ -13,11 +13,13 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Date;
 
+import cn.dm.android.DMOfferWall;
 import cn.sdgundam.comicatsdgo.SearchUnitActivity;
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.R;
@@ -287,6 +289,16 @@ public class HomeFragment extends Fragment implements
             }
         });
 
+        MenuItem offerMenuItem = menu.findItem(R.id.action_offers_domob);
+        View offerButtonView = MenuItemCompat.getActionView(offerMenuItem);
+        offerButtonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DMOfferWall.getInstance(getActivity()).showOfferWall(getActivity());
+            }
+        });
+        ((TextView)offerButtonView.findViewById(R.id.badge_text_view))
+                .setText(String.valueOf((int)(Math.random() * 10)));
     }
 
     @Override

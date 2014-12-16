@@ -11,6 +11,7 @@ import com.umeng.analytics.MobclickAgent;
 import net.youmi.android.AdManager;
 import net.youmi.android.offers.OffersManager;
 
+import cn.dm.android.DMOfferWall;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 
 /**
@@ -33,7 +34,11 @@ public class GDApplication extends Application {
         MobclickAgent.setDebugMode(true);
         MobclickAgent.openActivityDurationTrack(false);
 
+        // 有米 积分墙
         OffersManager.getInstance(this).onAppLaunch();
+
+        // 多盟 积分墙
+        DMOfferWall.init(this, getResources().getString(R.string.domob_publisher_id));
     }
 
     @Override
