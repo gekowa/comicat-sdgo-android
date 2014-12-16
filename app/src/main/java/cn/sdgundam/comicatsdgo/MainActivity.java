@@ -1,6 +1,7 @@
 package cn.sdgundam.comicatsdgo;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,8 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
+
+import net.youmi.android.offers.OffersManager;
 
 import cn.sdgundam.comicatsdgo.top_view_fragment.HomeFragment;
 import cn.sdgundam.comicatsdgo.top_view_fragment.NewsFragment;

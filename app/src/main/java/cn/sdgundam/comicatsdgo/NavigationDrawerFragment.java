@@ -23,8 +23,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import net.youmi.android.offers.OffersManager;
 
 import java.util.ArrayList;
 
@@ -111,6 +114,14 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
         ((TextView)rootView.findViewById(R.id.version_text_view)).setText("v" + getResources().getString(R.string.app_versionName));
+
+        rootView.findViewById(R.id.youmi_offer_wall).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OffersManager.getInstance(getActivity()).showOffersWall();
+            }
+        });
+
         return rootView;
     }
 
