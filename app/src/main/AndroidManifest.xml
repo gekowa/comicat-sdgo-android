@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.sdgundam.comicatsdgo"
     android:versionCode="20141212"
-    android:versionName="@string/app_versionName">
+    android:versionName="@string/app_versionName"
+    >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -17,8 +18,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <!-- for 广点通 -->
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES"/>-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES"/>
 
     <!-- for 有米 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -101,9 +102,9 @@
         </activity>
 
         <!-- for 广点通 -->
-        <!--<service android:name="com.qq.e.comm.DownloadService" android:exported="false"></service>-->
-        <!--<activity android:name="com.qq.e.ads.AdActivity" android:theme="@android:style/Theme.Translucent">-->
-        <!--</activity>-->
+        <service android:name="com.qq.e.comm.DownloadService" android:exported="false"></service>
+        <activity android:name="com.qq.e.ads.AdActivity" android:theme="@android:style/Theme.Translucent">
+        </activity>
 
         <!-- for 有米 -->
         <activity
