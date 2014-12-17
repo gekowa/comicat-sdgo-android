@@ -1,19 +1,25 @@
 package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.umeng.analytics.MobclickAgent;
 
+import cn.sdgundam.comicatsdgo.video.VideoInfoListener;
 
-public class PostViewActivity extends Activity {
+
+public class PostViewActivity extends Activity
+    implements VideoInfoListener {
 
     private int postId;
 
@@ -30,6 +36,8 @@ public class PostViewActivity extends Activity {
 
         setContentView(R.layout.activity_post_view);
 
+        VideoInfoInterface vii = new VideoInfoInterface(this);
+
         WebView webView = (WebView)findViewById(R.id.web_view);
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -39,7 +47,20 @@ public class PostViewActivity extends Activity {
                 PostViewActivity.this.findViewById(R.id.loading).setVisibility(View.GONE);
             }
         });
-        webView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view.aspx?id=%d&page=0", postId));
+        webView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view-android.aspx?id=%d&page=0", postId));
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(vii, "$VLI");
+    }
+
+    @Override
+    public void clickedOnUnit(String unitId) {
+        Intent intent = Utility.makeUnitViewActivityIntent(this, unitId);
+        this.startActivity(intent);
+    }
+
+    @Override
+    public void clickedOnVideo(int postId, String videoHost, String videoId, String videoId2) {
+
     }
 
     @Override
@@ -55,6 +76,24 @@ public class PostViewActivity extends Activity {
         MobclickAgent.onPageEnd("新闻详细");
         MobclickAgent.onPause(this);
     }
+
+    class VideoInfoInterface {
+        VideoInfoListener vil;
+        public VideoInfoInterface(VideoInfoListener vil) {
+            this.vil = vil;
+        }
+
+        @JavascriptInterface
+        public void gotoUnit(String unitId) {
+            vil.clickedOnUnit(unitId);
+        }
+
+        @JavascriptInterface
+        public void gotoVideo(int postId, String videoHost, String videoId, String videoId2) {
+            vil.clickedOnVideo(postId, videoHost, videoId, videoId2);
+        }
+    }
+
 
 
 //    @Override
