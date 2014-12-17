@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="domob_publisher_id">96ZJ3KZgzeYqLwTCqk</string>
+    <string name="youmi_app_id">dd9220c0bf404ef0</string>
+    <string name="youmi_app_secret">0edc8891c11d2f1a</string>
+
+    <string name="weixin_app_id">wx533616eb0869c8b7</string>
+    <string name="weixin_app_secret">95c2a6d00087bdf30fe7a423690c7661</string>
+</resources>

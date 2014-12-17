@@ -13,6 +13,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
 
 import net.youmi.android.AdManager;
 import net.youmi.android.banner.AdSize;
@@ -96,6 +100,8 @@ public class UnitViewActivity extends Activity implements
     private boolean isShowingUnitMix = false, isShowingUnitMixCN = false;
 
     private Date lastSwipeRefresh;
+
+    UMSocialService umSocialService = UMServiceFactory.getUMSocialService("com.umeng.share");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,7 +265,26 @@ public class UnitViewActivity extends Activity implements
         myState.putBoolean(SHOWING_UNIT_MIX_CN, isShowingUnitMixCN);
     }
 
-//    @Override
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.unit_view, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_share: {
+                umSocialService.setShareContent(String.format("我正在用漫猫SD敢达App查看%s详细资料和最新视频", unitInfo.getModelName()));
+                umSocialService.openShare(this, false);
+                return true;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    //    @Override
 //    protected void onStop() {
 //        super.onStop();
 //

@@ -55,3 +55,9 @@
 -keepclassmembers class * {
    public <init>(org.json.JSONObject);
 }
+
+-keep class com.tencent.** { *; }
+-dontwarn com.tencent.**
+
+-keep class com.umeng.** { *; }
+-dontwarn com.umeng.**

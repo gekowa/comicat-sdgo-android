@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
+<resources>
 
     <string name="app_name">漫猫SD敢达</string>
     <string name="app_versionName">0.1a</string>
@@ -87,9 +86,6 @@
     <string name="title_activity_units_by_origin">UnitsByOriginActivity</string>
     <string name="press_back_again_to_exit">再按一次返回键退出…</string>
     <string name="action_benefit">福利</string>
+    <string name="share_menu_text">分享</string>
 
-
-    <string name="domob_publisher_id">96ZJ3KZgzeYqLwTCqk</string>
-    <string name="youmi_app_id">dd9220c0bf404ef0</string>
-    <string name="youmi_app_secret">0edc8891c11d2f1a</string>
 </resources>
