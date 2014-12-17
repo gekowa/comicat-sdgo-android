@@ -14,6 +14,7 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 import net.youmi.android.offers.OffersManager;
 

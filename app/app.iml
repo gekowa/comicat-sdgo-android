@@ -87,6 +87,8 @@
     <orderEntry type="library" exported="" name="picasso-2.3.4" level="project" />
     <orderEntry type="library" exported="" name="domob_android_sdk" level="project" />
     <orderEntry type="library" exported="" name="paginglistview-1.1" level="project" />
+    <orderEntry type="library" exported="" name="libbspatch" level="project" />
+    <orderEntry type="library" exported="" name="umeng-update-v2.4.2" level="project" />
     <orderEntry type="library" exported="" name="YoumiSdk_v4.10_2014-11-24" level="project" />
     <orderEntry type="library" exported="" name="kryo-2.24.0" level="project" />
     <orderEntry type="library" exported="" name="okio-1.0.1" level="project" />

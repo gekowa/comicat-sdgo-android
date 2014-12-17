@@ -10,6 +10,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import net.youmi.android.AdManager;
 import net.youmi.android.offers.OffersManager;
+import net.youmi.android.spot.SpotManager;
 
 import cn.dm.android.DMOfferWall;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
@@ -31,11 +32,14 @@ public class GDApplication extends Application {
 
         // Log.d("Device Info: ", getDeviceInfo(this));
 
-        MobclickAgent.setDebugMode(true);
+//        MobclickAgent.setDebugMode(true);
         MobclickAgent.openActivityDurationTrack(false);
 
         // 有米 积分墙
         OffersManager.getInstance(this).onAppLaunch();
+
+        // 有米 插屏
+        SpotManager.getInstance(this).loadSpotAds();
 
         // 多盟 积分墙
         DMOfferWall.init(this, getResources().getString(R.string.domob_publisher_id));
@@ -45,7 +49,11 @@ public class GDApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
 
+        // 有米 积分墙
         OffersManager.getInstance(this).onAppExit();
+
+        // 有米 插屏
+        SpotManager.getInstance(this).unregisterSceenReceiver();
     }
 
     public static String getDeviceInfo(Context context) {

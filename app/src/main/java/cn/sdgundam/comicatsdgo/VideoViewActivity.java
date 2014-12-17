@@ -36,6 +36,8 @@ import net.youmi.android.AdManager;
 import net.youmi.android.banner.AdSize;
 import net.youmi.android.banner.AdView;
 import net.youmi.android.banner.AdViewListener;
+import net.youmi.android.spot.SpotDialogListener;
+import net.youmi.android.spot.SpotManager;
 
 import java.util.Arrays;
 
@@ -256,30 +258,49 @@ public class VideoViewActivity extends Activity implements
 //    }
 
     void loadAds() {
-        AdManager.getInstance(this).init("dd9220c0bf404ef0", "0edc8891c11d2f1a", false);
+        Resources resources = getResources();
+        AdManager.getInstance(this).init(resources.getString(R.string.youmi_app_id), resources.getString(R.string.youmi_app_secret), false);
 
-        int actionBarContainerId = getResources().getIdentifier("action_bar_container", "id", "android");
-        ViewGroup actionBarContainerView = (ViewGroup)decorView.findViewById(actionBarContainerId);
+//        int actionBarContainerId = getResources().getIdentifier("action_bar_container", "id", "android");
+//        ViewGroup actionBarContainerView = (ViewGroup)decorView.findViewById(actionBarContainerId);
+//
+//        AdView adView = new AdView(this, AdSize.FIT_SCREEN);
+//        adView.setHorizontalGravity(RelativeLayout.CENTER_IN_PARENT);
+//        actionBarContainerView.addView(adView);
+//
+//        adView.setAdListener(new AdViewListener() {
+//
+//            @Override
+//            public void onSwitchedAd(AdView arg0) {
+//                Log.i("YoumiAdDemo", "广告条切换");
+//            }
+//
+//            @Override
+//            public void onReceivedAd(AdView arg0) {
+//                Log.i("YoumiAdDemo", "请求广告成功");
+//            }
+//
+//            @Override
+//            public void onFailedToReceivedAd(AdView arg0) {
+//                Log.i("YoumiAdDemo", "请求广告失败");
+//            }
+//        });
 
-        AdView adView = new AdView(this, AdSize.FIT_SCREEN);
-        adView.setHorizontalGravity(RelativeLayout.CENTER_IN_PARENT);
-        actionBarContainerView.addView(adView);
-
-        adView.setAdListener(new AdViewListener() {
-
+        // 有米 插屏
+        SpotManager.getInstance(this).showSpotAds(this, new SpotDialogListener() {
             @Override
-            public void onSwitchedAd(AdView arg0) {
-                Log.i("YoumiAdDemo", "广告条切换");
+            public void onShowSuccess() {
+                Log.i("Youmi", "onShowSuccess");
             }
 
             @Override
-            public void onReceivedAd(AdView arg0) {
-                Log.i("YoumiAdDemo", "请求广告成功");
+            public void onShowFailed() {
+                Log.i("Youmi", "onShowFailed");
             }
 
             @Override
-            public void onFailedToReceivedAd(AdView arg0) {
-                Log.i("YoumiAdDemo", "请求广告失败");
+            public void onSpotClosed() {
+                Log.e("sdkDemo", "closed");
             }
         });
     }

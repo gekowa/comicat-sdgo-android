@@ -29,7 +29,9 @@ dependencies {
             'libs/umeng-analytics-v5.2.4.jar',  // 友盟
             'libs/gdt_mob_release_v4.3.467.jar', // 广点通
             'libs/dm_offerwall_2.2.3.jar',      // 多盟积分墙
-            'libs/domob_android_sdk.jar'        // 多盟广告位
+            'libs/domob_android_sdk.jar',        // 多盟广告位
+            'libs/umeng-update-v2.4.2.jar',
+            'libs/armeabi/libbspatch.so',
     )
     compile 'com.android.support:support-annotations:20.0.0'
     compile 'com.android.support:support-v4:20.0.0'

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
 
     <string name="app_name">漫猫SD敢达</string>
     <string name="app_versionName">0.1a</string>
@@ -89,4 +90,6 @@
 
 
     <string name="domob_publisher_id">96ZJ3KZgzeYqLwTCqk</string>
+    <string name="youmi_app_id">dd9220c0bf404ef0</string>
+    <string name="youmi_app_secret">0edc8891c11d2f1a</string>
 </resources>

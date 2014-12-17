@@ -50,3 +50,8 @@
 -keep class cn.dm.** { *; }
 -keep class cn.dm.android.ui.interaction.** {*;}
 -keepattributes *Annotation*
+
+# 友盟自动更新
+-keepclassmembers class * {
+   public <init>(org.json.JSONObject);
+}
