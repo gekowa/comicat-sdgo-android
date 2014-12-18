@@ -88,6 +88,13 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cn.sdgundam.comicatsdgo.MainActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="comicatsdgo" android:host="@string/unit_view_host_name" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".SearchUnitActivity"
@@ -178,6 +185,14 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:screenOrientation="portrait">
         </activity>
+
+        <!-- 微信回调-->
+        <activity
+            android:name="cn.sdgundam.comicatsdgo.wxapi.WXEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

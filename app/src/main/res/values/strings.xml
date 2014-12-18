@@ -88,4 +88,8 @@
     <string name="action_benefit">福利</string>
     <string name="share_menu_text">分享</string>
 
+    <!-- host names -->
+    <string name="unit_view_host_name">unit-view</string>
+    <string name="video_view_host_name">video-view</string>
+
 </resources>

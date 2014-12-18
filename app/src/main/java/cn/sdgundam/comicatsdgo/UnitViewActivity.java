@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -30,6 +31,9 @@ import android.widget.TextView;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 import net.youmi.android.AdManager;
 import net.youmi.android.banner.AdSize;
@@ -39,6 +43,7 @@ import net.youmi.android.spot.SpotDialogListener;
 import net.youmi.android.spot.SpotManager;
 
 import java.util.Date;
+import java.util.List;
 
 import cn.sdgundam.comicatsdgo.api_model.UnitInfo;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
@@ -107,7 +112,7 @@ public class UnitViewActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initialize(getIntent().getExtras());
+        initialize(getIntent());
 
         new TrackingService(this).markUnitViewed(unitId);
 
@@ -120,6 +125,34 @@ public class UnitViewActivity extends Activity implements
         loadAds();
 
         loadUnitInfo();
+    }
+
+
+    void initialize(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            unitId = extras.getString("id");
+        }
+
+        if (unitId == null  || unitId.length() == 0) {
+            Uri uri = intent.getData();
+            if (uri.getHost().equals(getResources().getString(R.string.unit_view_host_name))) {
+                List<String> params = uri.getPathSegments();
+                unitId = params.get(0);
+            }
+        }
+
+        if (unitId == null || unitId.length() == 0) {
+            //unitId = "24713"; // 飞翼高达凤凰
+            // unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
+            //unitId = "10021";    // 石斛兰
+//        unitId= "11046";    // 扎古II (指挥官专用) Mission多
+//        unitId = "15006";   // 105短剑 扭蛋多, Quest多
+            // unitId = "15002";   // 红异端
+            // unitId = "10042";   // 高达试作2号机
+            unitId = "10002";   // 全装甲高达
+            // unitId = "88888";
+        }
     }
 
     private void initializeView() {
@@ -275,7 +308,43 @@ public class UnitViewActivity extends Activity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_share: {
-                umSocialService.setShareContent(String.format("我正在用漫猫SD敢达App查看%s详细资料和最新视频", unitInfo.getModelName()));
+                String shareContent = String.format("我正在用漫猫SD敢达App查看%s详细资料和最新视频", unitInfo.getModelName());
+
+                // common
+                umSocialService.setShareContent(shareContent);
+
+                // 微信
+                String appId = getResources().getString(R.string.weixin_app_id);
+                String appSecret = getResources().getString(R.string.weixin_app_secret);
+                // 添加微信平台
+                UMWXHandler wxHandler = new UMWXHandler(this, appId, appSecret);
+                wxHandler.addToSocialSDK();
+                // 支持微信朋友圈
+                UMWXHandler wxCircleHandler = new UMWXHandler(this, appId, appSecret);
+                wxCircleHandler.setToCircle(true);
+                wxCircleHandler.addToSocialSDK();
+
+                //设置微信好友分享内容
+                WeiXinShareContent weixinContent = new WeiXinShareContent();
+                //设置分享文字
+                weixinContent.setShareContent(shareContent);
+                //设置标题
+                weixinContent.setTitle(getResources().getString(R.string.app_name));
+                //设置分享内容跳转URL
+                weixinContent.setTargetUrl("你的URL链接");
+                //设置分享图片
+                weixinContent.setShareImage(null);
+                umSocialService.setShareMedia(weixinContent);
+
+
+                //设置微信朋友圈分享内容
+                CircleShareContent circleMedia = new CircleShareContent();
+                circleMedia.setShareContent(shareContent);
+                //设置朋友圈title
+                circleMedia.setTitle("友盟社会化分享组件-朋友圈");
+                circleMedia.setShareImage(null);
+                circleMedia.setTargetUrl("你的URL链接");
+
                 umSocialService.openShare(this, false);
                 return true;
             }
@@ -300,24 +369,6 @@ public class UnitViewActivity extends Activity implements
 //         outState.putInt(TAB_INDEX_KEY, tabHost.getCurrentTab());
     }
 
-    void initialize(Bundle extra) {
-        if (extra != null) {
-            unitId = extra.getString("id");
-        }
-
-        if (unitId == null || unitId.length() == 0) {
-            //unitId = "24713"; // 飞翼高达凤凰
-            // unitId = "10214";    // 高达试作2号机/高达试作1号机全方位推进型玉兰
-            //unitId = "10021";    // 石斛兰
-//        unitId= "11046";    // 扎古II (指挥官专用) Mission多
-//        unitId = "15006";   // 105短剑 扭蛋多, Quest多
-            // unitId = "15002";   // 红异端
-            // unitId = "10042";   // 高达试作2号机
-            unitId = "10002";   // 全装甲高达
-            // unitId = "88888";
-        }
-
-    }
 
     void loadUnitInfo() {
         apiService.fetchUnitInfo(unitId, false);
