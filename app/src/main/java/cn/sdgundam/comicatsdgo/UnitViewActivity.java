@@ -31,6 +31,7 @@ import android.widget.TextView;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
@@ -308,42 +309,16 @@ public class UnitViewActivity extends Activity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_share: {
-                String shareContent = String.format("我正在用漫猫SD敢达App查看%s详细资料和最新视频", unitInfo.getModelName());
-
-                // common
-                umSocialService.setShareContent(shareContent);
+                String shareContent = String.format("我正在用漫猫SD敢达App查看\"%s\"详细资料和最新视频", unitInfo.getModelName());
 
                 // 微信
-                String appId = getResources().getString(R.string.weixin_app_id);
-                String appSecret = getResources().getString(R.string.weixin_app_secret);
-                // 添加微信平台
-                UMWXHandler wxHandler = new UMWXHandler(this, appId, appSecret);
-                wxHandler.addToSocialSDK();
-                // 支持微信朋友圈
-                UMWXHandler wxCircleHandler = new UMWXHandler(this, appId, appSecret);
-                wxCircleHandler.setToCircle(true);
-                wxCircleHandler.addToSocialSDK();
+                SharingUtility.setupWeixinShare(this, umSocialService,
+                        getResources().getString(R.string.app_name),
+                        shareContent,
+                        "http://www.sdgundam.cn/pages/app/android-landing-page.html",
+                        "");
 
-                //设置微信好友分享内容
-                WeiXinShareContent weixinContent = new WeiXinShareContent();
-                //设置分享文字
-                weixinContent.setShareContent(shareContent);
-                //设置标题
-                weixinContent.setTitle(getResources().getString(R.string.app_name));
-                //设置分享内容跳转URL
-                weixinContent.setTargetUrl("你的URL链接");
-                //设置分享图片
-                weixinContent.setShareImage(null);
-                umSocialService.setShareMedia(weixinContent);
-
-
-                //设置微信朋友圈分享内容
-                CircleShareContent circleMedia = new CircleShareContent();
-                circleMedia.setShareContent(shareContent);
-                //设置朋友圈title
-                circleMedia.setTitle("友盟社会化分享组件-朋友圈");
-                circleMedia.setShareImage(null);
-                circleMedia.setTargetUrl("你的URL链接");
+                SharingUtility.configureListener(UnitViewActivity.this, umSocialService);
 
                 umSocialService.openShare(this, false);
                 return true;

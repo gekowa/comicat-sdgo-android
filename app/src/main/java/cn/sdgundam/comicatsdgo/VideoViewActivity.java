@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,14 @@ import android.widget.Toast;
 //import android.widget.MediaController;
 
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.listener.SocializeListeners;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 import net.youmi.android.AdManager;
 import net.youmi.android.banner.AdSize;
@@ -111,6 +121,8 @@ public class VideoViewActivity extends Activity implements
 
     private Handler videoTimeoutHandler;
     private Runnable videoTimeoutActions;
+
+    UMSocialService umSocialService = UMServiceFactory.getUMSocialService("com.umeng.share");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -431,6 +443,35 @@ public class VideoViewActivity extends Activity implements
             // TODO: if none, use super
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.unit_view, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_share: {
+                String shareContent = "我正在用漫猫SD敢达App观看最新视频";
+
+                // 微信
+                SharingUtility.setupWeixinShare(this, umSocialService,
+                        getResources().getString(R.string.app_name),
+                        shareContent,
+                        "http://www.sdgundam.cn/pages/app/android-landing-page.html",
+                        "");
+
+                SharingUtility.configureListener(VideoViewActivity.this, umSocialService);
+
+                umSocialService.openShare(this, false);
+                return true;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     void configureVideoViewOnOrientation() {
