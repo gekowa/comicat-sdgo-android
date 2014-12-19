@@ -114,7 +114,7 @@
         </activity>
 
         <!-- for 广点通 -->
-        <service android:name="com.qq.e.comm.DownloadService" android:exported="false"></service>
+        <service android:name="com.qq.e.comm.DownloadService" android:exported="false"/>
         <activity android:name="com.qq.e.ads.AdActivity" android:theme="@android:style/Theme.Translucent">
         </activity>
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="interstitial_ads_providers">
+        <item>GDT</item>
+        <item>Youmi</item>
+        <item>Domob</item>
+    </string-array>
+
+    <integer-array name="interstitial_ads_provider_weight">
+        <item>4</item>
+        <item>3</item>
+        <item>3</item>
+    </integer-array>
+
+    <integer name="interstitial_ads_freq_VideoViewActivity">1</integer>
+    <integer name="interstitial_ads_freq_UnitViewActivity">3</integer>
+    <integer name="interstitial_ads_freq_PostViewActivity">3</integer>
+</resources>

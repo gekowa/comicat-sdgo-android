@@ -43,6 +43,9 @@ public class GDApplication extends Application {
 
         // 多盟 积分墙
         DMOfferWall.init(this, getResources().getString(R.string.domob_publisher_id));
+
+        // 初始化插屏广告管理
+        InterstitialAdsManager.init(this.getResources());
     }
 
     @Override
