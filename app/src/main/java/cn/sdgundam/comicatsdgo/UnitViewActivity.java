@@ -273,6 +273,12 @@ public class UnitViewActivity extends Activity implements
                         shareContent,
                         "http://www.sdgundam.cn/pages/app/android-landing-page.html",
                         "");
+                // QQ
+                SharingUtility.setupQQShare(this, umSocialService,
+                        getResources().getString(R.string.app_name),
+                        shareContent,
+                        "http://www.sdgundam.cn/pages/app/android-landing-page.html",
+                        "");
 
                 SharingUtility.configureListener(UnitViewActivity.this, umSocialService);
 

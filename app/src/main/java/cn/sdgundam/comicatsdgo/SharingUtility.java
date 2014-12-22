@@ -1,5 +1,6 @@
 package cn.sdgundam.comicatsdgo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -7,6 +8,10 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.listener.SocializeListeners;
+import com.umeng.socialize.media.QQShareContent;
+import com.umeng.socialize.media.QZoneShareContent;
+import com.umeng.socialize.sso.QZoneSsoHandler;
+import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
@@ -50,7 +55,46 @@ public class SharingUtility {
         umSocialService.setShareMedia(circleShareContent);
     }
 
-    public static void configureListener(final Context context, UMSocialService umSocialService) {
+    public static void setupQQShare(Context context, UMSocialService umSocialService, String title, String content, String url, String image) {
+        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler((Activity)context,
+                context.getResources().getString(R.string.qq_app_id),
+                context.getResources().getString(R.string.qq_app_key));
+        qqSsoHandler.addToSocialSDK();
+
+        QQShareContent qqShareContent = new QQShareContent();
+        //设置分享文字
+        qqShareContent.setShareContent(content);
+        //设置分享title
+        qqShareContent.setTitle(title);
+        //设置分享图片
+        if (image != null) {
+            qqShareContent.setShareImage(new UMImage(context, image));
+        }
+        //设置点击分享内容的跳转链接
+        qqShareContent.setTargetUrl(url);
+        umSocialService.setShareMedia(qqShareContent);
+
+
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler((Activity)context,
+                context.getResources().getString(R.string.qq_app_id),
+                context.getResources().getString(R.string.qq_app_key));
+        qZoneSsoHandler.addToSocialSDK();
+        QZoneShareContent qzone = new QZoneShareContent();
+        //设置分享文字
+        qzone.setShareContent(content);
+        //设置点击消息的跳转URL
+        qzone.setTargetUrl(url);
+        //设置分享内容的标题
+        qzone.setTitle(title);
+        //设置分享图片
+        if (image != null) {
+            qzone.setShareImage(new UMImage(context, image));
+        }
+        umSocialService.setShareMedia(qzone);
+
+    }
+
+    public static void configureListener(final Context context, final UMSocialService umSocialService) {
         umSocialService.registerListener(new SocializeListeners.SnsPostListener() {
             @Override
             public void onStart() {
@@ -62,7 +106,7 @@ public class SharingUtility {
                 if (code == 200) {
                     Toast.makeText(context, "分享成功!", Toast.LENGTH_SHORT)
                             .show();
-                } else {
+                } else if (code != 40000) {
                     Toast.makeText(context, "分享失败, 错误代码: " + code, Toast.LENGTH_SHORT)
                             .show();
                 }
