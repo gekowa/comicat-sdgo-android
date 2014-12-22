@@ -118,6 +118,7 @@
         <activity android:name="com.qq.e.ads.AdActivity" android:theme="@android:style/Theme.Translucent">
         </activity>
 
+
         <!-- for 有米 -->
         <activity
             android:name="net.youmi.android.AdBrowser"
@@ -193,6 +194,10 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait" />
+
+        <!-- 多盟 -->
+        <activity android:name="cn.domob.android.ads.DmActivity"
+            android:theme="@android:style/Theme.Translucent"></activity>
     </application>
 
 </manifest>

@@ -42,12 +42,12 @@ import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
-import net.youmi.android.AdManager;
-import net.youmi.android.banner.AdSize;
-import net.youmi.android.banner.AdView;
-import net.youmi.android.banner.AdViewListener;
-import net.youmi.android.spot.SpotDialogListener;
-import net.youmi.android.spot.SpotManager;
+//import net.youmi.android.AdManager;
+//import net.youmi.android.banner.AdSize;
+//import net.youmi.android.banner.AdView;
+//import net.youmi.android.banner.AdViewListener;
+//import net.youmi.android.spot.SpotDialogListener;
+//import net.youmi.android.spot.SpotManager;
 
 import java.util.Arrays;
 
@@ -270,51 +270,7 @@ public class VideoViewActivity extends Activity implements
 //    }
 
     void loadAds() {
-        Resources resources = getResources();
-        AdManager.getInstance(this).init(resources.getString(R.string.youmi_app_id), resources.getString(R.string.youmi_app_secret), false);
-
-//        int actionBarContainerId = getResources().getIdentifier("action_bar_container", "id", "android");
-//        ViewGroup actionBarContainerView = (ViewGroup)decorView.findViewById(actionBarContainerId);
-//
-//        AdView adView = new AdView(this, AdSize.FIT_SCREEN);
-//        adView.setHorizontalGravity(RelativeLayout.CENTER_IN_PARENT);
-//        actionBarContainerView.addView(adView);
-//
-//        adView.setAdListener(new AdViewListener() {
-//
-//            @Override
-//            public void onSwitchedAd(AdView arg0) {
-//                Log.i("YoumiAdDemo", "广告条切换");
-//            }
-//
-//            @Override
-//            public void onReceivedAd(AdView arg0) {
-//                Log.i("YoumiAdDemo", "请求广告成功");
-//            }
-//
-//            @Override
-//            public void onFailedToReceivedAd(AdView arg0) {
-//                Log.i("YoumiAdDemo", "请求广告失败");
-//            }
-//        });
-
-        // 有米 插屏
-        SpotManager.getInstance(this).showSpotAds(this, new SpotDialogListener() {
-            @Override
-            public void onShowSuccess() {
-                Log.i("Youmi", "onShowSuccess");
-            }
-
-            @Override
-            public void onShowFailed() {
-                Log.i("Youmi", "onShowFailed");
-            }
-
-            @Override
-            public void onSpotClosed() {
-                Log.e("sdkDemo", "closed");
-            }
-        });
+        InterstitialAdsManager.getInstance().displayNextAds(this);
     }
 
     private void initialize(Intent intent) {

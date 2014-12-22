@@ -35,6 +35,11 @@ public class GDApplication extends Application {
 //        MobclickAgent.setDebugMode(true);
         MobclickAgent.openActivityDurationTrack(false);
 
+        // 有米
+        AdManager.getInstance(this).init(
+                getResources().getString(R.string.youmi_app_id),
+                getResources().getString(R.string.youmi_app_secret), false);
+
         // 有米 积分墙
         OffersManager.getInstance(this).onAppLaunch();
 

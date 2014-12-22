@@ -50,6 +50,12 @@ public class PostViewActivity extends Activity
         webView.loadUrl(String.format("http://www.sdgundam.cn/pages/app/post-view-android.aspx?id=%d&page=0", postId));
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(vii, "$VLI");
+
+        loadAds();
+    }
+
+    private void loadAds() {
+        InterstitialAdsManager.getInstance().displayNextAds(this);
     }
 
     @Override

@@ -1,11 +1,21 @@
 package cn.sdgundam.comicatsdgo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 
+import net.youmi.android.AdManager;
+import net.youmi.android.spot.SpotDialogListener;
+import net.youmi.android.spot.SpotManager;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Dictionary;
 import java.util.Hashtable;
+
+import cn.domob.android.ads.InterstitialAd;
+import cn.domob.android.ads.InterstitialAdListener;
 
 /**
  * Created by xhguo on 12/19/2014.
@@ -19,7 +29,7 @@ public class InterstitialAdsManager {
 
     String[] allProviders;
 
-    Dictionary<String, Integer> counterByProvider;   // provider / counter
+//    Dictionary<String, Integer> counterByProvider;   // provider / counter
     Dictionary<String, Integer> counterByTag;
 //     Dictionary<String, Integer> weightTable;
 
@@ -44,11 +54,10 @@ public class InterstitialAdsManager {
     private void initInternal() {
         allProviders = resources.getStringArray(R.array.interstitial_ads_providers);
 
-
-        counterByProvider = new Hashtable<String, Integer>();
-        for (int i = 0; i < allProviders.length; i++) {
-            counterByProvider.put(allProviders[i], 0);
-        }
+//        counterByProvider = new Hashtable<String, Integer>();
+//        for (int i = 0; i < allProviders.length; i++) {
+//            counterByProvider.put(allProviders[i], 0);
+//        }
 
         resetWeightArray();
 
@@ -88,7 +97,20 @@ public class InterstitialAdsManager {
     }
 
     private void displayAdsOfProvider(Context context, String provider) {
-        Log.d(LOG_TAG, "Will displaying Ads: " + provider);
+        try {
+            Method method = this.getClass().getDeclaredMethod("displayAdsOf" + provider, Context.class);
+            method.setAccessible(true);
+            method.invoke(this, context);
+        }
+        catch (NoSuchMethodException e) {
+            System.out.println(e.toString());
+        }
+        catch (InvocationTargetException e) {
+            System.out.println(e.toString());
+        }
+        catch (IllegalAccessException e) {
+            System.out.println(e.toString());
+        }
     }
 
     private int pick() {
@@ -113,5 +135,116 @@ public class InterstitialAdsManager {
             }
         }
         return -1;
+    }
+
+    private void displayAdsOfGDT(Context context) {
+        final com.qq.e.ads.InterstitialAd ads  = new com.qq.e.ads.InterstitialAd((Activity)context,
+                context.getResources().getString(R.string.gdt_app_id),
+                context.getResources().getString(R.string.gdt_interstitial_ads_id));
+
+        ads.setAdListener(new com.qq.e.ads.InterstitialAdListener() {
+            @Override
+            public void onFail() {
+
+            }
+
+            @Override
+            public void onBack() {
+
+            }
+
+            @Override
+            public void onAdReceive() {
+                ads.show();
+            }
+
+            @Override
+            public void onExposure() {
+
+            }
+
+            @Override
+            public void onClicked() {
+
+            }
+        });
+
+        ads.loadAd();
+    }
+
+    private void displayAdsOfYoumi(Context context) {
+        AdManager.getInstance(context).init(resources.getString(R.string.youmi_app_id), resources.getString(R.string.youmi_app_secret), false);
+
+        // 有米 插屏
+        SpotManager.getInstance(context).showSpotAds(context, new SpotDialogListener() {
+            @Override
+            public void onShowSuccess() {
+                Log.i("Youmi", "onShowSuccess");
+            }
+
+            @Override
+            public void onShowFailed() {
+                Log.i("Youmi", "onShowFailed");
+            }
+
+            @Override
+            public void onSpotClosed() {
+                Log.e("sdkDemo", "closed");
+            }
+        });
+    }
+
+    private void displayAdsOfDomob(Context context) {
+        InterstitialAd ads = new InterstitialAd((Activity)context,
+                context.getResources().getString(R.string.domob_publisher_id),
+                context.getResources().getString(R.string.domob_interstitial_ads_id));
+
+        ads.setInterstitialAdListener(new InterstitialAdListener() {
+            @Override
+            public void onInterstitialAdReady() {
+
+            }
+
+            @Override
+            public void onInterstitialAdFailed(cn.domob.android.ads.AdManager.ErrorCode errorCode) {
+
+            }
+
+            @Override
+            public void onInterstitialAdPresent() {
+
+            }
+
+            @Override
+            public void onInterstitialAdDismiss() {
+
+            }
+
+            @Override
+            public void onLandingPageOpen() {
+
+            }
+
+            @Override
+            public void onLandingPageClose() {
+
+            }
+
+            @Override
+            public void onInterstitialAdLeaveApplication() {
+
+            }
+
+            @Override
+            public void onInterstitialAdClicked(InterstitialAd interstitialAd) {
+
+            }
+        });
+
+        ads.loadInterstitialAd();
+
+        if (ads.isInterstitialAdReady()) {
+            ads.showInterstitialAd(context);
+        }
     }
 }
