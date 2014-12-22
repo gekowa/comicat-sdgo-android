@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -113,7 +114,12 @@ public class NavigationDrawerFragment extends Fragment {
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
-        ((TextView)rootView.findViewById(R.id.version_text_view)).setText("v" + getResources().getString(R.string.app_versionName));
+        try {
+            String versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+            ((TextView)rootView.findViewById(R.id.version_text_view)).setText("v" + versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            // do nothing
+        }
 
         rootView.findViewById(R.id.youmi_offer_wall).setOnClickListener(new View.OnClickListener() {
             @Override
