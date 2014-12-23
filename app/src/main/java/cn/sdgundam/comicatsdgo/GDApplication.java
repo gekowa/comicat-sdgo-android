@@ -17,6 +17,7 @@ import net.youmi.android.offers.OffersManager;
 import net.youmi.android.spot.SpotManager;
 
 import cn.dm.android.DMOfferWall;
+import cn.dm.android.DMService;
 import cn.sdgundam.comicatsdgo.gd_api.GDApiService;
 
 /**
@@ -53,7 +54,7 @@ public class GDApplication extends Application {
         SpotManager.getInstance(this).loadSpotAds();
 
         // 多盟 积分墙
-        DMOfferWall.init(this, getResources().getString(R.string.domob_publisher_id));
+        DMOfferWall.init(this, getResources().getString(R.string.domob_publisher_id_offers_wall));
 
         // 初始化插屏广告管理
         InterstitialAdsManager.init(this.getResources());
@@ -71,7 +72,7 @@ public class GDApplication extends Application {
                 .diskCacheFileNameGenerator(new Md5FileNameGenerator())
                 .diskCacheSize(500 * 1024 * 1024) // 500 Mb
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .writeDebugLogs() // Remove for release app
+//                .writeDebugLogs() // Remove for release app
                 .build();
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);

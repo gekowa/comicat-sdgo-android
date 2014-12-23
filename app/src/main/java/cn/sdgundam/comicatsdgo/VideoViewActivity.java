@@ -413,12 +413,12 @@ public class VideoViewActivity extends Activity implements
             case R.id.action_share: {
                 String shareContent = "我正在用漫猫SD敢达App观看最新视频";
 
-//                // 微信
-//                SharingUtility.setupWeixinShare(this, umSocialService,
-//                        getResources().getString(R.string.app_name),
-//                        shareContent,
-//                        "http://www.sdgundam.cn/pages/app/android-landing-page.html",
-//                        "");
+                // 微信
+                SharingUtility.setupWeixinShare(this, umSocialService,
+                        getResources().getString(R.string.app_name),
+                        shareContent,
+                        "http://www.sdgundam.cn/pages/app/android-landing-page.html",
+                        "");
                 // QQ
                 SharingUtility.setupQQShare(this, umSocialService,
                         getResources().getString(R.string.app_name),
@@ -426,30 +426,30 @@ public class VideoViewActivity extends Activity implements
                         "http://www.sdgundam.cn/pages/app/android-landing-page.html",
                         "");
 
-//                SharingUtility.configureListener(VideoViewActivity.this, umSocialService);
+                SharingUtility.configureListener(VideoViewActivity.this, umSocialService);
 
-//                umSocialService.openShare(this, false);
+                umSocialService.openShare(this, false);
 
-                umSocialService.postShare(this, SHARE_MEDIA.QQ,
-                        new SocializeListeners.SnsPostListener() {
-                            @Override
-                            public void onStart() {
-                                Toast.makeText(VideoViewActivity.this, "开始分享.", Toast.LENGTH_SHORT).show();
-                            }
-                            @Override
-                            public void onComplete(SHARE_MEDIA platform, int eCode,SocializeEntity entity) {
-                                if (eCode == 200) {
-                                    Toast.makeText(VideoViewActivity.this, "分享成功.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    String eMsg = "";
-                                    if (eCode == -101){
-                                        eMsg = "没有授权";
-                                    }
-                                    Toast.makeText(VideoViewActivity.this, "分享失败[" + eCode + "] " +
-                                            eMsg,Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+//                umSocialService.postShare(this, SHARE_MEDIA.QQ,
+//                        new SocializeListeners.SnsPostListener() {
+//                            @Override
+//                            public void onStart() {
+//                                Toast.makeText(VideoViewActivity.this, "开始分享.", Toast.LENGTH_SHORT).show();
+//                            }
+//                            @Override
+//                            public void onComplete(SHARE_MEDIA platform, int eCode,SocializeEntity entity) {
+//                                if (eCode == 200) {
+//                                    Toast.makeText(VideoViewActivity.this, "分享成功.", Toast.LENGTH_SHORT).show();
+//                                } else {
+//                                    String eMsg = "";
+//                                    if (eCode == -101){
+//                                        eMsg = "没有授权";
+//                                    }
+//                                    Toast.makeText(VideoViewActivity.this, "分享失败[" + eCode + "] " +
+//                                            eMsg,Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
 
                 return true;
             }

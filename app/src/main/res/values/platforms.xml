@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="domob_publisher_id">96ZJ3KZgzeYqLwTCqk</string>
+    <string name="domob_publisher_id">56OJxkEIuN4xVm8MrX</string>
     <string name="domob_interstitial_ads_id">16TLeIsoApzpANUOxo4zOCPz</string>
+
+    <string name="domob_publisher_id_offers_wall">96ZJ3KZgzeYqLwTCqk</string>
 
     <string name="youmi_app_id">dd9220c0bf404ef0</string>
     <string name="youmi_app_secret">0edc8891c11d2f1a</string>

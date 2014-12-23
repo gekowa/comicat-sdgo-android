@@ -189,20 +189,21 @@ public class InterstitialAdsManager {
 
             @Override
             public void onSpotClosed() {
-                Log.e("sdkDemo", "closed");
+                Log.e("Youmi", "closed");
             }
         });
     }
 
-    private void displayAdsOfDomob(Context context) {
-        InterstitialAd ads = new InterstitialAd((Activity)context,
+    private void displayAdsOfDomob(final Context context) {
+        final InterstitialAd ads = new InterstitialAd((Activity)context,
                 context.getResources().getString(R.string.domob_publisher_id),
                 context.getResources().getString(R.string.domob_interstitial_ads_id));
+
 
         ads.setInterstitialAdListener(new InterstitialAdListener() {
             @Override
             public void onInterstitialAdReady() {
-
+                ads.showInterstitialAd(context);
             }
 
             @Override
@@ -217,7 +218,7 @@ public class InterstitialAdsManager {
 
             @Override
             public void onInterstitialAdDismiss() {
-
+                // ads.loadInterstitialAd();
             }
 
             @Override
@@ -242,9 +243,9 @@ public class InterstitialAdsManager {
         });
 
         ads.loadInterstitialAd();
-
-        if (ads.isInterstitialAdReady()) {
-            ads.showInterstitialAd(context);
-        }
+//
+//        if (ads.isInterstitialAdReady()) {
+//            ads.showInterstitialAd(context);
+//        }
     }
 }
