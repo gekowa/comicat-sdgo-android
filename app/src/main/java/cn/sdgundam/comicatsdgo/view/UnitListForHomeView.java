@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
+import cn.sdgundam.comicatsdgo.ImageLoaderOptions;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.api_model.UnitInfoShort;
@@ -108,11 +110,20 @@ public class UnitListForHomeView extends HListView {
 
             UnitInfoShort unit = (UnitInfoShort)getItem(i);
 
-            Picasso.with(context)
-                    .load(Utility.getUnitImageURLByUnitId(unit.getUnitId()))
-                    .resize(unitImageSize, unitImageSize)
-                    .placeholder(R.drawable.placeholder_unit)
-                    .into(view);
+//            Picasso.with(context)
+//                    .load(Utility.getUnitImageURLByUnitId(unit.getUnitId()))
+//                    .resize(unitImageSize, unitImageSize)
+//                    .placeholder(R.drawable.placeholder_unit)
+//                    .into(view);
+
+            DisplayImageOptions options = new DisplayImageOptions.Builder()
+                    .cloneFrom(ImageLoaderOptions.Normal)
+                    .showImageOnLoading(R.drawable.placeholder_unit)
+                    .build();
+
+            ImageLoader.getInstance().displayImage(Utility.getUnitImageURLByUnitId(unit.getUnitId()),
+                    view,
+                    options);
 
             return view;
         }

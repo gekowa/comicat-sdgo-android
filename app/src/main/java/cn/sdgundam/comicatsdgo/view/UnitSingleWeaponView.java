@@ -9,8 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
+import cn.sdgundam.comicatsdgo.ImageLoaderOptions;
 import cn.sdgundam.comicatsdgo.R;
 
 /**
@@ -61,9 +62,7 @@ public class UnitSingleWeaponView extends RelativeLayout {
     public void setWeaponId(int weaponId) {
         this.weaponId = weaponId;
 
-        Picasso.with(getContext())
-                .load(Uri.parse(String.format("http://cdn.sdgundam.cn/data-source/acc/weapon/%s.gif", weaponId)))
-                .into(weaponImageView);
+        ImageLoader.getInstance().displayImage(String.format("http://cdn.sdgundam.cn/data-source/acc/weapon/%s.gif", weaponId), weaponImageView, ImageLoaderOptions.NormalOpaque);
     }
 
     public void setWeaponIndex(int weaponIndex) {

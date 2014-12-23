@@ -2,7 +2,6 @@ package cn.sdgundam.comicatsdgo.top_view_fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.annotation.Nullable;
@@ -15,9 +14,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
 
+import cn.sdgundam.comicatsdgo.ImageLoaderOptions;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.UnitsByOriginActivity;
 import cn.sdgundam.comicatsdgo.api_model.OriginInfo;
@@ -151,9 +151,9 @@ public class OriginFragment extends Fragment {
 
             OriginInfo oi = (OriginInfo)getItem(position);
 
-            Picasso.with(context)
-                    .load(Uri.parse(String.format("http://cdn.sdgundam.cn/images/origin/app/origin-%s.png", oi.getOriginIndex())))
-                    .into(originImageView);
+            ImageLoader.getInstance().displayImage(String.format("http://cdn.sdgundam.cn/images/origin/app/origin-%s.png", oi.getOriginIndex()),
+                    originImageView,
+                    ImageLoaderOptions.Normal);
 
             originTitleTV.setText(oi.getTitle());
             unitCountTV.setText(oi.getNumberOfUnits() + "");

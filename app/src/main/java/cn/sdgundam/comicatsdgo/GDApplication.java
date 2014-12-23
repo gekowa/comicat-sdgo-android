@@ -1,11 +1,15 @@
 package cn.sdgundam.comicatsdgo;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.umeng.analytics.MobclickAgent;
 
 import net.youmi.android.AdManager;
@@ -23,12 +27,14 @@ public class GDApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        initImageLoader(getApplicationContext());
+
         GDApiService apiService = new GDApiService(this);
         apiService.checkOriginUpdate(true);
 
-        if (BuildConfig.DEBUG) {
-            Picasso.with(this).setIndicatorsEnabled(true);
-        }
+//        if (BuildConfig.DEBUG) {
+//            Picasso.with(this).setIndicatorsEnabled(true);
+//        }
 
         // Log.d("Device Info: ", getDeviceInfo(this));
 
@@ -51,6 +57,24 @@ public class GDApplication extends Application {
 
         // 初始化插屏广告管理
         InterstitialAdsManager.init(this.getResources());
+    }
+
+    public static void initImageLoader(Context context) {
+        // This configuration tuning is custom. You can tune every option, you may tune some of them,
+        // or you can create default configuration by
+        //  ImageLoaderConfiguration.createDefault(this);
+        // method.
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .memoryCacheSize(20 * 1024 * 1024)  // 20MB
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+                .diskCacheSize(500 * 1024 * 1024) // 500 Mb
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .writeDebugLogs() // Remove for release app
+                .build();
+        // Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(config);
     }
 
     @Override

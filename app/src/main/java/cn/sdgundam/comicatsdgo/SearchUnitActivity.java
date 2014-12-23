@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -294,9 +294,7 @@ public class SearchUnitActivity extends Activity implements
 
             UnitInfoShort uis = (UnitInfoShort)getItem(position);
 
-            Picasso.with(context)
-                    .load(Uri.parse(Utility.getUnitImageURLByUnitId(uis.getUnitId())))
-                    .into(unitImageView);
+            ImageLoader.getInstance().displayImage(Utility.getUnitImageURLByUnitId(uis.getUnitId()), unitImageView, ImageLoaderOptions.Normal);
 
             modelNameTextView.setText(uis.getModelName());
             rankTextView.setText(uis.getRank());

@@ -8,8 +8,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
+import cn.sdgundam.comicatsdgo.ImageLoaderOptions;
 import cn.sdgundam.comicatsdgo.R;
 
 /**
@@ -44,9 +45,7 @@ public class UnitSingleSkillView extends LinearLayout {
     public void setSkillId(int skillId) {
         this.skillId = skillId;
 
-        Picasso.with(getContext())
-                .load(Uri.parse(String.format("http://cdn.sdgundam.cn/data-source/acc/skill/%s.gif", skillId)))
-                .into(skillImageView);
+        ImageLoader.getInstance().displayImage(String.format("http://cdn.sdgundam.cn/data-source/acc/skill/%s.gif", skillId), skillImageView, ImageLoaderOptions.NormalOpaque);
     }
 
     public void setSkillName(String skillName) {

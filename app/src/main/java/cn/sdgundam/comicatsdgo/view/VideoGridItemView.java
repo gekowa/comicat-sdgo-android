@@ -14,10 +14,12 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import cn.sdgundam.comicatsdgo.BuildConfig;
+import cn.sdgundam.comicatsdgo.ImageLoaderOptions;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.api_model.VideoListItem;
@@ -40,29 +42,34 @@ public class VideoGridItemView extends View {
     static Bitmap placeHolderBitmap;
 
     VideoListItem vli;
-    Target imageTarget;
     Bitmap image;
     Bitmap gdCategoryDrawingCache;
+    ImageLoadingListener imageLoadingListener;
 
     public VideoGridItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        imageTarget = new Target() {
+        imageLoadingListener = new ImageLoadingListener() {
             @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                VideoGridItemView.this.image = bitmap;
+            public void onLoadingStarted(String imageUri, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                VideoGridItemView.this.image = loadedImage;
 
                 VideoGridItemView.this.requestLayout();
                 VideoGridItemView.this.invalidate();
             }
 
             @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
+            public void onLoadingCancelled(String imageUri, View view) {
 
             }
         };
@@ -105,7 +112,7 @@ public class VideoGridItemView extends View {
             // also prepare for reuse
             image = null;
 
-            Picasso.with(getContext()).load(vli.getImageURL()).into(imageTarget);
+            ImageLoader.getInstance().loadImage(vli.getImageURL(), ImageLoaderOptions.NormalOpaque, imageLoadingListener);
 
             GDCategorySmallIconView iconView = new GDCategorySmallIconView(getContext(), null);
             iconView.setGdCategory(vli.getGdPostCategory());
@@ -188,7 +195,7 @@ public class VideoGridItemView extends View {
 
     @Override
     protected void onDetachedFromWindow() {
-        Picasso.with(getContext()).cancelRequest(imageTarget);
+
     }
 
 //    class ImgaeLoaderAsyncTask extends AsyncTask<String, Void, Void> {

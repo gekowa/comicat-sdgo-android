@@ -28,22 +28,23 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-//    compile files('libs/YoumiSdk_v4.10_2014-11-24.jar', // 有米
-//            'libs/umeng-analytics-v5.2.4.jar',  // 友盟
-//            'libs/gdt_mob_release_v4.3.467.jar', // 广点通
-//            'libs/dm_offerwall_2.2.3.jar',      // 多盟积分墙
-//            'libs/domob_android_sdk.jar',        // 多盟广告位
-//            'libs/umeng-update-v2.4.2.jar',
-//            'libs/armeabi/libbspatch.so',
-//    )
+    //    compile files('libs/YoumiSdk_v4.10_2014-11-24.jar', // 有米
+    //            'libs/umeng-analytics-v5.2.4.jar',  // 友盟
+    //            'libs/gdt_mob_release_v4.3.467.jar', // 广点通
+    //            'libs/dm_offerwall_2.2.3.jar',      // 多盟积分墙
+    //            'libs/domob_android_sdk.jar',        // 多盟广告位
+    //            'libs/umeng-update-v2.4.2.jar',
+    //            'libs/armeabi/libbspatch.so',
+    //    )
     compile 'com.android.support:support-annotations:20.0.0'
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.android.support:support-v13:20.0.0'
     compile 'com.snappydb:snappydb-lib:0.5.0'
     compile 'com.esotericsoftware.kryo:kryo:2.24.0'
-    compile 'com.squareup.okhttp:okhttp:2.1.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
-    compile 'com.squareup.picasso:picasso:2.3.4'
+//    compile 'com.squareup.okhttp:okhttp:2.1.0'
+//    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
+//    compile 'com.squareup.picasso:picasso:2.3.4'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'org.lucasr.twowayview:twowayview:0.1.1'
     compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
     compile 'com.github.nicolasjafelle:paginglistview:1.1'

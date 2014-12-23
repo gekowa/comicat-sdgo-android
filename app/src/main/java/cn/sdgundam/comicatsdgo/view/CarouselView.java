@@ -16,12 +16,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.imbryk.viewpager.LoopViewPager;
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.viewpagerindicator.LinePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 
 import java.util.ArrayList;
 
+import cn.sdgundam.comicatsdgo.ImageLoaderOptions;
 import cn.sdgundam.comicatsdgo.PostViewActivity;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
@@ -134,7 +135,7 @@ public class CarouselView extends RelativeLayout {
             int realPosition= (carousel.length + position) % carousel.length;
             CarouselInfo ci = carousel[realPosition];
 
-            Picasso.with(getContext()).load(ci.getImageURL()).into(imageView);
+            ImageLoader.getInstance().displayImage(ci.getImageURL(), imageView, ImageLoaderOptions.NormalOpaque);
 
             container.addView(imageView);
 

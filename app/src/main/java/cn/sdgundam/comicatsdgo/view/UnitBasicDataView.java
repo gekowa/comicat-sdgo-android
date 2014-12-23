@@ -10,10 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.net.URI;
 
+import cn.sdgundam.comicatsdgo.ImageLoaderOptions;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
 
@@ -69,9 +70,10 @@ public class UnitBasicDataView extends LinearLayout {
 
     public void setUnitId(String unitId) {
         this.unitId = unitId;
-        Picasso.with(getContext())
-                .load(Uri.parse(String.format("http://cdn.sdgundam.cn/data-source/acc/unit-yoppa/app/%s.png", unitId)))
-                .into(unitImageView);
+
+        ImageLoader.getInstance().displayImage(String.format("http://cdn.sdgundam.cn/data-source/acc/unit-yoppa/app/%s.png", unitId),
+                unitImageView,
+                ImageLoaderOptions.Normal);
     }
 
     public void setModelName(String modelName) {

@@ -2,6 +2,7 @@ package cn.sdgundam.comicatsdgo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -98,11 +99,17 @@ public class SharingUtility {
         umSocialService.registerListener(new SocializeListeners.SnsPostListener() {
             @Override
             public void onStart() {
-
+                umSocialService.dismissShareBoard();
             }
 
             @Override
             public void onComplete(SHARE_MEDIA share_media, int code, SocializeEntity socializeEntity) {
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        umSocialService.dismissShareBoard();
+                    }
+                });
                 if (code == 200) {
                     Toast.makeText(context, "分享成功!", Toast.LENGTH_SHORT)
                             .show();

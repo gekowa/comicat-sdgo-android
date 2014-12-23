@@ -10,8 +10,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
+import cn.sdgundam.comicatsdgo.ImageLoaderOptions;
 import cn.sdgundam.comicatsdgo.R;
 import cn.sdgundam.comicatsdgo.Utility;
 import cn.sdgundam.comicatsdgo.api_model.UnitMixMaterial;
@@ -86,7 +87,7 @@ public class UnitMixPopupView extends FrameLayout {
             keyUnitTV.setBackgroundColor(Color.TRANSPARENT);
         }
 
-        Picasso.with(getContext()).load(Uri.parse(Utility.getUnitImageURLByUnitId(umm.getUnitId()))).into(unitIV);
+        ImageLoader.getInstance().displayImage(Utility.getUnitImageURLByUnitId(umm.getUnitId()), unitIV, ImageLoaderOptions.Normal);
 
         lvTV.setText(umm.getLevel());
 

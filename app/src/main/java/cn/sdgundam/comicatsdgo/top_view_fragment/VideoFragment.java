@@ -20,6 +20,8 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Arrays;
@@ -136,7 +138,7 @@ public class VideoFragment extends Fragment implements
         videoListView.setDrawSelectorOnTop(true);
         videoListView.setHorizontalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_horizontal_spacing));
         videoListView.setVerticalSpacing(getResources().getDimensionPixelSize(R.dimen.video_grid_vertical_spacing));
-        videoListView.setOnScrollListener(this);
+        videoListView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true, this));
         videoListView.setOnItemClickListener(this);
 
         ptrLayout = (PullToRefreshLayout)getView().findViewById(R.id.ptr_layout);

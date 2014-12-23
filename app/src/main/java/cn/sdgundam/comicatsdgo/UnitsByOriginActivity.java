@@ -17,7 +17,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -166,6 +167,7 @@ public class UnitsByOriginActivity extends Activity implements
             }
         });
 
+        unitsGV.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
 
         ptrLayout = (PullToRefreshLayout)findViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(this)
@@ -282,6 +284,7 @@ public class UnitsByOriginActivity extends Activity implements
                 view = convertView;
 
                 unitIV = (ImageView)view.getTag(R.id.unit_image_view);
+                unitIV.setImageBitmap(null);
                 modelNameTV = (TextView)view.getTag(R.id.model_name_text_view);
             } else {
                 view = LayoutInflater.from(context).inflate(R.layout.view_single_unit, null, false);
@@ -296,9 +299,7 @@ public class UnitsByOriginActivity extends Activity implements
 
             UnitInfoShort uis = (UnitInfoShort)getItem(position);
 
-            Picasso.with(context)
-                    .load(Uri.parse(Utility.getUnitImageURLByUnitId(uis.getUnitId())))
-                    .into(unitIV);
+            ImageLoader.getInstance().displayImage(Utility.getUnitImageURLByUnitId(uis.getUnitId()), unitIV, ImageLoaderOptions.Normal);
 
             modelNameTV.setText(uis.getModelName());
 
