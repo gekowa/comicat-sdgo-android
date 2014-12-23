@@ -203,7 +203,9 @@ public class InterstitialAdsManager {
         ads.setInterstitialAdListener(new InterstitialAdListener() {
             @Override
             public void onInterstitialAdReady() {
-                ads.showInterstitialAd(context);
+                if (ads.isInterstitialAdReady()) {
+                    ads.showInterstitialAd(context);
+                }
             }
 
             @Override
@@ -243,6 +245,8 @@ public class InterstitialAdsManager {
         });
 
         ads.loadInterstitialAd();
+
+
 //
 //        if (ads.isInterstitialAdReady()) {
 //            ads.showInterstitialAd(context);
