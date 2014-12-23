@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
+import android.widget.Toast;
 
 import net.youmi.android.AdManager;
 import net.youmi.android.spot.SpotDialogListener;
@@ -13,6 +14,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Dictionary;
 import java.util.Hashtable;
+
+import javax.xml.namespace.NamespaceContext;
 
 import cn.domob.android.ads.InterstitialAd;
 import cn.domob.android.ads.InterstitialAdListener;
@@ -29,9 +32,7 @@ public class InterstitialAdsManager {
 
     String[] allProviders;
 
-//    Dictionary<String, Integer> counterByProvider;   // provider / counter
     Dictionary<String, Integer> counterByTag;
-//     Dictionary<String, Integer> weightTable;
 
     int[] weightArray;
 
@@ -53,11 +54,6 @@ public class InterstitialAdsManager {
 
     private void initInternal() {
         allProviders = resources.getStringArray(R.array.interstitial_ads_providers);
-
-//        counterByProvider = new Hashtable<String, Integer>();
-//        for (int i = 0; i < allProviders.length; i++) {
-//            counterByProvider.put(allProviders[i], 0);
-//        }
 
         resetWeightArray();
 

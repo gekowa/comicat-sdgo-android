@@ -19,6 +19,8 @@
 -keep class cn.sdgundam.comicatsdgo.api_model.UnitInfo { *; }
 -keep class cn.sdgundam.comicatsdgo.VideoViewActivity$YoukuJSInterface { *; }
 -keep class cn.sdgundam.comicatsdgo.VideoViewActivity$VideoInfoInterface { *; }
+-keep class cn.sdgundam.comicatsdgo.R.integer { *** interstitial_ads_freq_*; }
+-keep class cn.sdgundam.comicatsdgo.InterstitialAdsManager { void displayAdsOf*(...); }
 
 -keep public class io.vov.vitamio.** { *; }
 
