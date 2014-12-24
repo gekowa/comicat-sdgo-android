@@ -29,9 +29,6 @@
     <!-- 多盟积分墙 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 
-    <!-- QQ、QQ空间所需权限 -->
-    <uses-permission android:name="android.permission.GET_TASKS" />
-
     <!-- android:name=".GDApplication" -->
     <!-- android:configChanges="orientation" -->
     <!-- android:screenOrientation="portrait" -->
