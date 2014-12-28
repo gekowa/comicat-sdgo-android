@@ -1,5 +1,6 @@
 package cn.sdgundam.comicatsdgo;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -112,18 +113,20 @@ public class Utility {
         return bitmap;
     }
 
-    public static void showNetworkErrorAlertDialog(Context context, Throwable e) {
-        AlertDialog alert = new AlertDialog.Builder(context).create();
-        alert.setTitle(context.getString(R.string.data_loading_failure));
-        alert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (Message)null);
+    public static void showNetworkErrorAlertDialog(Activity activity, Throwable e) {
+        if (!activity.isFinishing()) {
+            AlertDialog alert = new AlertDialog.Builder(activity).create();
+            alert.setTitle(activity.getString(R.string.data_loading_failure));
+            alert.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (Message) null);
 
-        Class throwableType = e.getClass();
+            Class throwableType = e.getClass();
 
-        if (IOException.class.isAssignableFrom(throwableType)) {
-            alert.setMessage(context.getString(R.string.network_disconnected));
+            if (IOException.class.isAssignableFrom(throwableType)) {
+                alert.setMessage(activity.getString(R.string.network_disconnected));
+            }
+
+            alert.show();
         }
-
-        alert.show();
     }
 
     public static Intent makeVideoViewActivityIntent(Context context, int postId, String videoHost, String videoId, String videoId2) {
