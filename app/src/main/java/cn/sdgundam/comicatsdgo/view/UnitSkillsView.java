@@ -33,11 +33,11 @@ public class UnitSkillsView extends LinearLayout {
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
             try {
-                int skillId = (Integer)UnitInfo.class.getDeclaredMethod("getSkill" + i, null).invoke(unitInfo);
+                int skillId = (Integer)UnitInfo.class.getDeclaredMethod("getSkill" + i).invoke(unitInfo);
 
-                String skillName = (String)UnitInfo.class.getDeclaredMethod("getSkillName" + i, null).invoke(unitInfo);
-                String skillDesc = (String)UnitInfo.class.getDeclaredMethod("getSkillDesc" + i, null).invoke(unitInfo);
-                String skillEx = (String)UnitInfo.class.getDeclaredMethod("getSkillEx" + i, null).invoke(unitInfo);
+                String skillName = (String)UnitInfo.class.getDeclaredMethod("getSkillName" + i).invoke(unitInfo);
+                String skillDesc = (String)UnitInfo.class.getDeclaredMethod("getSkillDesc" + i).invoke(unitInfo);
+                String skillEx = (String)UnitInfo.class.getDeclaredMethod("getSkillEx" + i).invoke(unitInfo);
 
                 view.setSkillId(skillId);
                 view.setSkillName(skillName);

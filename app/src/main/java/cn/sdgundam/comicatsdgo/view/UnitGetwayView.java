@@ -65,7 +65,7 @@ public class UnitGetwayView extends LinearLayout {
 
         try {
             for (int i = 0; i < 4; i++) {
-                String capsule = (String) UnitInfo.class.getMethod("getCapsule" + (i + 1), null).invoke(unitInfo);
+                String capsule = (String) UnitInfo.class.getMethod("getCapsule" + (i + 1)).invoke(unitInfo);
                 showCapsules |= capsule.length() > 0;
                 if(capsule.length() > 0) {
                     capsules.add(capsule);
@@ -123,7 +123,7 @@ public class UnitGetwayView extends LinearLayout {
 
         try {
             for (int i = 0; i < 2; i++) {
-                String quest = (String) UnitInfo.class.getMethod("getQuest" + (i + 1), null).invoke(unitInfo);
+                String quest = (String) UnitInfo.class.getMethod("getQuest" + (i + 1)).invoke(unitInfo);
                 showQuest |= quest.length() > 0;
                 if (quest.length() > 0) {
                     quests.add(quest);
@@ -152,7 +152,7 @@ public class UnitGetwayView extends LinearLayout {
 
         try {
             for (int i = 0; i < 5; i++) {
-                String mission = (String) UnitInfo.class.getMethod("getMission" + (i + 1), null).invoke(unitInfo);
+                String mission = (String) UnitInfo.class.getMethod("getMission" + (i + 1)).invoke(unitInfo);
                 showMission |= mission.length() > 0;
                 if (mission.length() > 0) {
                     missions.add(mission);
@@ -181,7 +181,7 @@ public class UnitGetwayView extends LinearLayout {
 
         try {
             for (int i = 0; i < 2; i++) {
-                String lab = (String) UnitInfo.class.getMethod("getLab" + (i + 1), null).invoke(unitInfo);
+                String lab = (String) UnitInfo.class.getMethod("getLab" + (i + 1)).invoke(unitInfo);
                 showLab |= lab.length() > 0;
                 if (lab.length() > 0) {
                     labs.add(lab);

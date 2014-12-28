@@ -37,14 +37,14 @@ public class UnitWeaponsView extends LinearLayout {
             view.setWeaponIndex(i);
 
             try {
-                int weaponId = (Integer)UnitInfo.class.getDeclaredMethod("getWeapon" + i, null).invoke(unitInfo);
+                int weaponId = (Integer)UnitInfo.class.getDeclaredMethod("getWeapon" + i).invoke(unitInfo);
 
-                String weaponName = (String)UnitInfo.class.getDeclaredMethod("getWeaponName" + i, null).invoke(unitInfo);
-                String weaponProperty = (String)UnitInfo.class.getDeclaredMethod("getWeaponProperty" + i, null).invoke(unitInfo);
-                String weaponEffect = (String)UnitInfo.class.getDeclaredMethod("getWeaponEffect" + i, null).invoke(unitInfo);
-                String weaponRange = (String)UnitInfo.class.getDeclaredMethod("getWeaponRange" + i, null).invoke(unitInfo);
-                String weaponExLine1 = (String)UnitInfo.class.getDeclaredMethod(String.format("getWeaponEx%sLine1", i), null).invoke(unitInfo);
-                String weaponExLine2 = (String)UnitInfo.class.getDeclaredMethod(String.format("getWeaponEx%sLine2", i), null).invoke(unitInfo);
+                String weaponName = (String)UnitInfo.class.getDeclaredMethod("getWeaponName" + i).invoke(unitInfo);
+                String weaponProperty = (String)UnitInfo.class.getDeclaredMethod("getWeaponProperty" + i).invoke(unitInfo);
+                String weaponEffect = (String)UnitInfo.class.getDeclaredMethod("getWeaponEffect" + i).invoke(unitInfo);
+                String weaponRange = (String)UnitInfo.class.getDeclaredMethod("getWeaponRange" + i).invoke(unitInfo);
+                String weaponExLine1 = (String)UnitInfo.class.getDeclaredMethod(String.format("getWeaponEx%sLine1", i)).invoke(unitInfo);
+                String weaponExLine2 = (String)UnitInfo.class.getDeclaredMethod(String.format("getWeaponEx%sLine2", i)).invoke(unitInfo);
 
                 view.setWeaponId(weaponId);
                 view.setWeaponName(weaponName);
