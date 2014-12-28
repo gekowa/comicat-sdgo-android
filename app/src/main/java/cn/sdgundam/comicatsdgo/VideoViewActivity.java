@@ -1,5 +1,6 @@
 package cn.sdgundam.comicatsdgo;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -116,6 +117,7 @@ public class VideoViewActivity extends Activity implements
     private ViewGroup loadingView;
     private ViewGroup videoOverlay;
     private RelativeLayout bannerContainer;
+    private ActionBar actionBar;
 
     private OrientationEventListener orientationEventListener;
 
@@ -179,9 +181,12 @@ public class VideoViewActivity extends Activity implements
             }
         };
 
+        actionBar = getActionBar();
+
+
         // Debug
-        if (BuildConfig.DEBUG) {
-            getActionBar().setTitle(String.valueOf(postId));
+        if (BuildConfig.DEBUG && actionBar != null) {
+            actionBar.setTitle(String.valueOf(postId));
         }
     }
 
@@ -374,7 +379,9 @@ public class VideoViewActivity extends Activity implements
     @Override
     public void onSystemUiVisibilityChange(int i) {
         if ((i & SYSTEM_UI_FLAG_MY_FULLSCREEN) != i) {
-            mediaController.show();
+            if (mediaController != null) {
+                mediaController.show();
+            }
         }
     }
 
@@ -463,7 +470,9 @@ public class VideoViewActivity extends Activity implements
 
         if (orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
 
-            getActionBar().hide();
+            if (actionBar != null) {
+                actionBar.hide();
+            }
 
 //            layoutParamsPortraitForVideoContainer = (LinearLayout.LayoutParams)videoContainer.getLayoutParams();
 //            LinearLayout.LayoutParams landscapeLayoutForVideoContainer = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -489,7 +498,9 @@ public class VideoViewActivity extends Activity implements
         }
         else if (orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
 
-            getActionBar().show();
+            if (actionBar != null) {
+                actionBar.hide();
+            }
 
             if (layoutParamsPortraitForVideoView != null) {
                 videoView.setLayoutParams(layoutParamsPortraitForVideoView);
