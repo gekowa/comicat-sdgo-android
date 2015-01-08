@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.ViewDragHelper;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 
 import net.youmi.android.offers.OffersManager;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
@@ -212,6 +214,20 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        try {
+            Field mDragger = drawerLayout.getClass().getDeclaredField("mLeftDragger");  //mRightDragger for right obviously
+            mDragger.setAccessible(true);
+            ViewDragHelper draggerObj = (ViewDragHelper) mDragger.get(mDrawerLayout);
+
+            Field mEdgeSize = draggerObj.getClass().getDeclaredField("mEdgeSize");
+            mEdgeSize.setAccessible(true);
+            int edge = mEdgeSize.getInt(draggerObj);
+
+            mEdgeSize.setInt(draggerObj, edge * 5);
+        }
+        catch (NoSuchFieldException ex) { }
+        catch(IllegalAccessException ex) { }
     }
 
     private void selectItem(int position) {
